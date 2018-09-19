@@ -19,7 +19,7 @@
             </div>
             <div class="field">
                 <div class="control">
-                    <button class="button is-primary">Register</button>
+                    <button @click="signUp" class="button is-primary">Get Inspired</button>
                 </div>
             </div>
             
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import firebase from 'firebase'
 export default {
   name: "signup",
   data() {
@@ -38,6 +39,18 @@ export default {
         password: ""
       }
     };
+  },
+  methods: {
+      signUp() {
+          firebase.auth().createUserWithEmailAndPassword(this.user.email, this.user.password).then(
+              (user) => {
+                  alert('Account Created!')
+              },
+              (err) => {
+                  alert(`Oops, ${err.message}`)
+              }
+          )
+      }
   }
 };
 </script>
