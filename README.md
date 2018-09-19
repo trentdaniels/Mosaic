@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # capstone
 
 ## Project setup
@@ -20,6 +19,4 @@ npm run build
 ```
 npm run lint
 ```
-=======
 # creatives
->>>>>>> 8cf467d9e8e7bffd662809c712be522b37454a3f
