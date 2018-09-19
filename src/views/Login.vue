@@ -1,7 +1,7 @@
 <template>
     <div id="login" class="section columns">
         <div class="container column is-6">
-            <h1 class="title">Sign In</h1>
+            <h1 class="title">Log In</h1>
             <h2 class="subtitle">Get back to your inspirations</h2>
             <div class="field">
                 <label class="label">Email</label>
@@ -23,7 +23,7 @@
                 </div>
             </div>
             
-            <p class="help">Don't have an account? Create one Here</p>
+            <p class="help">Don't have an account? <router-link to="/signup">Get Creating.</router-link></p>
         </div>
     </div>
 </template>
