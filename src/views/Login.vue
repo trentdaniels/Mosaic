@@ -19,7 +19,7 @@
             </div>
             <div class="field">
                 <div class="control">
-                    <button class="button is-primary">Connect</button>
+                    <button @click="login" class="button is-primary">Connect</button>
                 </div>
             </div>
             
@@ -38,6 +38,11 @@ export default {
         password: ""
       }
     };
+  },
+  methods: {
+      login() {
+          this.$router.replace('home');
+      }
   }
 };
 </script>
