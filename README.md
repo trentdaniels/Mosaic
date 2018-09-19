@@ -1,4 +1,4 @@
-# capstone
+# creatives
 
 ## Project setup
 ```
@@ -19,4 +19,4 @@ npm run build
 ```
 npm run lint
 ```
-# creatives
+
