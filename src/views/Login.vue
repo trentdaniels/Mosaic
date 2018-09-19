@@ -8,14 +8,14 @@
                 <div class="control">
                     <input class="input" type="email" placeholder="Email" v-model.trim="user.email"/>
                 </div>
-                <p class="help">Ex: creative@creative.com</p>
+                <p class="help" v-show="user.email !== ''">Ex: creative@creative.com</p>
             </div>
             <div class="field">
                 <label class="label">Password</label>
                 <div class="control">
                     <input class="input" type="password" placeholder="Password" v-model.trim="user.password"/>
                 </div>
-                <p class="help">Enter your account password here</p>
+                <p class="help" v-show="user.password.length > 0">Be secretive..</p>
             </div>
             <div class="field">
                 <div class="control">
@@ -45,7 +45,7 @@ export default {
       login() {
           firebase.auth().signInWithEmailAndPassword(this.user.email, this.user.password).then(
               (user) => {
-                  alert('You are now logged in!')
+                  this.$router.replace('home')
               },
               (err) => {
                   alert(`Oops, ${err.message}`)

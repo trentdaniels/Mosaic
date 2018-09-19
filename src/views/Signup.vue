@@ -44,7 +44,7 @@ export default {
       signUp() {
           firebase.auth().createUserWithEmailAndPassword(this.user.email, this.user.password).then(
               (user) => {
-                  alert('Account Created!')
+                  this.$router.replace('home')
               },
               (err) => {
                   alert(`Oops, ${err.message}`)

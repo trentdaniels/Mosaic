@@ -29,8 +29,7 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
+      component: () => import(/* webpackChunkName: "about" */ "./views/About.vue")
     },
     {
       path: "/login",
@@ -45,12 +44,12 @@ export default new Router({
   ],
   beforeEach(to, from, next) {
     let currentUser = firebase.auth().currentUser;
-    let requiredAuth = to.matched.some(record => record.meta.requiresAuth);
+    let authenticated = to.matched.some(record => record.meta.requiresAuth);
 
-    if(requiredAuth && !currentUser) {
+    if(authenticated && !currentUser) {
       next('login')
     }
-    else if (!requiredAuth && currentUser) {
+    else if (!authenticated && currentUser) {
       next('home')
     }
     else {
