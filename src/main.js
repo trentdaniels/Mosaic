@@ -7,11 +7,16 @@ import {config} from "./credentials/firebase"
 import "bulma";
 
 firebase.initializeApp(config);
-
+let app;
 Vue.config.productionTip = false;
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount("#app");
+firebase.auth().onAuthStateChanged((user) => {
+  if(!app) {
+    app = new Vue({
+      router,
+      store,
+      render: h => h(App)
+    }).$mount("#app");
+  }
+})
+

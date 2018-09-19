@@ -23,7 +23,7 @@
                 </div>
             </div>
             
-            <p class="help">Don't have an account? <router-link to="/signup">Get Creating.</router-link></p>
+            <p class="help">Don't have an account? <router-link to="/signup">Start Creating.</router-link></p>
         </div>
     </div>
 </template>
@@ -43,7 +43,14 @@ export default {
   },
   methods: {
       login() {
-          this.$router.replace('home');
+          firebase.auth().signInWithEmailAndPassword(this.user.email, this.user.password).then(
+              (user) => {
+                  alert('You are now logged in!')
+              },
+              (err) => {
+                  alert(`Oops, ${err.message}`)
+              }
+          )
       }
   }
 };
