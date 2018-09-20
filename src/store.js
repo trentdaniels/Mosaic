@@ -19,6 +19,9 @@ export default new Vuex.Store({
   getters: {
     isLoggedIn(state) {
       return state.currentUser.id && state.currentUser.email ? true : false;
+    },
+    name(state) {
+      return state.currentUser.name
     }
   },
   mutations: {
@@ -26,6 +29,8 @@ export default new Vuex.Store({
       state.currentUser.id = user.id;
       state.currentUser.email = user.email;
       state.currentUser.isAuthenticated = true;
+      state.currentUser.name = user.name;
+      state.currentUser.bio = user.bio;
     },
     clearUser(state) {
       state.currentUser.id = null;
@@ -73,7 +78,9 @@ export default new Vuex.Store({
         db.collection("users").doc(authUser.user.uid).get().then((doc) => {
           commit('getCurrentUser', {
             id: doc.id,
-            email: loggedInUser.email
+            email: loggedInUser.email,
+            name: doc.name,
+            bio: doc.bio
           })
         })
         Router.replace('home')

@@ -1,9 +1,11 @@
 <template>
     <nav id="nav">
-        <router-link to="/home">Home</router-link> |
-        <router-link to="/about">About</router-link> |
-        <button @click="logout" v-if="isLoggedIn">Log Out</button>
-        <router-link to="/login" v-else>Log In</router-link>
+        <div class="field is-grouped">
+            <router-link to="/home" class="button">Home</router-link>
+            <router-link to="/about" class="button">About</router-link>
+            <button @click="logout" v-if="isLoggedIn" class="button">Log Out</button>
+            <router-link to="/login" v-else class="button">Log In</router-link>
+        </div>
     </nav>
 </template>
 
