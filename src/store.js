@@ -24,9 +24,7 @@ export default new Vuex.Store({
       'newsApi',
       'unSplash'
     ],
-    searchedProjects:[],
-    searchedPhotos:[],
-    searchedArticles:[]
+    currentSearch: []
   },
   getters: {
     isLoggedIn(state) {
@@ -56,20 +54,26 @@ export default new Vuex.Store({
       state.currentUser.name = user.name,
       state.currentUser.bio = user.bio
     },
-    getProjects(state, projects) {
-      projects.forEach(project => {
-        state.searchedProjects.push(project)
+    updateSearch(state, inspirations) {
+      state.currentSearch = []
+      inspirations.forEach(inspiration => {
+        state.currentSearch.push(inspiration)
       })
+      console.log(state.currentSearch)
     },
     getArticles(state, articles) {
+      state.currentSearch = []
       articles.forEach(article => {
-        state.searchedProjects.push(article)
+        state.currentSearch.push(article)
       })
+      console.log(state.currentSearch)
     },
     getPhotos(state, photos) {
+      state.currentSearch = []
       photos.forEach(photo => {
-        state.searchedPhotos.push(photo)
+        state.currentSearch.push(photo)
       })
+      console.log(state.currentSearch)
     }
   },
   actions: {
@@ -149,8 +153,7 @@ export default new Vuex.Store({
                 returnedProjects.push(project)
               }
             })
-            commit('getProjects', returnedProjects)
-            console.log(returnedProjects)
+            commit('updateSearch', returnedProjects)
           },
           (err) => {
             alert(`Oops, ${err.message}`)
@@ -160,8 +163,7 @@ export default new Vuex.Store({
           url = `https://newsapi.org/v2/everything?q=${query.url}&sortBy=popularity&pageSize=10&apiKey=${keys.NEWS_API}`
           axios.get(url).then((res) => {
             let articles = res.data.articles;
-            commit('getArticles', articles)
-            console.log(articles)
+            commit('updateSearch', articles)
           }, (err) => {
             alert(`Oops, ${err.message}`)
           })
@@ -170,8 +172,7 @@ export default new Vuex.Store({
           url = `https://api.unsplash.com/search/photos?page=1&query=${query.url}&orientation=squarish&client_id=${keys.UNSPLASH_API}`
           axios.get(url).then((res) => {
             let photos = res.data.results;
-            commit('getPhotos', photos)
-            console.log(photos)
+            commit('updateSearch', photos)
           }, (err) => {
             alert(`Oops, ${err.message}`)
           })
