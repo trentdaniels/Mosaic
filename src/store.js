@@ -23,11 +23,14 @@ export default new Vuex.Store({
       'behance',
       'newsApi',
       'unSplash'
-    ]
+    ],
+    searchedProjects:[],
+    searchedPhotos:[],
+    searchedArticles:[]
   },
   getters: {
     isLoggedIn(state) {
-      return state.currentUser.id && state.currentUser.email ? true : false;
+      return state.currentUser.id  ? true : false;
     },
     name(state) {
       return state.currentUser.name
@@ -52,6 +55,11 @@ export default new Vuex.Store({
     addInfo(state, user) {
       state.currentUser.name = user.name,
       state.currentUser.bio = user.bio
+    },
+    getProjects(state, projects) {
+      projects.forEach(project => {
+        state.searchedProjects.push(project)
+      })
     }
   },
   actions: {
@@ -124,8 +132,15 @@ export default new Vuex.Store({
           axios.get(url, {
             adapter: jsonAdapter
           }).then((response) => {
-            let projects = response.data;
-            console.log(projects)
+            let projects = response.data.projects;
+            let returnedProjects = [];
+            projects.forEach((project, index) => {
+              if (index < 10) {
+                returnedProjects.push(project)
+              }
+            })
+            commit('getProjects', returnedProjects)
+            console.log(returnedProjects)
           },
           (err) => {
             alert(`Oops, ${err.message}`)
