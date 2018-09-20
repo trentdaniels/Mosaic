@@ -1,7 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import firebase from "firebase/app";
+import Router from './router'
 
 Vue.use(Vuex);
+
 
 export default new Vuex.Store({
   state: {
@@ -17,8 +20,8 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    getUser(state, user) {
-      state.currentUser.id = user.uid;
+    getCurrentUser(state, user) {
+      state.currentUser.id = user.id;
       state.currentUser.email = user.email;
       state.currentUser.isAuthenticated = true;
     },
@@ -29,11 +32,49 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    getUser({ commit }, user) {
-      commit("getUser", user);
-    },
     clearUser({ commit }) {
       commit("clearUser");
+    },
+    async signUp({ commit }, createdUser) {
+      const db = firebase.firestore();
+      const settings = {timestampsInSnapshots: true};
+      db.settings(settings);
+      const auth = firebase.auth();
+
+      auth.createUserWithEmailAndPassword(createdUser.email, createdUser.password).then((authUser) => {
+        db.collection("users").doc(authUser.user.uid).set({
+          id: authUser.user.uid,
+          email: createdUser.email,
+          password: createdUser.password
+        })
+        commit('getCurrentUser', {
+          id: authUser.user.uid,
+          email: authUser.user.email
+        })
+        Router.replace('home')
+      }, (err) => {
+          alert(`Oops, ${err.message}`);
+        }
+      );      
+    },
+    async logIn({ commit }, loggedInUser) {
+      const db = firebase.firestore();
+      const settings = {timestampsInSnapshots: true};
+      db.settings(settings);
+      const auth = firebase.auth();
+
+      auth.signInWithEmailAndPassword(loggedInUser.email, loggedInUser.password).then((authUser) => {
+        db.collection("users").doc(authUser.user.uid).get().then((doc) => {
+          console.log(doc)
+          commit('getCurrentUser', {
+            id: doc.id,
+            email: loggedInUser.email
+          })
+        })
+        Router.replace('home')
+      }, (err) => {
+        alert(`Oops, ${err.message}`)
+      })
     }
   }
 });

@@ -9,6 +9,7 @@ import { config } from "./credentials/firebase";
 import "bulma";
 
 firebase.initializeApp(config);
+
 let app;
 Vue.config.productionTip = false;
 

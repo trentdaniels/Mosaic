@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
-import store from "./store";
+import Sstore from "./store";
+
 
 Vue.use(Router);
 
@@ -47,7 +48,7 @@ export default new Router({
     }
   ],
   beforeEach(to, from, next) {
-    let currentUser = store.getters.isLoggedIn;
+    let currentUser = Store.getters.isLoggedIn;
     let authenticated = to.matched.some(route => route.meta.requiresAuth);
 
     if (authenticated && !currentUser) {

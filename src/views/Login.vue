@@ -43,22 +43,13 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getUser"]),
+    ...mapActions({
+        logInUser: 'logIn'
+    }),
     login() {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(this.user.email, this.user.password)
-        .then(
-          userData => {
-            console.log(userData);
-            this.getUser(userData.user);
-            this.$router.replace("home");
-          },
-          err => {
-            alert(`Oops, ${err.message}`);
-          }
-        );
+        this.logInUser(this.user)
     }
+      
   }
 };
 </script>

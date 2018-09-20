@@ -30,6 +30,7 @@
 
 <script>
 import firebase, { auth } from "firebase";
+import {mapActions} from 'vuex'
 export default {
   name: "signup",
   data() {
@@ -41,19 +42,13 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+        createUser: 'signUp'
+    }),
     signUp() {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.user.email, this.user.password)
-        .then(
-          user => {
-            this.$router.replace("home");
-          },
-          err => {
-            alert(`Oops, ${err.message}`);
-          }
-        );
+        this.createUser(this.user)
     }
+      
   }
 };
 </script>
