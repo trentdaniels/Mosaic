@@ -15,7 +15,7 @@
             <h2 class="subtitle">Let's get inspired.</h2>
           </div>
           <div class="column is-10">
-            <main-search :targets="apiTargets"></main-search>
+            <main-search @searched="getProjects"></main-search>
           </div>
         </div>
         </div>
@@ -29,7 +29,7 @@
 // @ is an alias to /src
 import MainSearch from "@/components/MainSearch.vue";
 import Navigation from "@/components/Navigation.vue";
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 
 export default {
@@ -40,18 +40,17 @@ export default {
   },
   data() {
     return {
-      apiTargets: [
-        'behance',
-        'newsApi',
-        'unSplash'
-      ]
+      
     }
   },
   computed: {
     ...mapGetters(['name'])
   },
   methods: {
-    
+    ...mapActions(['searchProjects']),
+    getProjects(query) {
+      this.searchProjects(query)
+    }
   }
 };
 </script>

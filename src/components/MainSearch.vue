@@ -4,9 +4,9 @@
     <div  class="field has-addons">
     <div class="control">
       <span class="select is-medium is-primary">
-        <select>
-          <option v-for="(target, index) in targets" :key="index">
-            {{ target }}
+        <select v-model="selectedApi">
+          <option v-for="(api, index) in apis" :key="index" :value="index">
+            {{ api }}
           </option>
         </select>
       </span>
@@ -15,21 +15,34 @@
       <input type="text" placeholder="ex: Rainbow Dragons" v-model="search" class="input is-medium is-primary" />
     </div>
     <div class="control">
-      <button class="button is-primary is-medium">Search</button>
+      <button class="button is-primary is-medium" @click="getProjects">Search</button>
     </div>
   </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: "MainSearch",
-  props: {
-    targets: Array
-  },
   data() {
     return {
-      search: ''
+      search: '',
+      selectedApi: 0
+    }
+  },
+  computed: {
+    ...mapGetters(['apis']),
+    encodedSearch() {
+      return encodeURIComponent(this.search)
+    }
+  },
+  methods: {
+    getProjects() {
+      this.$emit('searched', {
+        url: this.encodedSearch,
+        api: this.selectedApi
+      })
     }
   }
 };
@@ -37,18 +50,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+
 </style>

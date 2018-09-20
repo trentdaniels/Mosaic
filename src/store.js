@@ -1,6 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import firebase from "firebase/app";
+import 'firebase/firestore';
+import 'firebase/auth';
+import axios from 'axios'
 import Router from './router'
 
 Vue.use(Vuex);
@@ -14,7 +17,12 @@ export default new Vuex.Store({
       name: null,
       bio: null,
       isAuthenticated: false
-    }
+    },
+    apiTargets: [
+      'behance',
+      'newsApi',
+      'unSplash'
+    ]
   },
   getters: {
     isLoggedIn(state) {
@@ -22,6 +30,9 @@ export default new Vuex.Store({
     },
     name(state) {
       return state.currentUser.name
+    },
+    apis(state) {
+      return state.apiTargets
     }
   },
   mutations: {
@@ -103,6 +114,22 @@ export default new Vuex.Store({
         alert(`Oops, ${err.message}`)
       })
       
+    },
+    async searchProjects(query) {
+      switch(query.api) {
+        case 0:
+          axios.get()
+          break;
+        case 1: 
+          axios.get()
+          break;
+        case 2:  
+          axios.get()
+          break;
+        default:
+          alert('unable to get projects, please try again')
+          break;
+      }
     }
   }
 });
