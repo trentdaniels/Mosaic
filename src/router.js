@@ -45,6 +45,14 @@ export default new Router({
       path: "/signup",
       name: "signup",
       component: () => import("./views/Signup.vue")
+    },
+    {
+      path: "/getstarted",
+      name: "getstarted",
+      component: () => import('./views/UserStart.vue'),
+      meta: {
+        requiresAuth: true
+      }
     }
   ],
   beforeEach(to, from, next) {

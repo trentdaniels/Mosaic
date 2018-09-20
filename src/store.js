@@ -11,12 +11,14 @@ export default new Vuex.Store({
     currentUser: {
       id: null,
       email: null,
+      name: null,
+      bio: null,
       isAuthenticated: false
     }
   },
   getters: {
     isLoggedIn(state) {
-      return state.currentUser.id ? true : false;
+      return state.currentUser.id && state.currentUser.email ? true : false;
     }
   },
   mutations: {
@@ -29,6 +31,10 @@ export default new Vuex.Store({
       state.currentUser.id = null;
       state.currentUser.email = null;
       state.currentUser.isAuthenticated = false;
+    },
+    addInfo(state, user) {
+      state.currentUser.name = user.name,
+      state.currentUser.bio = user.bio
     }
   },
   actions: {
@@ -43,15 +49,15 @@ export default new Vuex.Store({
 
       auth.createUserWithEmailAndPassword(createdUser.email, createdUser.password).then((authUser) => {
         db.collection("users").doc(authUser.user.uid).set({
+          type: "Creative",
           id: authUser.user.uid,
           email: createdUser.email,
-          password: createdUser.password
-        })
+        }, {merge: true})
         commit('getCurrentUser', {
           id: authUser.user.uid,
           email: authUser.user.email
         })
-        Router.replace('home')
+        Router.replace('getstarted')
       }, (err) => {
           alert(`Oops, ${err.message}`);
         }
@@ -65,7 +71,6 @@ export default new Vuex.Store({
 
       auth.signInWithEmailAndPassword(loggedInUser.email, loggedInUser.password).then((authUser) => {
         db.collection("users").doc(authUser.user.uid).get().then((doc) => {
-          console.log(doc)
           commit('getCurrentUser', {
             id: doc.id,
             email: loggedInUser.email
@@ -75,6 +80,22 @@ export default new Vuex.Store({
       }, (err) => {
         alert(`Oops, ${err.message}`)
       })
+    },
+    async updateUser({state, commit}, user) {
+      const db = firebase.firestore();
+      const settings = {timestampsInSnapshots: true};
+      db.settings(settings);
+
+      db.collection("users").doc(state.currentUser.id).set({
+        name: user.name,
+        bio: user.bio
+      }, {merge: true}).then(() => {
+        commit('addInfo', user)
+        Router.replace('home')
+      }, (err) => {
+        alert(`Oops, ${err.message}`)
+      })
+      
     }
   }
 });

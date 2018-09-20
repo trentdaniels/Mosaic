@@ -1,5 +1,5 @@
 <template>
-    <div id="login" class="section columns">
+    <div id="userStart" class="section columns">
         <div class="container column is-6">
             <h1 class="title">Log In</h1>
             <h2 class="subtitle">Get back to your inspirations</h2>
