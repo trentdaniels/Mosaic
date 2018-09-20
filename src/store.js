@@ -121,15 +121,7 @@ export default new Vuex.Store({
       switch(query.api) {
         case 0:
           url = `http://behance.net/v2/projects?q=${query.url}&page=1&sort=views&api_key=${keys.BEHANCE_API}`;
-          
-          // function callback (json) {
-          //   console.log(json)
-          // }
           axios.get(url, {
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'text/html'
-            },
             adapter: jsonAdapter
           }).then((response) => {
             let projects = response.data;
