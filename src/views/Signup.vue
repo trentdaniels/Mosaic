@@ -29,7 +29,8 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import firebase,{ auth } from 'firebase'
+import axios from 'axios'
 export default {
   name: "signup",
   data() {
@@ -50,6 +51,7 @@ export default {
                   alert(`Oops, ${err.message}`)
               }
           )
+          axios.post()
       }
   }
 };

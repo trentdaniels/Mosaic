@@ -44,13 +44,13 @@ export default new Router({
   ],
   beforeEach(to, from, next) {
     let currentUser = firebase.auth().currentUser;
-    let authenticated = to.matched.some(record => record.meta.requiresAuth);
+    let authenticated = to.matched.some(route => route.meta.requiresAuth);
 
     if(authenticated && !currentUser) {
       next('login')
     }
     else if (!authenticated && currentUser) {
-      next('home')
+      next()
     }
     else {
       next()

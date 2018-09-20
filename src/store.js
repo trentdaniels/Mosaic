@@ -5,16 +5,23 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: {
-      email: '',
+    currentUser: {
+      id : null,
+      email: null,
       isAuthenticated: false
     }
     
   },
   mutations: {
-    authenticate(context) {
-      context.commit()
+    getUser(state, user) {
+      state.currentUser.id = user.uid
+      state.currentUser.email = user.email
+      state.currentUser.isAuthenticated = true
     }
   },
-  actions: {}
+  actions: {
+    getUser({commit}, user) {
+      commit('getUser', user)
+    }
+  }
 });
