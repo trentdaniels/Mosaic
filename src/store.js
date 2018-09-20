@@ -12,6 +12,11 @@ export default new Vuex.Store({
     }
     
   },
+  getters: {
+    isLoggedIn(state) {
+      return state.currentUser.id ? true : false
+    }
+  },
   mutations: {
     getUser(state, user) {
       state.currentUser.id = user.uid
