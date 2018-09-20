@@ -60,6 +60,16 @@ export default new Vuex.Store({
       projects.forEach(project => {
         state.searchedProjects.push(project)
       })
+    },
+    getArticles(state, articles) {
+      articles.forEach(article => {
+        state.searchedProjects.push(article)
+      })
+    },
+    getPhotos(state, photos) {
+      photos.forEach(photo => {
+        state.searchedPhotos.push(photo)
+      })
     }
   },
   actions: {
@@ -149,7 +159,8 @@ export default new Vuex.Store({
         case 1:
           url = `https://newsapi.org/v2/everything?q=${query.url}&sortBy=popularity&pageSize=10&apiKey=${keys.NEWS_API}`
           axios.get(url).then((res) => {
-            let articles = res.data;
+            let articles = res.data.articles;
+            commit('getArticles', articles)
             console.log(articles)
           }, (err) => {
             alert(`Oops, ${err.message}`)
@@ -158,7 +169,8 @@ export default new Vuex.Store({
         case 2:  
           url = `https://api.unsplash.com/search/photos?page=1&query=${query.url}&orientation=squarish&client_id=${keys.UNSPLASH_API}`
           axios.get(url).then((res) => {
-            let photos = res.data;
+            let photos = res.data.results;
+            commit('getPhotos', photos)
             console.log(photos)
           }, (err) => {
             alert(`Oops, ${err.message}`)
