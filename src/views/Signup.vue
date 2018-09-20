@@ -29,8 +29,7 @@
 </template>
 
 <script>
-import firebase,{ auth } from 'firebase'
-import axios from 'axios'
+import firebase, { auth } from "firebase";
 export default {
   name: "signup",
   data() {
@@ -42,17 +41,19 @@ export default {
     };
   },
   methods: {
-      signUp() {
-          firebase.auth().createUserWithEmailAndPassword(this.user.email, this.user.password).then(
-              (user) => {
-                  this.$router.replace('home')
-              },
-              (err) => {
-                  alert(`Oops, ${err.message}`)
-              }
-          )
-          
-      }
+    signUp() {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.user.email, this.user.password)
+        .then(
+          user => {
+            this.$router.replace("home");
+          },
+          err => {
+            alert(`Oops, ${err.message}`);
+          }
+        );
+    }
   }
 };
 </script>

@@ -1,8 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
-import firebase from "firebase";
-import store from 'store';
+import store from "./store";
 
 Vue.use(Router);
 
@@ -30,7 +29,8 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ "./views/About.vue"),
+      component: () =>
+        import(/* webpackChunkName: "about" */ "./views/About.vue"),
       meta: {
         requiresAuth: true
       }
@@ -50,14 +50,12 @@ export default new Router({
     let currentUser = store.getters.isLoggedIn;
     let authenticated = to.matched.some(route => route.meta.requiresAuth);
 
-    if(authenticated && !currentUser) {
-      next('login')
-    }
-    else if (!authenticated && currentUser) {
-      next()
-    }
-    else {
-      next()
+    if (authenticated && !currentUser) {
+      next("login");
+    } else if (!authenticated && currentUser) {
+      next();
+    } else {
+      next();
     }
   }
 });

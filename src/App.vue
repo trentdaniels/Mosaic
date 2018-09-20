@@ -6,13 +6,9 @@
 
 <script>
 import Navigation from "@/components/Navigation.vue";
-export default {
-  
-};
+export default {};
 </script>
 
 
 <style lang="scss">
-
-
 </style>
