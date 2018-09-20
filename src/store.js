@@ -78,9 +78,9 @@ export default new Vuex.Store({
         db.collection("users").doc(authUser.user.uid).get().then((doc) => {
           commit('getCurrentUser', {
             id: doc.id,
-            email: loggedInUser.email,
-            name: doc.name,
-            bio: doc.bio
+            email: doc.data().email,
+            name: doc.data().name,
+            bio: doc.data().bio
           })
         })
         Router.replace('home')

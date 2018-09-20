@@ -12,7 +12,7 @@
       </span>
     </div>
     <div class="control is-expanded">
-      <input type="text" placeholder="ex: Rainbow Dragons" v-model="search" class="input is-medium" />
+      <input type="text" placeholder="ex: Rainbow Dragons" v-model="search" class="input is-medium is-primary" />
     </div>
     <div class="control">
       <button class="button is-primary is-medium">Search</button>
