@@ -11,6 +11,7 @@
 // @ is an alias to /src
 import HelloWorld from "@/components/HelloWorld.vue";
 import Navigation from '@/components/Navigation.vue';
+import { mapActions } from 'vuex'
 import firebase from 'firebase';
 
 export default {
@@ -20,8 +21,12 @@ export default {
     Navigation
   },
   methods: {
+    ...mapActions([
+      'clearUser'
+    ]),
     logout() {
       firebase.auth().signOut().then(() => {
+        this.clearUser()
         this.$router.replace('login')
       }, (err) => {
         alert(`Oh no! ${err.message}`)
