@@ -4,10 +4,11 @@ import firebase from "firebase/app";
 import 'firebase/firestore';
 import 'firebase/auth';
 import axios from 'axios'
+import jsonAdapter from 'axios-jsonp'
+import keys from './credentials/keys'
 import Router from './router'
 
 Vue.use(Vuex);
-
 
 export default new Vuex.Store({
   state: {
@@ -115,16 +116,46 @@ export default new Vuex.Store({
       })
       
     },
-    async searchProjects(query) {
+    async searchProjects({commit}, query) {
+      let url;
       switch(query.api) {
         case 0:
-          axios.get()
+          url = `http://behance.net/v2/projects?q=${query.url}&page=1&sort=views&api_key=${keys.BEHANCE_API}`;
+          
+          // function callback (json) {
+          //   console.log(json)
+          // }
+          axios.get(url, {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'text/html'
+            },
+            adapter: jsonAdapter
+          }).then((response) => {
+            let projects = response.data;
+            console.log(projects)
+          },
+          (err) => {
+            alert(`Oops, ${err.message}`)
+          });
           break;
-        case 1: 
-          axios.get()
+        case 1:
+          url = `https://newsapi.org/v2/everything?q=${query.url}&sortBy=popularity&pageSize=10&apiKey=${keys.NEWS_API}`
+          axios.get(url).then((res) => {
+            let articles = res.data;
+            console.log(articles)
+          }, (err) => {
+            alert(`Oops, ${err.message}`)
+          })
           break;
         case 2:  
-          axios.get()
+          url = `https://api.unsplash.com/search/photos?page=1&query=${query.url}&orientation=squarish&client_id=${keys.UNSPLASH_API}`
+          axios.get(url).then((res) => {
+            let photos = res.data;
+            console.log(photos)
+          }, (err) => {
+            alert(`Oops, ${err.message}`)
+          })
           break;
         default:
           alert('unable to get projects, please try again')
