@@ -31,8 +31,9 @@ export default new Vuex.Store({
     isLoading: false
   },
   getters: {
-    isLoggedIn() {
-      return firebase.auth().currentUser.uid !== null  ? true : false;
+    isLoggedIn(state) {
+      let loggedInUserId = state.currentUser.id
+      return loggedInUserId !== null ? true: false
     },
     name(state) {
       return state.currentUser.name
@@ -86,6 +87,7 @@ export default new Vuex.Store({
       const auth = firebase.auth();
       auth.signOut().then(() => {
         commit("clearUser");
+        Router.replace('home')
       }, (err) =>
       alert(`Oops, ${err.message}`)
       )
