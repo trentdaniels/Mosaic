@@ -15,8 +15,8 @@
             <h2 class="subtitle">Here's what we know about you:</h2>
             <p>Thanks again for using us!</p>
           </div>
-            <template v-if="!isEditing && !isDeleting">
-                <div class="column is-6">
+            <div class="column is-6">
+                <template v-if="!isEditing && !isDeleting">
                     <h1 class="title is-1">Your Name is {{ userDetails.name }}.</h1>
                     <h3 class="subtitle is-3">(Great name by the way)</h3>
                     <div class="field">
@@ -28,14 +28,19 @@
                         <p>{{ userDetails.email }}</p>
                     </div>
                     <div class="buttons">
-                        <button @click ="isEditing = true" class="button is-light">Edit</button>
-                        <button @click="isDeleting = true" class="button is-dark">Delete</button>
+                        <router-link @click.native="isEditing = true" to="/account/edit" class="button is-light" exact>Edit</router-link>
+                        <router-link to="/account/delete" class="button is-dark" exact>Delete</router-link>
                     </div>
-                </div>
-            </template>
-            <template v-else-if="isEditing">
-
-            </template>
+                </template>
+                <template v-else-if="isEditing && !isDeleting">
+                    <router-view @cancelled="reset"></router-view>
+                </template>
+                <template v-else-if="!isEditing && isDeleting">
+                    <router-view></router-view>
+                </template>
+            </div>
+            
+            
         </div>
         </div>
       </div>
@@ -45,14 +50,12 @@
 
 <script>
 import Navigation from '@/components/Navigation.vue'
-import Edit from './Edit.vue'
-import Delete from './Delete.vue'
 
 import { mapGetters } from 'vuex';
     export default {
         name: 'Details',
         components: {
-            Navigation
+            Navigation,
         },
         computed: {
             ...mapGetters(['userDetails'])
@@ -62,7 +65,14 @@ import { mapGetters } from 'vuex';
                 isEditing: false,
                 isDeleting: false
             }
+        },
+        methods: {
+            reset() {
+                this.isEditing = false;
+                this.isDeleting = false;
+            }
         }
+        
     }
 </script>
 

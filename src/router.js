@@ -55,11 +55,7 @@ export default new Router({
       }
     },
     {
-      path:'/account',
-      redirect: '/account/details'
-    },
-    {
-      path: '/account/details',
+      path: '/account',
       name: 'account',
       component: () => import('./views/Account/Details.vue'),
       meta: {
