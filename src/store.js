@@ -31,8 +31,8 @@ export default new Vuex.Store({
     isLoading: false
   },
   getters: {
-    isLoggedIn(state) {
-      return state.currentUser.id  ? true : false;
+    isLoggedIn() {
+      return firebase.auth().currentUser.uid !== null  ? true : false;
     },
     name(state) {
       return state.currentUser.name
@@ -188,6 +188,42 @@ export default new Vuex.Store({
           alert('unable to get projects, please try again')
           break;
       }
+    },
+    editUser({ commit,state }, newUserInfo) {
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+      const settings = {timestampsInSnapshots: true};
+      db.settings(settings);
+
+      auth.currentUser.updateEmail(newUserInfo.email).then(() => {
+        db.collection('users').doc(state.currentUser.id).set(newUserInfo, {merge: true})
+        commit('getCurrentUser', {
+          id: state.currentUser.id,
+          name: newUserInfo.name,
+          bio: newUserInfo.bio,
+          email: newUserInfo.email
+        })
+        Router.replace('account')
+      }, (err) => {
+        alert(`Oops, ${err.message}`)
+      })
+    },
+    deleteUser({commit, state}) {
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+      const settings = {timestampsInSnapshots: true};
+      db.settings(settings);
+      
+      db.collection("users").doc(state.currentUser.id).delete().then(() => {
+        auth.currentUser.delete().then(() => {
+          commit('clearUser')
+          Router.replace('home')
+        }, (err) => {
+          alert(`Oops, There was a problem deleting your info from the database. ${err.message}`)
+        })
+      }, (err) => {
+        alert(`Good News: Your account failed at deleting. The bad news: ${err.message}`)
+      })
     }
   }
 });

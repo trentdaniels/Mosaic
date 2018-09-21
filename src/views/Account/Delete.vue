@@ -10,9 +10,9 @@
         <div class="container">
         <div class="columns is-centered">
             <div class="column is-6">
-                <h1 class="title">Change is Good.</h1>
-                <h2 class="subtitle">We admire your need for change! Let's get started.</h2>
-                <p>Fill out the form to save your changes</p>
+                <h1 class="title">Someone once said that change is for the better.</h1>
+                <h2 class="subtitle">This change is not. Don't delete!</h2>
+                <p>It'll make us sad, and no one likes sad.</p>
             </div>
             <div class="column is-6">
                 <h1 class="title is-1">Oh No!</h1>
@@ -25,7 +25,7 @@
                     <p class="help">Are you ABSOLUTELY sure?</p>
                 </div>
                 <div class="buttons">
-                    <button class="button is-danger">Delete</button>
+                    <button @click="deleteAccount" class="button is-danger">Delete</button>
                     <router-link to="/account" class="button is-light" @click.native="cancel">Cancel</router-link>
                 </div>
             </div>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
+    import { mapGetters, mapActions } from 'vuex'
     import Navigation from '@/components/Navigation.vue'
     export default {
         name: 'Delete',
@@ -53,8 +53,17 @@
             ...mapGetters(['userDetails'])
         },
         methods: {
+            ...mapActions(['deleteUser']),
             cancel() {
                 this.$emit('cancelled')
+            },
+            deleteAccount() {
+                if(this.email === this.userDetails.email) {
+                    this.deleteUser()
+                }
+                else {
+                    alert('That\'s the wrong email!')
+                }
             }
         }
     }

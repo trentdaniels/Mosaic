@@ -36,8 +36,8 @@
                     </div>
                 </div>
                 <div class="buttons">
-                    <button class="button is-success">Save</button>
-                    <router-link to="/account" class="button is-light" @click.native="cancel" >Cancel</router-link>
+                    <button class="button is-success" @click="updateInfo">Save</button>
+                    <router-link to="/account" class="button is-light">Cancel</router-link>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
+    import { mapGetters, mapActions } from 'vuex'
     import Navigation from '@/components/Navigation.vue'
     export default {
         name: 'Edit',
@@ -66,8 +66,9 @@
             ...mapGetters(['userDetails'])
         },
         methods: {
-            cancel() {
-                this.$emit('cancelled')
+            ...mapActions(['editUser']),
+            updateInfo() {
+                this.editUser(this.user)
             }
         }
     }

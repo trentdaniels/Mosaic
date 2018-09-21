@@ -10,19 +10,16 @@ export default new Router({
   routes: [
     {
       path: "*",
-      redirect: "/login"
+      redirect: "/home"
     },
     {
       path: "/",
-      redirect: "/login"
+      redirect: "/home"
     },
     {
       path: "/home",
       name: "home",
       component: Home,
-      meta: {
-        requiresAuth: true
-      }
     },
     {
       path: "/about",
@@ -65,12 +62,18 @@ export default new Router({
     {
       path: '/account/edit',
       name: 'edit',
-      component: () => import('./views/Account/Edit.vue')
+      component: () => import('./views/Account/Edit.vue'),
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/account/delete',
       name: 'delete',
-      component:() => import('./views/Account/Delete.vue')
+      component:() => import('./views/Account/Delete.vue'),
+      meta: {
+        requiresAuth: true
+      }
     }
   ],
   beforeEach(to, from, next) {
