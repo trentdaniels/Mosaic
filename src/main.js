@@ -1,3 +1,4 @@
+import "bulma";
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -7,7 +8,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
-import "bulma";
+
 
 firebase.initializeApp(config);
 

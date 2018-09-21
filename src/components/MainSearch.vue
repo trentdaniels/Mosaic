@@ -3,19 +3,19 @@
     <label class="label has-text-white">Start Searching:</label>
     <div  class="field has-addons" @keyup.enter="getProjects">
     <div class="control">
-      <span class="select is-medium is-primary">
+      <div class="select is-medium is-primary">
         <select v-model="selectedApi">
           <option v-for="(api, index) in apis" :key="index" :value="index">
             {{ api }}
           </option>
         </select>
-      </span>
+      </div>
     </div>
     <div class="control is-expanded">
       <input type="text" placeholder="ex: Rainbow Dragons" v-model="search" class="input is-medium is-primary" />
     </div>
     <div class="control">
-      <button class="button is-primary is-medium" @click="getProjects">Search</button>
+      <button class="button is-primary is-medium" :class="{'is-loading': isLoading}" @click="getProjects">Search</button>
     </div>
   </div>
   </div>
@@ -32,7 +32,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['apis']),
+    ...mapGetters(['apis', 'isLoading']),
     encodedSearch() {
       return encodeURIComponent(this.search)
     }

@@ -53,15 +53,37 @@ export default new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path:'/account',
+      redirect: '/account/details'
+    },
+    {
+      path: '/account/details',
+      name: 'account',
+      component: () => import('./views/Account/Details.vue'),
+      meta: {
+        requiresAuth: true
+      },
+      children: [
+        {
+          path: 'edit',
+          component: () => import('./views/Account/Edit.vue')
+        },
+        {
+          path: 'delete',
+          component:() => import('./views/Account/Delete.vue')
+        }
+      ]
     }
   ],
   beforeEach(to, from, next) {
-    let currentUser = Store.getters.isLoggedIn;
-    let authenticated = to.matched.some(route => route.meta.requiresAuth);
+    let isLoggedIn = Store.getters.isLoggedIn;
+    let needsAuthentication = to.matched.some(route => route.meta.requiresAuth);
 
-    if (authenticated && !currentUser) {
+    if (needsAuthentication && !isLoggedIn) {
       next("login");
-    } else if (!authenticated && currentUser) {
+    } else if (!needsAuthentication && isLoggedIn) {
       next();
     } else {
       next();

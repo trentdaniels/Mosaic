@@ -27,7 +27,8 @@ export default new Vuex.Store({
     currentSearch: {
       type: null,
       results: []
-    }
+    },
+    isLoading: false
   },
   getters: {
     isLoggedIn(state) {
@@ -41,6 +42,12 @@ export default new Vuex.Store({
     },
     currentSearch(state) {
       return state.currentSearch
+    },
+    userDetails(state) {
+      return state.currentUser
+    },
+    isLoading(state) {
+      return state.isLoading
     }
   },
   mutations: {
@@ -69,6 +76,9 @@ export default new Vuex.Store({
         state.currentSearch.results.push(inspiration)
       })
       console.log(state.currentSearch)
+    },
+    setLoading(state) {
+      state.isLoading = !state.isLoading
     }
   },
   actions: {

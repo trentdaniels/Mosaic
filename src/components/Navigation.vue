@@ -10,9 +10,9 @@
                     <div class="navbar-item has-dropdown" :class="{'is-active': isActive}" @click="isActive = !isActive">
                         <a class="navbar-link">Manage Account</a>
                         <div class="navbar-dropdown is-boxed">
-                            <router-link to="/home" class="navbar-item has-text-primary">My Profile</router-link>
-                            <router-link to="/home" class="navbar-item has-text-primary">Edit Account</router-link>
-                            <router-link to="/home" class="navbar-item has-text-primary">Delete Account</router-link>
+                            <router-link to="/account/details" class="navbar-item has-text-primary">My Profile</router-link>
+                            <router-link to="/account/edit" class="navbar-item has-text-primary">Edit Account</router-link>
+                            <router-link to="/account/delete" class="navbar-item has-text-primary">Delete Account</router-link>
                         </div>
                     </div>
                     <router-link to="/home" @click.native="logout" class="navbar-item">Log Out</router-link>
@@ -46,5 +46,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    
 </style>
