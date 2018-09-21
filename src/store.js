@@ -24,7 +24,10 @@ export default new Vuex.Store({
       'newsApi',
       'unSplash'
     ],
-    currentSearch: []
+    currentSearch: {
+      type: null,
+      results: []
+    }
   },
   getters: {
     isLoggedIn(state) {
@@ -35,6 +38,9 @@ export default new Vuex.Store({
     },
     apis(state) {
       return state.apiTargets
+    },
+    currentSearch(state) {
+      return state.currentSearch
     }
   },
   mutations: {
@@ -55,23 +61,10 @@ export default new Vuex.Store({
       state.currentUser.bio = user.bio
     },
     updateSearch(state, inspirations) {
-      state.currentSearch = []
-      inspirations.forEach(inspiration => {
-        state.currentSearch.push(inspiration)
-      })
-      console.log(state.currentSearch)
-    },
-    getArticles(state, articles) {
-      state.currentSearch = []
-      articles.forEach(article => {
-        state.currentSearch.push(article)
-      })
-      console.log(state.currentSearch)
-    },
-    getPhotos(state, photos) {
-      state.currentSearch = []
-      photos.forEach(photo => {
-        state.currentSearch.push(photo)
+      state.currentSearch.results = []
+      state.currentSearch.type = inspirations.type
+      inspirations.results.forEach(inspiration => {
+        state.currentSearch.results.push(inspiration)
       })
       console.log(state.currentSearch)
     }
@@ -149,30 +142,30 @@ export default new Vuex.Store({
             let projects = response.data.projects;
             let returnedProjects = [];
             projects.forEach((project, index) => {
-              if (index < 10) {
+              if (index < 12) {
                 returnedProjects.push(project)
               }
             })
-            commit('updateSearch', returnedProjects)
+            commit('updateSearch', {type: 'project', results: returnedProjects})
           },
           (err) => {
             alert(`Oops, ${err.message}`)
           });
           break;
         case 1:
-          url = `https://newsapi.org/v2/everything?q=${query.url}&sortBy=popularity&pageSize=10&apiKey=${keys.NEWS_API}`
+          url = `https://newsapi.org/v2/everything?q=${query.url}&sortBy=popularity&pageSize=12&apiKey=${keys.NEWS_API}`
           axios.get(url).then((res) => {
             let articles = res.data.articles;
-            commit('updateSearch', articles)
+            commit('updateSearch', {type: 'article', results: articles})
           }, (err) => {
             alert(`Oops, ${err.message}`)
           })
           break;
         case 2:  
-          url = `https://api.unsplash.com/search/photos?page=1&query=${query.url}&orientation=squarish&client_id=${keys.UNSPLASH_API}`
+          url = `https://api.unsplash.com/search/photos?page=1&per_page=12&query=${query.url}&orientation=squarish&client_id=${keys.UNSPLASH_API}`
           axios.get(url).then((res) => {
             let photos = res.data.results;
-            commit('updateSearch', photos)
+            commit('updateSearch', {type: 'photo', results: photos})
           }, (err) => {
             alert(`Oops, ${err.message}`)
           })

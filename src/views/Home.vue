@@ -18,6 +18,7 @@
             <main-search @searched="getProjects"></main-search>
           </div>
         </div>
+        <inspirations></inspirations>
         </div>
       </div>
     </section>
@@ -30,13 +31,14 @@
 import MainSearch from "@/components/MainSearch.vue";
 import Navigation from "@/components/Navigation.vue";
 import { mapGetters, mapActions } from 'vuex'
-
+import Inspirations from '@/components/Inspirations.vue'
 
 export default {
   name: "home",
   components: {
     MainSearch,
-    Navigation
+    Navigation,
+    Inspirations
   },
   data() {
     return {
