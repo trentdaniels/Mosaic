@@ -1,9 +1,9 @@
 <template>
   <div id="mainSearch">
-    <label class="label">Start Searching:</label>
+    <label class="label has-text-white">Start Searching:</label>
     <div  class="field has-addons">
     <div class="control">
-      <span class="select is-medium is-primary">
+      <span class="select is-medium is-dark">
         <select v-model="selectedApi">
           <option v-for="(api, index) in apis" :key="index" :value="index">
             {{ api }}
@@ -12,10 +12,10 @@
       </span>
     </div>
     <div class="control is-expanded">
-      <input type="text" placeholder="ex: Rainbow Dragons" v-model="search" class="input is-medium is-primary" />
+      <input type="text" placeholder="ex: Rainbow Dragons" v-model="search" class="input is-medium is-dark" />
     </div>
     <div class="control">
-      <button class="button is-primary is-medium" @click="getProjects">Search</button>
+      <button class="button is-dark is-medium" @click="getProjects">Search</button>
     </div>
   </div>
   </div>
