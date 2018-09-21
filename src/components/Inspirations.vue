@@ -8,7 +8,7 @@
                 </figure>
                 <h1 class="title is-4 has-text-dark">{{ inspiration.name }}</h1>
                 <div class="tags is-centered">
-                    <span v-for="(field, index) in inspiration.fields" :key="index" class="tag is-primary">{{ field }}</span>
+                    <span v-for="(field, index) in inspiration.fields" :key="index" class="tag is-light">{{ field }}</span>
                 </div>
                 <div class="buttons is-centered">
                         <button class="button is-success is-small is-rounded" v-if="isLoggedIn">Add to Collection</button>
@@ -38,7 +38,7 @@
                         <img :src="inspiration.urls.thumb" :alt="inspiration.description" />
                     </figure>
                     <h1 class="title is-4 has-text-dark">{{ inspiration.description }}</h1>
-                    <div class="tags">
+                    <div class="tags is-centered">
                         <span v-for="(tag, index) in inspiration.photo_tags" :key="index" class="tag is-light">{{ tag.title }}</span>
                     </div>
                     <div class="buttons is-centered">
@@ -65,7 +65,7 @@
         computed: {
             ...mapGetters(['currentSearch', 'isLoggedIn']),
             noSearchResults() {
-                return this.currentSearch.results.length === 0
+                return this.currentSearch.results.length === 0 && this.currentSearch.type !== null
             }
         }
     }
