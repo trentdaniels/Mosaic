@@ -7,8 +7,11 @@
                     <img :src="inspiration.covers.original" :alt="inspiration.name" />
                 </figure>
                 <h1 class="title is-4 has-text-dark">{{ inspiration.name }}</h1>
-                <div class="tags">
+                <div class="tags is-centered">
                     <span v-for="(field, index) in inspiration.fields" :key="index" class="tag is-primary">{{ field }}</span>
+                </div>
+                <div class="buttons is-centered">
+                        <button class="button is-success is-small is-rounded" v-if="isLoggedIn">Add to Collection</button>
                 </div>
             </div>
         </div>
@@ -23,7 +26,7 @@
                     <p class="subtitle is-6">By: {{inspiration.author}}</p>
                     <p>{{ inspiration.content }}</p>
                     <div class="buttons is-centered">
-                        <button class="button is-success" v-if="isLoggedIn">Add to Collection</button>
+                        <button class="button is-success is-small is-rounded" v-if="isLoggedIn">Add to Collection</button>
                     </div>
                 </div>
             </div>
@@ -37,6 +40,9 @@
                     <h1 class="title is-4 has-text-dark">{{ inspiration.description }}</h1>
                     <div class="tags">
                         <span v-for="(tag, index) in inspiration.photo_tags" :key="index" class="tag is-light">{{ tag.title }}</span>
+                    </div>
+                    <div class="buttons is-centered">
+                        <button class="button is-success is-small is-rounded" v-if="isLoggedIn">Add to Collection</button>
                     </div>
                 </div>
             </div>
