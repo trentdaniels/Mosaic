@@ -6,7 +6,7 @@
                 <router-link to="/about" class="navbar-item">About</router-link>
             </div>
             <div class="navbar-end">
-                <router-link to="/login" @click.native="logout" v-if="isLoggedIn" class="navbar-item">Log Out</router-link>
+                <router-link to="/home" @click.native="logout" v-if="isLoggedIn" class="navbar-item">Log Out</router-link>
                 <router-link to="/login" v-else class="navbar-item">Log In</router-link>
             </div>
         </div>
