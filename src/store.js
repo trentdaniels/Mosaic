@@ -20,9 +20,9 @@ export default new Vuex.Store({
       isAuthenticated: false
     },
     apiTargets: [
-      'behance',
-      'newsApi',
-      'unSplash'
+      'Projects',
+      'Articles',
+      'Photos'
     ],
     currentSearch: {
       type: null,
@@ -54,6 +54,8 @@ export default new Vuex.Store({
     clearUser(state) {
       state.currentUser.id = null;
       state.currentUser.email = null;
+      state.currentUser.name = null;
+      state.currentUser.bio = null;
       state.currentUser.isAuthenticated = false;
     },
     addInfo(state, user) {
@@ -70,8 +72,13 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    clearUser({ commit }) {
-      commit("clearUser");
+    async clearUser({ commit }) {
+      const auth = firebase.auth();
+      auth.signOut().then(() => {
+        commit("clearUser");
+      }, (err) =>
+      alert(`Oops, ${err.message}`)
+      )
     },
     async signUp({ commit }, createdUser) {
       const db = firebase.firestore();
@@ -140,13 +147,10 @@ export default new Vuex.Store({
             adapter: jsonAdapter
           }).then((response) => {
             let projects = response.data.projects;
-            let returnedProjects = [];
-            projects.forEach((project, index) => {
-              if (index < 12) {
-                returnedProjects.push(project)
-              }
+            let filteredProjects = projects.filter((project, index) => {
+              return index < 12
             })
-            commit('updateSearch', {type: 'project', results: returnedProjects})
+            commit('updateSearch', {type: 'project', results: filteredProjects})
           },
           (err) => {
             alert(`Oops, ${err.message}`)

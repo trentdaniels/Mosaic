@@ -15,7 +15,7 @@
         </template>
         <template v-else-if="currentSearch.type === 'article'">
             <div v-for="(inspiration,index) in currentSearch.results" :key="index" class="column is-4">
-                <div class="box">
+                <div class="tile">
                     <figure class="image">
                         <img :src="inspiration.urlToImage" :alt="inspiration.description" />
                     </figure>

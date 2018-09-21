@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <section class="hero is-bold is-fullheight is-light">
+    <section class="hero is-bold is-fullheight is-primary">
       <div class="hero-head">
         <div class="container">
          <navigation></navigation>
