@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
-import Sstore from "./store";
+import Store from "./store";
 
 
 Vue.use(Router);
@@ -61,16 +61,16 @@ export default new Router({
       meta: {
         requiresAuth: true
       },
-      children: [
-        {
-          path: 'edit',
-          component: () => import('./views/Account/Edit.vue')
-        },
-        {
-          path: 'delete',
-          component:() => import('./views/Account/Delete.vue')
-        }
-      ]
+    },
+    {
+      path: '/account/edit',
+      name: 'edit',
+      component: () => import('./views/Account/Edit.vue')
+    },
+    {
+      path: '/account/delete',
+      name: 'delete',
+      component:() => import('./views/Account/Delete.vue')
     }
   ],
   beforeEach(to, from, next) {
