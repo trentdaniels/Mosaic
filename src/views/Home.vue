@@ -11,8 +11,14 @@
         <div class="columns is-multiline is-centered">
           <div class="column is-12">
             <img alt="Vue logo" src="../assets/logo.png">
-            <h1 class="title">Welcome {{ name }}!</h1>
-            <h2 class="subtitle">Let's get inspired.</h2>
+            <div v-if="user">
+              <h1 class="title">Welcome {{ user.data.name }}!</h1>
+              <h2 class="subtitle">Let's get inspired.</h2>
+            </div>
+            <div v-else>
+              <h1 class="title">Welcome</h1>
+              <h2 class="subtitle">Please log in for a greater experience</h2>
+            </div>
           </div>
           <div class="column is-10">
             <main-search @searched="getProjects"></main-search>
@@ -46,7 +52,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['name'])
+    ...mapGetters(['user'])
   },
   methods: {
     ...mapActions(['searchProjects']),

@@ -20,19 +20,19 @@
                 <div class="field">
                     <label class="label has-text-white">Name:</label>
                     <div class="control">
-                        <input class="input" type="text" v-model="user.name" :placeholder="userDetails.name"/>
+                        <input class="input" type="text" v-model="editedUser.name" :placeholder="user.data.name"/>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label has-text-white">Email:</label>
                     <div class="control">
-                        <input class="input" type="email" v-model="user.email" :placeholder="userDetails.email"/>
+                        <input class="input" type="email" v-model="editedUser.email" :placeholder="user.data.email"/>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label has-text-white">Bio:</label>
                     <div class="control">
-                        <textarea class="textarea" v-model="user.bio" :placeholder="userDetails.bio"></textarea>
+                        <textarea class="textarea" v-model="editedUser.bio" :placeholder="user.data.bio"></textarea>
                     </div>
                 </div>
                 <div class="buttons">
@@ -55,7 +55,7 @@
         components: {Navigation},
         data() {
             return {
-                user: {
+                editedUser: {
                     name: '',
                     email: '',
                     bio: ''
@@ -63,12 +63,12 @@
             }
         },
         computed: {
-            ...mapGetters(['userDetails'])
+            ...mapGetters(['user'])
         },
         methods: {
             ...mapActions(['editUser']),
             updateInfo() {
-                this.editUser(this.user)
+                this.editUser(this.editedUser)
             }
         }
     }

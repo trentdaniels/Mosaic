@@ -80,7 +80,7 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  let isLoggedIn = Store.getters.isLoggedIn;
+  let isLoggedIn = Store.getters.user;
   let needsAuthentication = to.matched.some(route => route.meta.requiresAuth);
 
   if (needsAuthentication && !isLoggedIn) {

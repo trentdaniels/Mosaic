@@ -15,15 +15,15 @@
             <p>Thanks again for using us!</p>
           </div>
             <div class="column is-6">
-                <h1 class="title is-1">Your Name is {{ userDetails.name }}.</h1>
+                <h1 class="title is-1">Your Name is {{ user.data.name }}.</h1>
                 <h3 class="subtitle is-3">(Great name by the way)</h3>
                 <div class="field">
                     <label class="label has-text-white">Here's your bio:</label>
-                    <p>{{ userDetails.bio }}</p>
+                    <p>{{ user.data.bio }}</p>
                 </div>
                 <div class="field">
                     <label class="label has-text-white">Contact Info:</label>
-                    <p>{{ userDetails.email }}</p>
+                    <p>{{ user.data.email }}</p>
                 </div>
                 <div class="buttons">
                     <router-link to="/account/edit" class="button is-light" exact>Edit</router-link>
@@ -48,7 +48,7 @@ import { mapGetters } from 'vuex';
             Navigation,
         },
         computed: {
-            ...mapGetters(['userDetails'])
+            ...mapGetters(['user'])
         },
     }
 </script>

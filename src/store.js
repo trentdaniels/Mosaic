@@ -52,7 +52,6 @@ export default new Vuex.Store({
       inspirations.results.forEach(inspiration => {
         state.currentSearch.results.push(inspiration)
       })
-      console.log(state.currentSearch)
     },
     setLoading(state) {
       state.isLoading = !state.isLoading

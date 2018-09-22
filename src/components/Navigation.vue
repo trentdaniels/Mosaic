@@ -6,9 +6,9 @@
                 <router-link to="/about" class="navbar-item">About</router-link>
             </div>
             <div class="navbar-end">
-                <template v-if="isLoggedIn">
+                <template v-if="user">
                     <div class="navbar-item has-dropdown" :class="{'is-active': isActive}" @click="isActive = !isActive">
-                        <a class="navbar-link">Hello {{ userDetails.name }}!</a>
+                        <a class="navbar-link">Hello {{ user.data.name }}!</a>
                         <div class="navbar-dropdown is-boxed">
                             <router-link to="/account" class="navbar-item has-text-primary" exact>My Profile</router-link>
                             <hr class="dropdown-divider">
@@ -31,7 +31,7 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
     computed: {
-        ...mapGetters(['isLoggedIn', 'userDetails']),
+        ...mapGetters(['user']),
     },
     methods: {
         ...mapActions(["clearUser"]),
