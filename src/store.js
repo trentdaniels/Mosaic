@@ -67,7 +67,7 @@ export default new Vuex.Store({
       alert(`Oops, ${err.message}`)
       )
     },
-    async signUp({ commit }, createdUser) {
+    async signUp({ dispatch }, createdUser) {
       const db = firebase.firestore();
       const settings = {timestampsInSnapshots: true};
       db.settings(settings);
@@ -77,12 +77,11 @@ export default new Vuex.Store({
         db.collection("users").doc(response.user.uid).set({
           type: "Creative",
           email: createdUser.email,
+          name: createdUser.name,
+          bio: createdUser.bio
         }, {merge: true}).then(() => {
-          commit('setUser', {
-            id: response.user.uid,
-            email: createdUser.email
-          })
-          Router.replace('getstarted')
+          dispatch('getUser', response.user.uid)
+          Router.replace('home')
         }, (err) => {
           alert(`There was a problem setting the database. Details: ${err.message}`)
         })
@@ -103,22 +102,6 @@ export default new Vuex.Store({
       }, (err) => {
         alert(`Oops, ${err.message}`)
       })
-    },
-    async updateUser({state, commit}, user) {
-      const db = firebase.firestore();
-      const settings = {timestampsInSnapshots: true};
-      db.settings(settings);
-
-      db.collection("users").doc(state.currentUser.id).set({
-        name: user.name,
-        bio: user.bio
-      }, {merge: true}).then(() => {
-        commit('addInfo', user)
-        Router.replace('home')
-      }, (err) => {
-        alert(`Oops, ${err.message}`)
-      })
-      
     },
     async searchProjects({commit}, query) {
       let url;
@@ -182,7 +165,7 @@ export default new Vuex.Store({
       const settings = {timestampsInSnapshots: true};
       db.settings(settings);
       
-      db.collection("users").doc(state.currentUser.id).delete().then(() => {
+      db.collection("users").doc(state.user.id).delete().then(() => {
         auth.currentUser.delete().then(() => {
           commit('clearUser')
           Router.replace('home')
