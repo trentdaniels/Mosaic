@@ -12,13 +12,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    currentUser: {
-      id: null,
-      email: null,
-      name: null,
-      bio: null,
-      isAuthenticated: false
-    },
+    user: null,
     apiTargets: [
       'Projects',
       'Articles',
@@ -31,40 +25,22 @@ export default new Vuex.Store({
     isLoading: false
   },
   getters: {
-    isLoggedIn(state) {
-      let loggedInUserId = state.currentUser.id
-      return loggedInUserId !== null ? true: false
-    },
-    name(state) {
-      return state.currentUser.name
-    },
     apis(state) {
       return state.apiTargets
     },
     currentSearch(state) {
       return state.currentSearch
     },
-    userDetails(state) {
-      return state.currentUser
+    user(state) {
+      return state.user
     },
     isLoading(state) {
       return state.isLoading
     }
   },
   mutations: {
-    getCurrentUser(state, user) {
-      state.currentUser.id = user.id;
-      state.currentUser.email = user.email;
-      state.currentUser.isAuthenticated = true;
-      state.currentUser.name = user.name;
-      state.currentUser.bio = user.bio;
-    },
-    clearUser(state) {
-      state.currentUser.id = null;
-      state.currentUser.email = null;
-      state.currentUser.name = null;
-      state.currentUser.bio = null;
-      state.currentUser.isAuthenticated = false;
+    setUser(state, user) {
+      state.user = user
     },
     addInfo(state, user) {
       state.currentUser.name = user.name,
@@ -86,7 +62,7 @@ export default new Vuex.Store({
     async clearUser({ commit }) {
       const auth = firebase.auth();
       auth.signOut().then(() => {
-        commit("clearUser");
+        commit('setUser', null);
         Router.replace('home')
       }, (err) =>
       alert(`Oops, ${err.message}`)
@@ -98,17 +74,19 @@ export default new Vuex.Store({
       db.settings(settings);
       const auth = firebase.auth();
 
-      auth.createUserWithEmailAndPassword(createdUser.email, createdUser.password).then((authUser) => {
-        db.collection("users").doc(authUser.user.uid).set({
+      auth.createUserWithEmailAndPassword(createdUser.email, createdUser.password).then((response) => {
+        db.collection("users").doc(response.user.uid).set({
           type: "Creative",
-          id: authUser.user.uid,
           email: createdUser.email,
-        }, {merge: true})
-        commit('getCurrentUser', {
-          id: authUser.user.uid,
-          email: authUser.user.email
+        }, {merge: true}).then(() => {
+          commit('setUser', {
+            id: response.user.uid,
+            email: createdUser.email
+          })
+          Router.replace('getstarted')
+        }, (err) => {
+          alert(`There was a problem setting the database. Details: ${err.message}`)
         })
-        Router.replace('getstarted')
       }, (err) => {
           alert(`Oops, ${err.message}`);
         }
@@ -120,16 +98,16 @@ export default new Vuex.Store({
       db.settings(settings);
       const auth = firebase.auth();
 
-      auth.signInWithEmailAndPassword(loggedInUser.email, loggedInUser.password).then((authUser) => {
-        db.collection("users").doc(authUser.user.uid).get().then((doc) => {
-          commit('getCurrentUser', {
+      auth.signInWithEmailAndPassword(loggedInUser.email, loggedInUser.password).then((response) => {
+        db.collection("users").doc(response.user.uid).get().then((doc) => {
+          commit('setUser', {
             id: doc.id,
-            email: doc.data().email,
-            name: doc.data().name,
-            bio: doc.data().bio
+            data: doc.data()
           })
+          Router.replace('home')
+        }, (err) => {
+          alert(`Oops, ${err.message}`)
         })
-        Router.replace('home')
       }, (err) => {
         alert(`Oops, ${err.message}`)
       })
@@ -198,14 +176,15 @@ export default new Vuex.Store({
       db.settings(settings);
 
       auth.currentUser.updateEmail(newUserInfo.email).then(() => {
-        db.collection('users').doc(state.currentUser.id).set(newUserInfo, {merge: true})
-        commit('getCurrentUser', {
-          id: state.currentUser.id,
-          name: newUserInfo.name,
-          bio: newUserInfo.bio,
-          email: newUserInfo.email
+        db.collection('users').doc(state.user.id).set(newUserInfo, {merge: true}).then(() => {
+          db.collection('users').doc(state.user.id).get().then((doc) => {
+            commit('setUser', {
+              id: state.user.id,
+              data: doc.data()
+            })
+            Router.replace('account')
+          })
         })
-        Router.replace('account')
       }, (err) => {
         alert(`Oops, ${err.message}`)
       })

@@ -16,7 +16,7 @@
                         <span v-for="(field, index) in inspiration.fields" :key="index" class="tag is-light">{{ field }}</span>
                     </div>
                     <div class="buttons is-centered">
-                        <button class="button is-default" v-if="isLoggedIn">Add to Collection</button>
+                        <button class="button is-default" v-if="user">Add to Collection</button>
                     </div>
                 </div>
             </div>
@@ -31,13 +31,13 @@
                         </figure>
                     </div>
                     <div class="card-header">
-                        <p class="card-header-title has-text-dark">{{ inspiration.title }}</p>
+                        <p class="card-header-title has-text-dark is-centered">{{ inspiration.title }}</p>
                     </div>
                     <div class="card-content">
                         <p class="subtitle is-6 has-text-dark">By: {{inspiration.author}}</p>
                         <p>{{ inspiration.description }}</p>
                         <div class="buttons is-centered">
-                            <button class="button is-default" v-if="isLoggedIn">Add to Collection</button>
+                            <button class="button is-default" v-if="user">Add to Collection</button>
                         </div>
                     </div>
                 </div>
@@ -48,18 +48,18 @@
                 <div class="card">
                     <div class="card-image">
                         <figure class="image is-square">
-                            <img :src="inspiration.urls.thumb" :alt="inspiration.description" />
+                            <img :src="inspiration.urls.regular" :alt="inspiration.description" />
                         </figure>
                     </div>
                     <div class="card-header">
-                        <h1 class="card-header-title">{{ inspiration.description }}</h1>
+                        <h1 class="card-header-title is-centered">{{ inspiration.description }}</h1>
                     </div>
                     <div class="card-content">
                     <div class="tags is-centered">
                         <span v-for="(tag, index) in inspiration.photo_tags" :key="index" class="tag is-light">{{ tag.title }}</span>
                     </div>
                     <div class="buttons is-centered">
-                        <button class="button is-default" v-if="isLoggedIn">Add to Collection</button>
+                        <button class="button is-default" v-if="user">Add to Collection</button>
                     </div>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
     export default {
         name: 'Inspirations',
         computed: {
-            ...mapGetters(['currentSearch', 'isLoggedIn']),
+            ...mapGetters(['currentSearch', 'user']),
             noSearchResults() {
                 return this.currentSearch.results.length === 0 && this.currentSearch.type !== null
             }

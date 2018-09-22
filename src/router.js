@@ -6,7 +6,7 @@ import Store from "./store";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: "*",
@@ -75,17 +75,21 @@ export default new Router({
         requiresAuth: true
       }
     }
-  ],
-  beforeEach(to, from, next) {
-    let isLoggedIn = Store.getters.isLoggedIn;
-    let needsAuthentication = to.matched.some(route => route.meta.requiresAuth);
-
-    if (needsAuthentication && !isLoggedIn) {
-      next("login");
-    } else if (!needsAuthentication && isLoggedIn) {
-      next();
-    } else {
-      next();
-    }
-  }
+  ]
+  
 });
+
+router.beforeEach((to, from, next) => {
+  let isLoggedIn = Store.getters.isLoggedIn;
+  let needsAuthentication = to.matched.some(route => route.meta.requiresAuth);
+
+  if (needsAuthentication && !isLoggedIn) {
+    next("login");
+  } else if (!needsAuthentication && isLoggedIn) {
+    next();
+  } else {
+    next();
+  }
+})
+
+export default router;
