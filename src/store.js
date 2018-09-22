@@ -91,22 +91,15 @@ export default new Vuex.Store({
         }
       );      
     },
-    async logIn({ commit }, loggedInUser) {
+    async logIn({ dispatch }, loggedInUser) {
       const db = firebase.firestore();
       const settings = {timestampsInSnapshots: true};
       db.settings(settings);
       const auth = firebase.auth();
 
       auth.signInWithEmailAndPassword(loggedInUser.email, loggedInUser.password).then((response) => {
-        db.collection("users").doc(response.user.uid).get().then((doc) => {
-          commit('setUser', {
-            id: doc.id,
-            data: doc.data()
-          })
+          dispatch('getUser', response.user.uid)
           Router.replace('home')
-        }, (err) => {
-          alert(`Oops, ${err.message}`)
-        })
       }, (err) => {
         alert(`Oops, ${err.message}`)
       })
@@ -168,7 +161,7 @@ export default new Vuex.Store({
           break;
       }
     },
-    editUser({ commit,state }, newUserInfo) {
+    editUser({ dispatch ,state }, newUserInfo) {
       const auth = firebase.auth();
       const db = firebase.firestore();
       const settings = {timestampsInSnapshots: true};
@@ -176,13 +169,8 @@ export default new Vuex.Store({
 
       auth.currentUser.updateEmail(newUserInfo.email).then(() => {
         db.collection('users').doc(state.user.id).set(newUserInfo, {merge: true}).then(() => {
-          db.collection('users').doc(state.user.id).get().then((doc) => {
-            commit('setUser', {
-              id: state.user.id,
-              data: doc.data()
-            })
+            dispatch('getUser', state.user.id)
             Router.replace('account')
-          })
         })
       }, (err) => {
         alert(`Oops, ${err.message}`)
@@ -203,6 +191,20 @@ export default new Vuex.Store({
         })
       }, (err) => {
         alert(`Good News: Your account failed at deleting. The bad news: ${err.message}`)
+      })
+    },
+    getUser({commit}, id) {
+      const db = firebase.firestore();
+      const settings = {timestampsInSnapshots: true};
+      db.settings(settings);
+
+      db.collection("users").doc(id).get().then((doc) => {
+        commit('setUser', {
+          id: doc.id,
+          data: doc.data()
+        })
+      }, (err) => {
+        alert(`Oops, ${err.message}`)
       })
     }
   }
