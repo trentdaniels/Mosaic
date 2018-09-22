@@ -44,14 +44,6 @@ const router = new Router({
       component: () => import("./views/Signup.vue")
     },
     {
-      path: "/getstarted",
-      name: "getstarted",
-      component: () => import('./views/UserStart.vue'),
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
       path: '/account',
       name: 'account',
       component: () => import('./views/Account/Details.vue'),
