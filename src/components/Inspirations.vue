@@ -88,7 +88,7 @@
         },
         methods: {
             addToCollection(project, type) {
-                this.$emit('addedProject', {type: type, project: project})
+                this.$emit('addedProject', {type: type, data: project})
             }
         }
     }

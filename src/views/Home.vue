@@ -26,7 +26,7 @@
         </div>
         <inspirations @addedProject="addToCollection"></inspirations>
         <template v-if="addingProject">
-          
+          <collection-modal :project=projectToAdd @cancelled="addingProject = false"></collection-modal>
         </template>
         </div>
       </div>
@@ -39,6 +39,7 @@
 // @ is an alias to /src
 import MainSearch from "@/components/MainSearch.vue";
 import Navigation from "@/components/Navigation.vue";
+import CollectionModal from '@/components/CollectionModal.vue'
 import { mapGetters, mapActions } from 'vuex'
 import Inspirations from '@/components/Inspirations.vue'
 
@@ -47,11 +48,13 @@ export default {
   components: {
     MainSearch,
     Navigation,
-    Inspirations
+    Inspirations,
+    CollectionModal
   },
   data() {
     return {
-      addingProject: false
+      addingProject: false,
+      projectToAdd: null
     }
   },
   computed: {
@@ -63,8 +66,9 @@ export default {
       this.searchProjects(query)
     },
     addToCollection(project) {
-
+      this.projectToAdd = project
       console.log(project)
+      this.addingProject = true
       // this.addProject(project)
     }
   }
