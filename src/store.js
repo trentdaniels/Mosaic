@@ -184,15 +184,18 @@ export default new Vuex.Store({
       let queriedProjects = [];
       let queriedArticles = [];
       let queriedPhotos = [];
+      let queriedCollections = [];
       db.collection('projects').where('userId', '==', id).get().then((snapShot) => snapShot.forEach((doc) => queriedProjects.push(doc.data())));
       db.collection('articles').where('userId', '==', id).get().then((snapShot) => snapShot.forEach((doc) => queriedArticles.push(doc.data())));
       db.collection('photos').where('userId', '==', id).get().then((snapShot) => snapShot.forEach((doc) => queriedPhotos.push(doc.data())));
+      db.collection('collections').where('userId', '==', id).get().then((snapShot) => snapShot.forEach((doc) => queriedCollections.push(doc.data())));
 
 
       db.collection("users").doc(id).get().then((doc) => {
         commit('setUser', {
           id: doc.id,
           data: doc.data(),
+          collections: queriedCollections,
           projects: queriedProjects,
           articles: queriedArticles,
           photos: queriedPhotos
@@ -211,36 +214,45 @@ export default new Vuex.Store({
       
       switch(collectionDetails.data.type) {
         case 'project':
+          db.collection('collections').add({
+            userId: state.user.id,
+            name: collectionDetails.name,
+          }).then((doc) => {
             db.collection('projects').add({
+              collectionId: doc.id,
               userId: state.user.id,
-              collection: collectionDetails.name,
               data: collectionDetails.data.data
             }).then(() => {
               dispatch('getUser', state.user.id)
-            }, (err) => {
-              alert(`Oops, ${err.message}`)
             })
+          })
           break;
         case 'article':
-          db.collection('articles').add({
+          db.collection('collections').add({
             userId: state.user.id,
-            collection: collectionDetails.name,
-            data: collectionDetails.data.data
-          }).then(() => {
-            dispatch('getUser', state.user.id)
-          }, (err) => {
-            alert(`Oops, ${err.message}`)
+            name: collectionDetails.name,
+          }).then((doc) => {
+            db.collection('articles').add({
+              collectionId: doc.id,
+              userId: state.user.id,
+              data: collectionDetails.data.data
+            }).then(() => {
+              dispatch('getUser', state.user.id)
+            })
           })
           break;
         case 'photo':
-          db.collection('photos').add({
+          db.collection('collections').add({
             userId: state.user.id,
-            collection: collectionDetails.name,
-            data: collectionDetails.data.data
-          }).then(() => {
-            dispatch('getUser', state.user.id)
-          }, (err) => {
-            alert(`Oops, ${err.message}`)
+            name: collectionDetails.name,
+          }).then((doc) => {
+            db.collection('photos').add({
+              collectionId: doc.id,
+              userId: state.user.id,
+              data: collectionDetails.data.data
+            }).then(() => {
+              dispatch('getUser', state.user.id)
+            })
           })
           break;
         default: 
