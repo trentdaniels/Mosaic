@@ -9,34 +9,36 @@
                 <button class="delete" @click="cancel"></button>
             </header>
             <section class="modal-card-body">
-                <div class="dropdown is-active" v-if="user.collections">
-                    <div class="dropdown-trigger">
-                        <button class="button">Choose a Collection</button>
-                    </div>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-content">
-                            <div class="dropdown-item" v-for="(collection,index) in user.collections" :key="index" >
-                                <button class="button" @click="collection.name">{{ collection.name }}</button>
+                <template v-if="collectionExists">
+                    <div class="panel" :class="{'is-active': isActive}">
+                        <p class="panel-heading">Your Collections</p>
+                        <div class="panel-block" v-for="(collection,index) in user.collections" :key="index" :class="{'is-active': collection.name === chosenCollection}">
+                            <div class="control">
+                                <p @click="chosenCollection = collection.name" :class="{'has-text-weight-bold': collection.name === chosenCollection}">{{ collection.name }}</p>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="field">
-                    <label class="label">Create a Collection</label>
-                    <div class="field has-addons">
-                        <div class="control is-expanded">
-                            <input class="input" type="text" v-model="newCollection" />
+                </template>
+                <template v-else>
+                    <div class="field">
+                        <label class="label">Create a Collection</label>
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                <input class="input" type="text" v-model="newCollection" />
+                            </div>
+                            <div class="control">
+                                <button class="button is-success" @click="addNewCollection">Add New</button>
+                            </div>      
                         </div>
-                        <div class="control">
-                            <button class="button is-success" @click="addNewCollection">Add New</button>
-                        </div>      
+                        <p class="help has-text-dark">Make it creative!</p>
                     </div>
-                    <p class="help has-text-dark">Make it creative!</p>
-                </div>
+                </template>
             </section>
             <footer class="modal-card-foot">
                 <button class="button is-success" @click="save">Save</button>
                 <button class="button" @click="cancel">Cancel</button>
+                <button @click="collectionExists = !collectionExists" class="button" v-if="collectionExists">Add New</button>
+                <button @click="collectionExists = !collectionExists" class="button" v-else>Choose Existing</button>
             </footer>
         </div>
     </div>
@@ -52,10 +54,16 @@
                 this.$emit('cancelled')
             },
             addNewCollection() {
+                this.user.collections.forEach((collection) => {
+                    if(collection.name === this.newCollection) {
+                        alert('Oops, this collection already exists! Try another name')
+                        return;
+                    }
+                })
                 this.$emit('addedNewCollection', this.newCollection)
             },
             save(){
-                this.$emit('saved')
+                this.$emit('saved', this.chosenCollection)
             }
         },
         computed: {
@@ -64,7 +72,9 @@
         data() {
             return {
                 newCollection: '',
-                chosenCollection: null
+                chosenCollection: '',
+                isActive: false,
+                collectionExists: true,
             }
         }
     }

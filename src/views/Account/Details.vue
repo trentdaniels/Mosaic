@@ -25,6 +25,10 @@
                     <label class="label has-text-white">Contact Info:</label>
                     <p>{{ user.data.email }}</p>
                 </div>
+                <div class="field">
+                    <label class="label has-text-white">Current Collections:</label>
+                    <p v-for="(collection, index) in user.collections" :key="index">{{ collection.name }}</p>
+                </div>
                 <div class="buttons">
                     <router-link to="/account/edit" class="button is-light" exact>Edit</router-link>
                     <router-link to="/account/delete" class="button is-dark" exact>Delete</router-link>

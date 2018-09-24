@@ -27,8 +27,8 @@ export default {
   name: "MainSearch",
   data() {
     return {
-      search: '',
-      selectedApi: 0
+      search: 'dragon',
+      selectedApi: 2
     }
   },
   computed: {

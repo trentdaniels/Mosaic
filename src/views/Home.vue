@@ -70,7 +70,11 @@ export default {
       this.addingProject = true
     },
     saveProject(collectionName) {
-      this.addProject(this.projectToAdd, collectionName)
+      this.addProject({
+        project: this.projectToAdd, 
+        collection: collectionName
+      })
+      this.addingProject = false
     },
     cancel() {
       this.addingProject = false
