@@ -24,7 +24,10 @@
             <main-search @searched="getProjects"></main-search>
           </div>
         </div>
-        <inspirations></inspirations>
+        <inspirations @addedProject="addToCollection"></inspirations>
+        <template v-if="addingProject">
+          
+        </template>
         </div>
       </div>
     </section>
@@ -48,16 +51,21 @@ export default {
   },
   data() {
     return {
-      
+      addingProject: false
     }
   },
   computed: {
     ...mapGetters(['user'])
   },
   methods: {
-    ...mapActions(['searchProjects']),
+    ...mapActions(['searchProjects', 'addProject']),
     getProjects(query) {
       this.searchProjects(query)
+    },
+    addToCollection(project) {
+
+      console.log(project)
+      // this.addProject(project)
     }
   }
 };
@@ -67,4 +75,5 @@ export default {
 .home {
   text-align: center;
 }
+
 </style>

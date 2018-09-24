@@ -16,7 +16,7 @@
                         <span v-for="(field, index) in inspiration.fields" :key="index" class="tag is-light">{{ field }}</span>
                     </div>
                     <div class="buttons is-centered">
-                        <button class="button is-default" v-if="user">Add to Collection</button>
+                        <button class="button is-default" v-if="user" @click="addToCollection(inspiration, currentSearch.type)">Add to Collection</button>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                         <p class="subtitle is-6 has-text-dark">By: {{inspiration.author}}</p>
                         <p>{{ inspiration.description }}</p>
                         <div class="buttons is-centered">
-                            <button class="button is-default" v-if="user">Add to Collection</button>
+                            <button class="button is-default" v-if="user" @click="addToCollection(inspiration, currentSearch.type)">Add to Collection</button>
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                         <span v-for="(tag, index) in inspiration.photo_tags" :key="index" class="tag is-light">{{ tag.title }}</span>
                     </div>
                     <div class="buttons is-centered">
-                        <button class="button is-default" v-if="user">Add to Collection</button>
+                        <button class="button is-default" v-if="user" @click="addToCollection(inspiration, currentSearch.type)">Add to Collection</button>
                     </div>
                     </div>
                 </div>
@@ -84,6 +84,11 @@
             ...mapGetters(['currentSearch', 'user']),
             noSearchResults() {
                 return this.currentSearch.results.length === 0 && this.currentSearch.type !== null
+            }
+        },
+        methods: {
+            addToCollection(project, type) {
+                this.$emit('addedProject', {type: type, project: project})
             }
         }
     }

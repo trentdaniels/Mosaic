@@ -176,7 +176,7 @@ export default new Vuex.Store({
         alert(`Good News: Your account failed at deleting. The bad news: ${err.message}`)
       })
     },
-    getUser({commit}, id) {
+    async getUser({commit}, id) {
       const db = firebase.firestore();
       const settings = {timestampsInSnapshots: true};
       db.settings(settings);
@@ -189,6 +189,9 @@ export default new Vuex.Store({
       }, (err) => {
         alert(`Oops, ${err.message}`)
       })
+    },
+    async addProject({dispatch}, project) {
+      
     }
   }
 });

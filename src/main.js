@@ -1,4 +1,4 @@
-import "bulma";
+import "bulma/bulma.sass";
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
