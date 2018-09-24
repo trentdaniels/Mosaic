@@ -16,6 +16,7 @@
                         <span v-for="(field, index) in inspiration.fields" :key="index" class="tag is-light">{{ field }}</span>
                     </div>
                     <div class="buttons is-centered">
+
                         <button class="button is-default" v-if="user" @click="addToCollection(inspiration, currentSearch.type)">Add to Collection</button>
                     </div>
                 </div>
