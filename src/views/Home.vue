@@ -26,7 +26,7 @@
         </div>
         <inspirations @addedProject="addToCollection"></inspirations>
         <template v-if="addingProject">
-          <collection-modal :project=projectToAdd @cancelled="addingProject = false"></collection-modal>
+          <collection-modal :project=projectToAdd @cancelled="cancel" @saved="saveProject" @addedNewCollection="createCollection"></collection-modal>
         </template>
         </div>
       </div>
@@ -61,15 +61,26 @@ export default {
     ...mapGetters(['user'])
   },
   methods: {
-    ...mapActions(['searchProjects', 'addProject']),
+    ...mapActions(['searchProjects', 'addProject', 'createNewCollection']),
     getProjects(query) {
       this.searchProjects(query)
     },
     addToCollection(project) {
       this.projectToAdd = project
-      console.log(project)
       this.addingProject = true
-      // this.addProject(project)
+    },
+    saveProject(collectionName) {
+      this.addProject(this.projectToAdd, collectionName)
+    },
+    cancel() {
+      this.addingProject = false
+    },
+    createCollection(collectionName) {
+      this.createNewCollection({
+        name: collectionName, 
+        data: this.projectToAdd
+      })
+      this.addingProject = false
     }
   }
 };

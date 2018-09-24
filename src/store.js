@@ -41,6 +41,7 @@ export default new Vuex.Store({
   mutations: {
     setUser(state, user) {
       state.user = user
+      console.log(user)
     },
     addInfo(state, user) {
       state.currentUser.name = user.name,
@@ -180,18 +181,72 @@ export default new Vuex.Store({
       const db = firebase.firestore();
       const settings = {timestampsInSnapshots: true};
       db.settings(settings);
+      let queriedProjects = [];
+      let queriedArticles = [];
+      let queriedPhotos = [];
+      db.collection('projects').where('userId', '==', id).get().then((snapShot) => snapShot.forEach((doc) => queriedProjects.push(doc.data())));
+      db.collection('articles').where('userId', '==', id).get().then((snapShot) => snapShot.forEach((doc) => queriedArticles.push(doc.data())));
+      db.collection('photos').where('userId', '==', id).get().then((snapShot) => snapShot.forEach((doc) => queriedPhotos.push(doc.data())));
+
 
       db.collection("users").doc(id).get().then((doc) => {
         commit('setUser', {
           id: doc.id,
-          data: doc.data()
+          data: doc.data(),
+          projects: queriedProjects,
+          articles: queriedArticles,
+          photos: queriedPhotos
         })
       }, (err) => {
         alert(`Oops, ${err.message}`)
       })
     },
     async addProject({dispatch}, project) {
+
+    },
+    async createNewCollection({dispatch , state}, collectionDetails) {
+      const db = firebase.firestore();
+      const settings = {timestampsInSnapshots: true};
+      db.settings(settings);
       
+      switch(collectionDetails.data.type) {
+        case 'project':
+            db.collection('projects').add({
+              userId: state.user.id,
+              collection: collectionDetails.name,
+              data: collectionDetails.data.data
+            }).then(() => {
+              dispatch('getUser', state.user.id)
+            }, (err) => {
+              alert(`Oops, ${err.message}`)
+            })
+          break;
+        case 'article':
+          db.collection('articles').add({
+            userId: state.user.id,
+            collection: collectionDetails.name,
+            data: collectionDetails.data.data
+          }).then(() => {
+            dispatch('getUser', state.user.id)
+          }, (err) => {
+            alert(`Oops, ${err.message}`)
+          })
+          break;
+        case 'photo':
+          db.collection('photos').add({
+            userId: state.user.id,
+            collection: collectionDetails.name,
+            data: collectionDetails.data.data
+          }).then(() => {
+            dispatch('getUser', state.user.id)
+          }, (err) => {
+            alert(`Oops, ${err.message}`)
+          })
+          break;
+        default: 
+          alert('Oops, there was a problem adding to that collection. Please try again')
+          break;
+      }
     }
   }
 });
