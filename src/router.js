@@ -66,6 +66,14 @@ const router = new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '/account/collections',
+      name: 'collections',
+      component:() => import ('./views/Account/Collections.vue'),
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
   
