@@ -70,7 +70,7 @@ const router = new Router({
     {
       path: '/account/collections',
       name: 'collections',
-      component:() => import ('./views/Account/Collections.vue'),
+      component:() => import('./views/Account/Collections.vue'),
       meta: {
         requiresAuth: true
       }

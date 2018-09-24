@@ -11,17 +11,17 @@
             <section class="modal-card-body">
                 <template v-if="collectionExists">
                     <div class="panel" :class="{'is-active': isActive}">
-                        <p class="panel-heading">Your Collections</p>
+                        <p class="panel-heading" v-if="user.collections.length > 0">Your Collections</p>
                         <div class="panel-block" v-for="(collection,index) in user.collections" :key="index" :class="{'is-active': collection.name === chosenCollection}">
                             <div class="control">
-                                <p @click="chosenCollection = collection.name" :class="{'has-text-weight-bold': collection.name === chosenCollection}">{{ collection.name }}</p>
+                                <p @click="chosenCollection = collection.name" :class="{'has-text-weight-bold': collection.name === chosenCollection}"><a>{{ collection.name }}</a></p>
                             </div>
                         </div>
                     </div>
                 </template>
                 <template v-else>
                     <div class="field">
-                        <label class="label">Create a Collection</label>
+                        <label class="label">Save to new Collection</label>
                         <div class="field has-addons">
                             <div class="control is-expanded">
                                 <input class="input" type="text" v-model="newCollection" />

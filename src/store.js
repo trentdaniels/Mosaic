@@ -22,7 +22,8 @@ export default new Vuex.Store({
       type: null,
       results: []
     },
-    isLoading: false
+    isLoading: false,
+    currentCollection: null
   },
   getters: {
     apis(state) {
@@ -36,6 +37,9 @@ export default new Vuex.Store({
     },
     isLoading(state) {
       return state.isLoading
+    },
+    currentCollection(state) {
+      return state.currentCollection
     }
   },
   mutations: {
@@ -55,6 +59,9 @@ export default new Vuex.Store({
     },
     setLoading(state) {
       state.isLoading = !state.isLoading
+    },
+    setCollection(state, collection) {
+      state.currentCollection = collection
     }
   },
   actions: {
@@ -260,12 +267,12 @@ export default new Vuex.Store({
       
       switch(collectionDetails.data.type) {
         case 'project':
-          db.collection('collections').add({
+          db.collection('collections').doc(collectionDetails.name).set({
             userId: state.user.id,
             name: collectionDetails.name,
-          }).then((doc) => {
+          }).then(() => {
             db.collection('projects').add({
-              collectionId: doc.id,
+              collectionId: collectionDetails.name,
               userId: state.user.id,
               data: collectionDetails.data.data
             }).then(() => {
@@ -274,12 +281,12 @@ export default new Vuex.Store({
           })
           break;
         case 'article':
-          db.collection('collections').add({
+          db.collection('collections').doc(collectionDetails.name).set({
             userId: state.user.id,
             name: collectionDetails.name,
-          }).then((doc) => {
+          }).then(() => {
             db.collection('articles').add({
-              collectionId: doc.id,
+              collectionId: collectionDetails.name,
               userId: state.user.id,
               data: collectionDetails.data.data
             }).then(() => {
@@ -288,12 +295,12 @@ export default new Vuex.Store({
           })
           break;
         case 'photo':
-          db.collection('collections').add({
+          db.collection('collections').doc(collectionDetails.name).set({
             userId: state.user.id,
             name: collectionDetails.name,
-          }).then((doc) => {
+          }).then(() => {
             db.collection('photos').add({
-              collectionId: doc.id,
+              collectionId: collectionDetails.name,
               userId: state.user.id,
               data: collectionDetails.data.data
             }).then(() => {
@@ -305,6 +312,31 @@ export default new Vuex.Store({
           alert('Oops, there was a problem adding to that collection. Please try again')
           break;
       }
+    },
+    getProjectsByCollection({commit, state}, collectionName) {
+      
+
+
+      let projects = state.user.projects.filter((project) => {
+        return project.collectionId === collectionName
+      })
+      if (projects === null) {
+        projects = []
+      }
+      let articles = state.user.articles.filter((article) => {
+        return article.collectionId === collectionName
+      })
+      if (articles === null) {
+        articles = []
+      }
+      let photos = state.user.photos.filter((photo) => {
+        return photo.collectionId === collectionName
+      })
+      if (photos === null) {
+        photos = []
+      }
+      
+      commit('setCollection', {projects: projects, articles: articles, photos: photos})
     }
   }
 });
