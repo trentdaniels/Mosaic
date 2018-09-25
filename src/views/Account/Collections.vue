@@ -38,7 +38,7 @@
                                                 <div class="tags is-centered">
                                                     <span v-for="(field, index) in project.data.fields" :key="index" class="tag is-light">{{ field }}</span>
                                                 </div>
-                                                <div class="buttons">
+                                                <div class="buttons is-centered">
                                                     <button class="button" @click="viewProject(project.data)">View Details</button>
                                                 </div>
                                             </div>
@@ -58,13 +58,13 @@
                                                 </figure>
                                             </div>
                                             <div class="card-header">
-                                                <h1 class="card-header-title is-centered has-text-dark">{{ article.data.title }}</h1>
+                                                <h1 class="card-header-title has-text-centered has-text-dark">{{ article.data.title }}</h1>
                                             </div>
                                             <div class="card-content">
                                                 <div class="tags is-centered">
                                                     <span class="tag is-light">{{ article.data.author }}</span>
                                                 </div>
-                                                <div class="buttons">
+                                                <div class="buttons is-centered">
                                                     <button class="button" @click="viewArticle(article.data)">View Details</button>
                                                 </div>
                                             </div>
@@ -82,14 +82,14 @@
                                                     <img :src="photo.data.urls.regular" :alt="photo.data.description" />
                                                 </figure>
                                             </div>
-                                            <div class="card-header">
-                                                <h1 class="card-header-title is-centered has-text-dark">{{ photo.data.description }}</h1>
+                                            <div class="card-header is-centered">
+                                                <h1 class="card-header-title has-text-centered has-text-dark is-capitalized">{{ photo.data.description }}</h1>
                                             </div>
                                             <div class="card-content">
                                                 <div class="tags is-centered">
                                                     <span v-for="(tag, index) in photo.data.photo_tags" :key="index" class="tag is-light">{{ tag.title }}</span>
                                                 </div>
-                                                <div class="buttons">
+                                                <div class="buttons is-centered">
                                                     <button class="button" @click="viewPhoto(photo.data)">View Details</button>
                                                 </div>
                                             </div>

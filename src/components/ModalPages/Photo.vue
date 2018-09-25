@@ -4,8 +4,8 @@
         <div class="modal-card">
             <section class="modal-card-body">
                 <div class="field">
-                    <h1 class="title has-text-dark">{{ photo.description }}</h1>
-                    <h3 class="subtitle has-text-dark">{{ photo.user.name }}</h3>
+                    <h1 class="title has-text-dark is-capitalized">{{ photo.description }}</h1>
+                    <h3 class="subtitle has-text-dark is-capitalized">{{ photo.user.name }}</h3>
                 </div>
                 <div class="field">
                     <figure class="image">
