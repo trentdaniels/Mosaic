@@ -10,10 +10,10 @@
         <div class="container">
         <div class="columns is-centered">
             <div class="column is-6">
-                <h1 class="title is-1">Project Details</h1>
+                <h1 class="title is-1">Creation Details</h1>
                 <h3 class="subtitle is-3">Let's change it up a bit.</h3>
                 <div class="field">
-                    <label class="label has-text-white">Project Name</label>
+                    <label class="label has-text-white">Creation Name</label>
                     <div class="control">
                         <input class="input" type="text" v-model="project.name" placeholder="Project Name"/>
                     </div>

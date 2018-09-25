@@ -13,8 +13,8 @@
                     <div class="navbar-item has-dropdown" :class="{'is-active': isActive}" @click="isActive = !isActive">
                         <a class="navbar-link">Hello {{ user.data.name }}!</a>
                         <div class="navbar-dropdown is-boxed">
-                            <router-link to="/account/projects" class="navbar-item has-text-primary" exact>My Projects</router-link>
-                            <router-link to="/account/projects/create" class="navbar-item has-text-primary" exact>Create Project</router-link>
+                            <router-link to="/account/creations/create" class="navbar-item has-text-primary" exact>Create</router-link>
+                            <router-link to="/account/creations" class="navbar-item has-text-primary" exact>My Creations</router-link>
                             <hr class="dropdown-divider">
                             <router-link to="/account" class="navbar-item has-text-primary" exact>My Profile</router-link>
                             <router-link to="/account/edit" class="navbar-item has-text-primary" exact>Edit Account</router-link>

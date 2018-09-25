@@ -362,7 +362,7 @@ export default new Vuex.Store({
               return creation.userId === state.user.id
             })
             commit('setCreation', creations)
-            Router.replace('account/projects')
+            Router.replace('account/creations')
           }, (err) => {
             alert(`Oops, ${err.message}`)})
         }, (err) => {

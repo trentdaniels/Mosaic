@@ -76,15 +76,15 @@ const router = new Router({
       }
     },
     {
-      path: '/account/projects',
-      name: 'projects',
-      component:() => import('./views/Account/Projects.vue'),
+      path: '/account/creations',
+      name: 'creations',
+      component:() => import('./views/Account/Creations.vue'),
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/account/projects/create',
+      path: '/account/creations/create',
       name: 'create',
       component:() => import('./views/Account/CreateProject.vue'),
       meta: {
