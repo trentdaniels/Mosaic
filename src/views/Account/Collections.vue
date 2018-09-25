@@ -23,7 +23,7 @@
                             <template v-if="collectionClicked">
                                 <label class="label has-text-white" v-if="currentCollection.projects.length > 0">Projects</label>
                             <div class="field" v-if="currentCollection.projects !== null">
-                                <div class="columns">
+                                <div class="columns is-multiline">
                                     <div class="column is-4" v-for="(project,index) in currentCollection.projects" :key="index" v-if="currentCollection.projects.length > 0">
                                         <div class="card">
                                             <div class="card-image">
@@ -37,6 +37,9 @@
                                             <div class="card-content">
                                                 <div class="tags is-centered">
                                                     <span v-for="(field, index) in project.data.fields" :key="index" class="tag is-light">{{ field }}</span>
+                                                </div>
+                                                <div class="buttons">
+                                                    <button class="button" @click="viewProject(project.data)">View Details</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -61,6 +64,9 @@
                                                 <div class="tags is-centered">
                                                     <span class="tag is-light">{{ article.data.author }}</span>
                                                 </div>
+                                                <div class="buttons">
+                                                    <button class="button" @click="viewArticle(article.data)">View Details</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -68,7 +74,7 @@
                             </div>
                             <div class="field" v-if="currentCollection.photos !== null">
                                 <label class="label has-text-white" v-if="currentCollection.photos.length > 0">Photos</label>
-                                <div class="columns">
+                                <div class="columns is-multiline">
                                     <div class="column is-4" v-for="(photo, index) in currentCollection.photos" :key="index" v-if="currentCollection.photos.length > 0">
                                         <div class="card">
                                             <div class="card-image">
@@ -83,6 +89,9 @@
                                                 <div class="tags is-centered">
                                                     <span v-for="(tag, index) in photo.data.photo_tags" :key="index" class="tag is-light">{{ tag.title }}</span>
                                                 </div>
+                                                <div class="buttons">
+                                                    <button class="button" @click="viewPhoto(photo.data)">View Details</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -91,6 +100,8 @@
                             </template>
                             </div>
                         </div>
+                        <template v-if="viewingDetails">
+                        </template>
                     </div>
                 </div>
         </section>
@@ -110,7 +121,9 @@
         data() {
             return {
                 selectedCollection: '',
-                collectionClicked: false
+                collectionClicked: false,
+                viewingDetails: false,
+                activeProject: null
             }
         },
         methods: {
@@ -119,8 +132,22 @@
                 this.selectedCollection = collectionName
                 this.getProjectsByCollection(this.selectedCollection)
                 this.collectionClicked = true
+            },
+            viewProject(project) {
+                this.activeProject = project
+                this.viewingDetails = true
+                console.log(project)
+            },
+            viewArticle(article) {
+                console.log(article)
+                this.activeProject = article
+                this.viewingDetails = true
+            },
+            viewPhoto(photo) {
+                console.log(photo)
+                this.activeProject = photo
+                this.viewDetails = true
             }
-            
         }
     }
 </script>
