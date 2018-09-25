@@ -46,7 +46,7 @@
                         <span class="file-name">{{ fileName }}</span>
                         </label>
                     </div>
-                    <p class="help">Talk about your project. The world would love to know!</p>
+                    <p class="help">Make the picture unique!</p>
                 </div>
                 <div class="field">
                     <div class="control">
@@ -63,6 +63,7 @@
 
 <script>
     import Navigation from '@/components/Navigation.vue'
+    import { mapActions } from 'vuex'
     export default {
         name: 'CreateProject',
         components: {
@@ -75,7 +76,7 @@
                     description: '',
                     category: '',
                     image: null,
-                    file: ''
+                    file: null
                 },
                 fileName: 'Your Project Image',
                 
@@ -85,7 +86,7 @@
             ...mapActions(['createProject']),
             handleFile() {
                 this.project.file = this.$refs.file.files[0]
-                this.fileName = this.file.name
+                this.fileName = this.project.file.name
             },
             submitProject() {
                 this.createProject(this.project)

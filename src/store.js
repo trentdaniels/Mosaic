@@ -23,7 +23,8 @@ export default new Vuex.Store({
       results: []
     },
     isLoading: false,
-    currentCollection: null
+    currentCollection: null,
+    creations: null
   },
   getters: {
     apis(state) {
@@ -62,6 +63,9 @@ export default new Vuex.Store({
     },
     setCollection(state, collection) {
       state.currentCollection = collection
+    },
+    setCreation(state, creations) {
+      state.creations = creations
     }
   },
   actions: {
@@ -191,11 +195,12 @@ export default new Vuex.Store({
       let queriedArticles = [];
       let queriedPhotos = [];
       let queriedCollections = [];
+      let queriedCreations = []
       db.collection('projects').where('userId', '==', id).get().then((snapShot) => snapShot.forEach((doc) => queriedProjects.push(doc.data())));
       db.collection('articles').where('userId', '==', id).get().then((snapShot) => snapShot.forEach((doc) => queriedArticles.push(doc.data())));
       db.collection('photos').where('userId', '==', id).get().then((snapShot) => snapShot.forEach((doc) => queriedPhotos.push(doc.data())));
       db.collection('collections').where('userId', '==', id).get().then((snapShot) => snapShot.forEach((doc) => queriedCollections.push(doc.data())));
-
+      db.collection('creations').where('userId', '==', id).get().then((snapShot) => snapShot.forEach((doc) => queriedCreations.push(doc.data())));
 
       db.collection("users").doc(id).get().then((doc) => {
         commit('setUser', {
@@ -204,7 +209,8 @@ export default new Vuex.Store({
           collections: queriedCollections,
           projects: queriedProjects,
           articles: queriedArticles,
-          photos: queriedPhotos
+          photos: queriedPhotos,
+          creations: queriedCreations
         })
       }, (err) => {
         alert(`Oops, ${err.message}`)
@@ -314,9 +320,6 @@ export default new Vuex.Store({
       }
     },
     getProjectsByCollection({commit, state}, collectionName) {
-      
-
-
       let projects = state.user.projects.filter((project) => {
         return project.collectionId === collectionName
       })
@@ -335,8 +338,39 @@ export default new Vuex.Store({
       if (photos === null) {
         photos = []
       }
-      
       commit('setCollection', {projects: projects, articles: articles, photos: photos})
+    },
+    createProject({commit, state, dispatch}, newProject) {
+      console.log(newProject)
+      const db = firebase.firestore();
+      const settings = {timestampsInSnapshots: true};
+      db.settings(settings);
+      const storage = firebase.storage();
+      let storageRef = storage.ref()
+      let projectRef = storageRef.child(`${state.user.id}/${newProject.name}.jpg`)
+      projectRef.put(newProject.file).then((snapShot) => {
+        snapShot.ref.getDownloadURL().then((downloadUrl) => {
+          db.collection('creations').doc(newProject.name).set({
+            name: newProject.name,
+            description: newProject.description,
+            category: newProject.category,
+            image: downloadUrl,
+            userId: state.user.id
+          }).then(() => {
+            dispatch('getUser', state.user.id)
+            let creations = state.user.creations.filter((creation) => {
+              return creation.userId === state.user.id
+            })
+            commit('setCreation', creations)
+            Router.replace('account/projects')
+          }, (err) => {
+            alert(`Oops, ${err.message}`)})
+        }, (err) => {
+          alert(`Oops, ${err.message}`)
+        })
+      }, (err) => {
+        alert(`Oops, ${err.message}`)
+      })
     }
   }
 });
