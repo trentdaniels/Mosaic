@@ -101,13 +101,13 @@
                             </div>
                         </div>
                         <template v-if="viewingDetails && projectType === 'project'">
-                            <project :project="activeProject"></project>
+                            <project :project="activeProject" @cancelled="cancelProject"></project>
                         </template>
                         <template v-else-if="viewingDetails && projectType === 'article'">
-                            <article :article="activeProject"></article>
+                            <app-article :article="activeProject" @cancelled="cancelProject"></app-article>
                         </template>
                         <template v-else-if="viewingDetails && projectType === 'photo'">
-                            <photo :photo="activeProject"></photo>
+                            <photo :photo="activeProject" @cancelled="cancelProject"></photo>
                         </template>
                     </div>
                 </div>
@@ -126,7 +126,7 @@
         components: {
             Navigation,
             Project,
-            Article,
+            'app-article': Article,
             Photo
         },
         computed: {
@@ -162,6 +162,11 @@
                 this.projectType = 'photo'
                 this.activeProject = photo
                 this.viewingDetails = true
+            },
+            cancelProject() {
+                this.projectType = ''
+                this.activeProject = null
+                this.viewingDetails = false
             }
         }
     }
