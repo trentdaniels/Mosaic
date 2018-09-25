@@ -100,7 +100,14 @@
                             </template>
                             </div>
                         </div>
-                        <template v-if="viewingDetails">
+                        <template v-if="viewingDetails && projectType === 'project'">
+                            <project :project="activeProject"></project>
+                        </template>
+                        <template v-else-if="viewingDetails && projectType === 'article'">
+                            <article :article="activeProject"></article>
+                        </template>
+                        <template v-else-if="viewingDetails && projectType === 'photo'">
+                            <photo :photo="activeProject"></photo>
                         </template>
                     </div>
                 </div>
@@ -111,9 +118,16 @@
 <script>
     import { mapGetters, mapActions } from 'vuex'
     import Navigation from '@/components/Navigation.vue'
+    import Project from '@/components/ModalPages/Project.vue'
+    import Article from '@/components/ModalPages/Article.vue'
+    import Photo from '@/components/ModalPages/Photo.vue'
     export default {
+        name: 'Collections',
         components: {
-            Navigation
+            Navigation,
+            Project,
+            Article,
+            Photo
         },
         computed: {
             ...mapGetters(['user', 'currentCollection']),
@@ -123,7 +137,8 @@
                 selectedCollection: '',
                 collectionClicked: false,
                 viewingDetails: false,
-                activeProject: null
+                activeProject: null,
+                projectType: ''
             }
         },
         methods: {
@@ -134,19 +149,19 @@
                 this.collectionClicked = true
             },
             viewProject(project) {
+                this.projectType = 'project'
                 this.activeProject = project
                 this.viewingDetails = true
-                console.log(project)
             },
             viewArticle(article) {
-                console.log(article)
+                this.projectType = 'article'
                 this.activeProject = article
                 this.viewingDetails = true
             },
             viewPhoto(photo) {
-                console.log(photo)
+                this.projectType = 'photo'
                 this.activeProject = photo
-                this.viewDetails = true
+                this.viewingDetails = true
             }
         }
     }

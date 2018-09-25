@@ -6,7 +6,8 @@
 
 <script>
     export default {
-        
+        props:['article'],
+        name: 'Article'
     }
 </script>
 
