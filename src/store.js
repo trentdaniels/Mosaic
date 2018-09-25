@@ -24,7 +24,6 @@ export default new Vuex.Store({
     },
     isLoading: false,
     currentCollection: null,
-    creations: null
   },
   getters: {
     apis(state) {
@@ -64,9 +63,6 @@ export default new Vuex.Store({
     setCollection(state, collection) {
       state.currentCollection = collection
     },
-    setCreation(state, creations) {
-      state.creations = creations
-    }
   },
   actions: {
     async clearUser({ commit }) {
@@ -358,10 +354,6 @@ export default new Vuex.Store({
             userId: state.user.id
           }).then(() => {
             dispatch('getUser', state.user.id)
-            let creations = state.user.creations.filter((creation) => {
-              return creation.userId === state.user.id
-            })
-            commit('setCreation', creations)
             Router.replace('account/creations')
           }, (err) => {
             alert(`Oops, ${err.message}`)})
