@@ -4,15 +4,19 @@
             <div class="navbar-start">
                 <router-link to="/home" class="navbar-item">Home</router-link>
                 <router-link to="/about" class="navbar-item">About</router-link>
+                <template v-if="user">
+                    
+                </template>
             </div>
             <div class="navbar-end">
                 <template v-if="user">
-                    
                     <div class="navbar-item has-dropdown" :class="{'is-active': isActive}" @click="isActive = !isActive">
                         <a class="navbar-link">Hello {{ user.data.name }}!</a>
                         <div class="navbar-dropdown is-boxed">
-                            <router-link to="/account" class="navbar-item has-text-primary" exact>My Profile</router-link>
+                            <router-link to="/account/projects" class="navbar-item has-text-primary" exact>My Projects</router-link>
+                            <router-link to="/account/projects/create" class="navbar-item has-text-primary" exact>Create Project</router-link>
                             <hr class="dropdown-divider">
+                            <router-link to="/account" class="navbar-item has-text-primary" exact>My Profile</router-link>
                             <router-link to="/account/edit" class="navbar-item has-text-primary" exact>Edit Account</router-link>
                             <router-link to="/account/delete" class="navbar-item has-text-primary" exact>Delete Account</router-link>
                         </div>
