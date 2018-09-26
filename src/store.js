@@ -503,6 +503,9 @@ export default new Vuex.Store({
       } catch(err) {
         alert(`Oops, ${err.message}`)
       }
+    },
+    async destroyProfile({commit}) {
+      commit('setProfile', null)
     }
   }
 });

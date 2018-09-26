@@ -12,10 +12,18 @@
           <div class="column is-6">
             <h1 class="title">Profile View</h1>
             <h2 class="subtitle">Get to know this creative!</h2>
+            <div class="field">
+                <label class="label has-text-white is-outline">Like what you see?</label>
+                <div class="control">
+                    <button class="button is-primary">Follow this Creative</button>
+                </div>
+                <p class="help">You won't regret it!</p>
+            </div>
           </div>
             <div class="column is-6">
                 <h1 class="title is-1">Meet {{ profile.data.name }}.</h1>
                 <h3 class="subtitle is-3">(Pretty good name if you ask me)</h3>
+                
                 <div class="field">
                     <label class="label has-text-white">Bio:</label>
                     <p>{{ profile.data.bio }}</p>
@@ -58,10 +66,13 @@ import { mapGetters, mapActions } from 'vuex';
             ...mapGetters(['user','profile'])
         },
         methods: {
-            ...mapActions(['fetchUser'])
+            ...mapActions(['fetchUser', 'destroyProfile'])
         },
-        beforeMount() {
+        mounted() {
             this.fetchUser(this.id)
+        },
+        beforeDestroy() {
+            this.destroyProfile()
         }
     }
 </script>
