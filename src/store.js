@@ -265,51 +265,47 @@ export default new Vuex.Store({
       const db = firebase.firestore();
       const settings = {timestampsInSnapshots: true};
       db.settings(settings);
+
       let collectionArray = [];
       let collectionToAdd;
-      db.collection('collections').where('name', '==', collectionDetails.collection).where('userId', '==', state.user.id).limit(1).get().then((snapShot) => {
-        snapShot.forEach((doc) => {
-          collectionArray.push({
-            id: doc.id,
-          })
+      try {
+        let snapShot = await db.collection('collection').where('name', '==', collectionDetails.collection).where('userId', '==', state.user.id).limit(1).get()
+        await snapShot.forEach((doc) => {
+          collectionArray.push({id: doc.id})
         })
         collectionToAdd = collectionArray[0].id
-
         switch(collectionDetails.project.type) {
           case 'project':
-            db.collection('projects').add({
+            await db.collection('projects').add({
               collectionId: collectionToAdd,
               userId: state.user.id,
               data: collectionDetails.project.data
-            }).then(() => {
-              dispatch('getUser', state.user.id)
-            },(err) => alert(`Oops, ${err.message}`))
+            })
+            dispatch('getUser', state.user.id)
             break;
           case 'article':
-            db.collection('articles').add({
+            await db.collection('articles').add({
               collectionId: collectionToAdd,
               userId: state.user.id,
               data: collectionDetails.project.data
-            }).then(() => {
-              dispatch('getUser', state.user.id)
-            }, (err) => alert(`Oops, ${err.message}`))
+            })
+            dispatch('getUser', state.user.id)
             break;
           case 'photo':
-            db.collection('photos').add({
+            await db.collection('photos').add({
               collectionId: collectionToAdd,
               userId: state.user.id,
               data: collectionDetails.project.data
-            }).then(() => {
-              dispatch('getUser', state.user.id)
-            }, (err) => alert(`Oops, ${err.message}`))
+            })
+            dispatch('getUser', state.user.id)
             break;
           default: 
             alert('Oops, there was an error adding to your collection. Please try again')
             break;
         }
-      })
-      
-      
+      } catch(err) {
+        alert(`Oops, ${err.message}`)
+      }
     },
     async createNewCollection({dispatch , state}, collectionDetails) {
       const db = firebase.firestore();
