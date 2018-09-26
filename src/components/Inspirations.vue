@@ -34,10 +34,15 @@
                         <p class="card-header-title has-text-dark is-centered">{{ creation.name }}</p>
                     </div>
                     <div class="card-content">
-                        <p class="subtitle is-6 has-text-dark">{{ creation.userName}}</p>
-                        <p>{{ creation.description }}</p>
-                        <div class="tags is-centered">
-                            <span class="tag is-light" v-for="category in creation.categories" :key="category">{{ category }}</span>
+                        <p class="subtitle is-6 has-text-dark has-text-weight-bold">{{ creation.userName}}</p>
+                        <div class="content">
+                            <p>{{ creation.description }}</p>
+                            <p>Created: {{ getDate(creation.created)}}</p>
+                        </div>
+                        <div class="content">
+                            <div class="tags is-centered">
+                                <span class="tag is-light" v-for="category in creation.categories" :key="category">{{ category }}</span>
+                            </div>
                         </div>
                         <div class="buttons is-centered">
                             <button @click="incrementLike(creation, index)" class="button is-info is-rounded" :disabled="liked(creation.name)">{{creation.likes}}</button>
@@ -121,6 +126,10 @@
             },
             liked(name) {
                 return this.alreadyLiked.includes(name)
+            },
+            getDate(number) {
+                let date = new Date()
+                return `0${date.getMonth(number)+1}/${date.getFullYear(number)}`
             }
         }
     }

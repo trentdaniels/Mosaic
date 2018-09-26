@@ -86,6 +86,7 @@ export default new Vuex.Store({
     },
     incrementLike(state, index) {
       state.currentSearch.results[index].likes += 1
+      state.currentSearch.results[index].likedUsers.push(state.user.id)
     }
   },
   actions: {
@@ -442,6 +443,7 @@ export default new Vuex.Store({
           categories: newProject.categories,
           image: downloadUrl,
           userName: state.user.data.name,
+          likedUsers: [],
           userId: state.user.id,
           likes: 0
         })
