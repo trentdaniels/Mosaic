@@ -61,9 +61,7 @@ export default new Vuex.Store({
     updateSearch(state, inspirations) {
       state.currentSearch.results = []
       state.currentSearch.type = inspirations.type
-      inspirations.results.forEach(inspiration => {
-        state.currentSearch.results.push(inspiration)
-      })
+      state.currentSearch.results = inspirations.results
     },
     setLoading(state, value) {
       state.isLoading = value
@@ -134,10 +132,16 @@ export default new Vuex.Store({
           const settings = {timestampsInSnapshots: true};
           db.settings(settings);
 
-          let search = decodeURIComponent(query.url)
-          console.log(search)
-          let snapShot = await db.collection('creations').where('name', '==', search)
-          
+          try {
+            let searchedCreations = []
+            let snapShot = await db.collection('creations').where('categories', 'array-contains', search)
+            snapShot.forEach((doc) => {
+              searchedCreations.push(doc.data())
+            })
+            commit('updateSearch', {type: 'creation', results: searchedCreations})
+          } catch(err) {
+            alert(`Oops, ${err.message}`)
+          }
         break;
         case 1:
           url = `http://behance.net/v2/projects?q=${query.url}&page=1&sort=views&api_key=${keys.BEHANCE_API}`;
@@ -416,7 +420,8 @@ export default new Vuex.Store({
           description: newProject.description,
           categories: newProject.categories,
           image: downloadUrl,
-          userId: state.user.id
+          userId: state.user.id,
+          likes: 0
         })
         dispatch('getUser', state.user.id)
         Router.push('/account/creations')

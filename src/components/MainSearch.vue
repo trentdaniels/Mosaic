@@ -12,7 +12,12 @@
       </div>
     </div>
     <div class="control is-expanded">
-      <input type="text" placeholder="ex: Rainbow Dragons" v-model="search" class="input is-medium is-primary" />
+      <input type="text" placeholder="ex: Rainbow Dragons" v-model="search" class="input is-medium is-primary" v-if="selectedApi !== 0" />
+      <div class="select is-medium is-primary is-fullwidth" v-else>
+        <select v-model="search">
+          <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
+        </select>
+      </div>
     </div>
     <div class="control">
       <button class="button is-primary is-medium" :class="{'is-loading': loading}" @click="getProjects">Search</button>
@@ -28,11 +33,11 @@ export default {
   data() {
     return {
       search: '',
-      selectedApi: 0
+      selectedApi: 0,
     }
   },
   computed: {
-    ...mapGetters(['apis', 'isLoading']),
+    ...mapGetters(['apis', 'isLoading', 'categories']),
     loading() {
       return this.isLoading
     },

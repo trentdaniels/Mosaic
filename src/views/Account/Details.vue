@@ -26,6 +26,10 @@
                     <p>{{ user.data.email }}</p>
                 </div>
                 <div class="field">
+                    <label class="label has-text-white">Current Creations:</label>
+                    <p v-for="(creation, index) in user.creations" :key="index">{{ creation.name }}</p>
+                </div>
+                <div class="field">
                     <label class="label has-text-white">Current Collections:</label>
                     <p v-for="(collection, index) in user.collections" :key="index">{{ collection.name }}</p>
                 </div>
