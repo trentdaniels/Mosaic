@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="column is-10">
-            <main-search @searched="getProjects"></main-search>
+            <main-search @searched="getProjects" :loading="loading"></main-search>
           </div>
         </div>
         <inspirations @addedProject="addToCollection"></inspirations>
@@ -54,7 +54,8 @@ export default {
   data() {
     return {
       addingProject: false,
-      projectToAdd: null
+      projectToAdd: null,
+      loading: false
     }
   },
   computed: {

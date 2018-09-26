@@ -11,7 +11,10 @@
         <div class="columns is-centered">
             <div class="column is-6">
                 <h1 class="title is-1">Creation Details</h1>
-                <h3 class="subtitle is-3">Let's change it up a bit.</h3>
+                <h2 class="subtitle">Let's change it up a bit.</h2>
+                <p>You can also go <router-link class="has-text-weight-bold" to="../creations">Back To Your Creations</router-link></p>
+            </div>
+            <div class="column is-6">
                 <div class="field">
                     <label class="label has-text-white">Creation Name</label>
                     <div class="control">
