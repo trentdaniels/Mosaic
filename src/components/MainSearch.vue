@@ -15,7 +15,7 @@
       <input type="text" placeholder="ex: Rainbow Dragons" v-model="search" class="input is-medium is-primary" />
     </div>
     <div class="control">
-      <button class="button is-primary is-medium" :class="{'is-loading': loading}" @click="getProjects">Search</button>
+      <button class="button is-primary is-medium" :class="{'is-loading': isLoading}" @click="getProjects">Search</button>
     </div>
   </div>
   </div>
@@ -25,7 +25,6 @@
 import { mapGetters } from 'vuex'
 export default {
   name: "MainSearch",
-  props: ['loading'],
   data() {
     return {
       search: '',
@@ -33,7 +32,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['apis']),
+    ...mapGetters(['apis', 'isLoading']),
     encodedSearch() {
       return encodeURIComponent(this.search)
     }

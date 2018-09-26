@@ -13,13 +13,14 @@
                             <h1 class="title is-1">{{ selectedCollection }}</h1>
                             <h1 class="title">Your Collections</h1>
                             <h2 class="subtitle">View your collections here!</h2>
-                        </div>
-                        <div class="column is-9">
-                            <div class="tabs">
-                                <ul>
+                            <div class="menu">
+                                <p class="menu-label has-text-white">Choose a Collection</p>
+                                <ul class="menu-list">
                                     <li v-for="(collection,index) in user.collections" :key="index" :class="{'is-active': selectedCollection === collection.name}" @click="getProjects(collection.name)"><a>{{ collection.name }}</a></li>
                                 </ul>
                             </div>
+                        </div>
+                        <div class="column is-9">
                             <template v-if="collectionClicked">
                                 <label class="label has-text-white" v-if="currentCollection.projects.length > 0">Projects</label>
                             <div class="field" v-if="currentCollection.projects !== null">
@@ -173,5 +174,7 @@
 </script>
 
 <style scoped>
-
+    .menu-list a:hover {
+        background-color: #00d1b2;
+    }
 </style>

@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="column is-10">
-            <main-search @searched="getProjects" :loading="loading"></main-search>
+            <main-search @searched="getProjects"></main-search>
           </div>
         </div>
         <inspirations @addedProject="addToCollection"></inspirations>

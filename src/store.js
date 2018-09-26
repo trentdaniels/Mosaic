@@ -57,8 +57,8 @@ export default new Vuex.Store({
         state.currentSearch.results.push(inspiration)
       })
     },
-    setLoading(state) {
-      state.isLoading = !state.isLoading
+    setLoading(state, value) {
+      state.isLoading = value.value
     },
     setCollection(state, collection) {
       state.currentCollection = collection
@@ -74,8 +74,8 @@ export default new Vuex.Store({
       alert(`Oops, ${err.message}`)
       )
     },
-    async changeLoading({ commit }) {
-      commit('setLoading')
+    async changeLoading({ commit }, value) {
+      commit('setLoading', value)
     },
     async signUp({ dispatch }, createdUser) {
       const db = firebase.firestore();
@@ -115,7 +115,7 @@ export default new Vuex.Store({
     },
     async searchProjects({commit, dispatch}, query) {
       let url;
-      await dispatch('changeLoading')
+      await dispatch('changeLoading', {value: true})
       switch(query.api) {
         case 0:
           url = `http://behance.net/v2/projects?q=${query.url}&page=1&sort=views&api_key=${keys.BEHANCE_API}`;
@@ -154,7 +154,7 @@ export default new Vuex.Store({
           alert('unable to get projects, please try again')
           break;
       }
-      dispatch('changeLoading')
+      dispatch('changeLoading', {value: false})
     },
     editUser({ dispatch ,state }, newUserInfo) {
       const auth = firebase.auth();
