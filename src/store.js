@@ -48,6 +48,21 @@ export default new Vuex.Store({
     },
     categories(state) {
       return state.creationCategories
+    },
+    alreadyLiked(state) {
+      if (state.currentSearch.type === 'creation' && state.currentSearch.results.length > 0) {
+        let likedCreations = state.currentSearch.results.filter((result) => {
+          return result.likedUsers
+        })
+        let userLiked = likedCreations.filter((creation) => {
+          return creation.likedUsers.includes(state.user.id)
+        })
+        let names = userLiked.map((creation) => {
+          return creation.name
+        })
+        return names
+
+      }
     }
   },
   mutations: {
@@ -69,6 +84,9 @@ export default new Vuex.Store({
     setCollection(state, collection) {
       state.currentCollection = collection
     },
+    incrementLike(state, index) {
+      state.currentSearch.results[index].likes += 1
+    }
   },
   actions: {
     async clearUser({ commit }) {
@@ -134,13 +152,15 @@ export default new Vuex.Store({
 
           try {
             let searchedCreations = []
-            let snapShot = await db.collection('creations').where('categories', 'array-contains', search)
+            let snapShot = await db.collection('creations').where('categories', 'array-contains', query.url).orderBy('likes', 'desc').get()
             snapShot.forEach((doc) => {
               searchedCreations.push(doc.data())
             })
             commit('updateSearch', {type: 'creation', results: searchedCreations})
           } catch(err) {
+            console.log(err)
             alert(`Oops, ${err.message}`)
+
           }
         break;
         case 1:
@@ -200,7 +220,7 @@ export default new Vuex.Store({
       }
       
     },
-    async deleteUser({commit, state}) {
+    async deleteUser({commit, state, dispatch}) {
       const auth = firebase.auth();
       const db = firebase.firestore();
       const settings = {timestampsInSnapshots: true};
@@ -211,9 +231,10 @@ export default new Vuex.Store({
         await db.collection('users').doc(state.user.id).delete()
         await auth.currentUser.delete()
         commit('setUser', null)
-        dispatch('changeLoading', false)
+        await dispatch('changeLoading', false)
         Router.push('/home')
       } catch(err) {
+        console.log(err)
         alert(`Oops, ${err.message}`)
       }
     },
@@ -405,7 +426,6 @@ export default new Vuex.Store({
       commit('setCollection', {projects: projects, articles: articles, photos: photos})
     },
     async createProject({state, dispatch}, newProject) {
-      console.log(newProject)
       const db = firebase.firestore();
       const settings = {timestampsInSnapshots: true};
       db.settings(settings);
@@ -418,8 +438,10 @@ export default new Vuex.Store({
         db.collection('creations').doc(newProject.name).set({
           name: newProject.name,
           description: newProject.description,
+          created: Date.now(),
           categories: newProject.categories,
           image: downloadUrl,
+          userName: state.user.data.name,
           userId: state.user.id,
           likes: 0
         })
@@ -428,6 +450,24 @@ export default new Vuex.Store({
       } catch(err) {
         alert(`Oops, ${err.message}`)
       }
+    },
+    async like({state, commit}, creation) {
+      const db = firebase.firestore();
+      const settings = {timestampsInSnapshots: true};
+      db.settings(settings);
+      try {
+        let snapShot = await db.collection('creations').doc(creation.creation.name).get()
+        let creationToUpdate = snapShot.data().likes
+
+        db.collection('creations').doc(creation.creation.name).set({
+          likes: creationToUpdate + 1,
+          likedUsers: firebase.firestore.FieldValue.arrayUnion(state.user.id)
+        }, {merge: true})
+        commit('incrementLike', creation.index)
+      } catch(err) {
+        alert(`Oops, ${err.message}`)
+      }
+      
     }
   }
 });

@@ -16,12 +16,35 @@
                         <span v-for="(field, index) in inspiration.fields" :key="index" class="tag is-light">{{ field }}</span>
                     </div>
                     <div class="buttons is-centered">
-
                         <button class="button is-default" v-if="user" @click="addToCollection(inspiration, currentSearch.type)">Add to Collection</button>
                     </div>
                 </div>
             </div>
         </div>
+        </template>
+        <template v-else-if="currentSearch.type === 'creation' && !noSearchResults">
+            <div v-for="(creation, index) in currentSearch.results" :key="index" class="column is-4">
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image">
+                            <img :src="creation.image" :alt="creation.description" />
+                        </figure>
+                    </div>
+                    <div class="card-header">
+                        <p class="card-header-title has-text-dark is-centered">{{ creation.name }}</p>
+                    </div>
+                    <div class="card-content">
+                        <p class="subtitle is-6 has-text-dark">{{ creation.userName}}</p>
+                        <p>{{ creation.description }}</p>
+                        <div class="tags is-centered">
+                            <span class="tag is-light" v-for="category in creation.categories" :key="category">{{ category }}</span>
+                        </div>
+                        <div class="buttons is-centered">
+                            <button @click="incrementLike(creation, index)" class="button is-info is-rounded" :disabled="liked(creation.name)">{{creation.likes}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </template>
         <template v-else-if="currentSearch.type === 'article' && !noSearchResults">
             <div v-for="(inspiration,index) in currentSearch.results" :key="index" class="column is-4">
@@ -78,18 +101,26 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex'
+    import {mapGetters, mapActions} from 'vuex'
     export default {
         name: 'Inspirations',
         computed: {
-            ...mapGetters(['currentSearch', 'user']),
+            ...mapGetters(['currentSearch', 'user', 'alreadyLiked']),
             noSearchResults() {
                 return this.currentSearch.results.length === 0 && this.currentSearch.type !== null
-            }
+            },
+            
         },
         methods: {
+            ...mapActions(['like']),
             addToCollection(project, type) {
                 this.$emit('addedProject', {type: type, data: project})
+            },
+            incrementLike(creation, index) {
+                this.like({creation: creation, index: index})
+            },
+            liked(name) {
+                return this.alreadyLiked.includes(name)
             }
         }
     }
