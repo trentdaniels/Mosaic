@@ -14,7 +14,7 @@
                             <h1 class="title">Your Collections</h1>
                             <h2 class="subtitle">View your collections here!</h2>
                             <div class="menu">
-                                <p class="menu-label has-text-white">Choose a Collection</p>
+                                <p class="menu-label has-text-white" v-if="user.collections.length > 0">Choose a Collection</p>
                                 <ul class="menu-list">
                                     <li v-for="(collection,index) in user.collections" :key="index" :class="{'is-active': selectedCollection === collection.name}" @click="getProjects(collection.name)"><a>{{ collection.name }}</a></li>
                                 </ul>

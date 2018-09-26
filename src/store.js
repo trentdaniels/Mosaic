@@ -15,6 +15,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     user: null,
+    profile: null,
     apiTargets: [
       'Creations',
       'Projects',
@@ -39,6 +40,9 @@ export default new Vuex.Store({
     },
     user(state) {
       return state.user
+    },
+    profile(state) {
+      return state.profile
     },
     isLoading(state) {
       return state.isLoading
@@ -68,6 +72,9 @@ export default new Vuex.Store({
   mutations: {
     setUser(state, user) {
       state.user = user
+    },
+    setProfile(state, profile) {
+      state.profile = profile
     },
     addInfo(state, user) {
       state.currentUser.name = user.name,
@@ -469,7 +476,33 @@ export default new Vuex.Store({
       } catch(err) {
         alert(`Oops, ${err.message}`)
       }
-      
+    },
+    async fetchUser({commit, dispatch}, id) {
+      const db = firebase.firestore();
+      const settings = {timestampsInSnapshots: true};
+      db.settings(settings);
+      let credentials = {id: id, db: db}
+
+      let queriedProjects = dispatch('getProjects', credentials)
+      let queriedArticles =  dispatch('getArticles', credentials);
+      let queriedPhotos =  dispatch('getPhotos', credentials);
+      let queriedCollections =  dispatch('getCollections', credentials);
+      let queriedCreations =  dispatch('getCreations', credentials)
+
+      try {
+        const results = await Promise.all([queriedProjects, queriedArticles, queriedPhotos, queriedCollections, queriedCreations])
+        let doc = await db.collection("users").doc(id).get()
+        commit('setProfile', {
+          data: doc.data(),
+          projects: results[0],
+          articles: results[1],
+          photos: results[2],
+          collections: results[3],
+          creations: results[4]
+        })
+      } catch(err) {
+        alert(`Oops, ${err.message}`)
+      }
     }
   }
 });
