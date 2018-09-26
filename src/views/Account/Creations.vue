@@ -32,7 +32,7 @@
                                                         <p>{{ creation.description }}</p>
                                                     </div>
                                                     <div class="tags">
-                                                        <span class="tag is-primary">{{ creation.category }}</span>
+                                                        <span v-for="category in creation.categories" :key="category" class="tag is-primary">{{ category }}</span>
                                                     </div>
                                                 </div>
                                             </div>

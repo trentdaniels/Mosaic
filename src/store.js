@@ -16,6 +16,7 @@ export default new Vuex.Store({
   state: {
     user: null,
     apiTargets: [
+      'Creations',
       'Projects',
       'Articles',
       'Photos'
@@ -26,6 +27,8 @@ export default new Vuex.Store({
     },
     isLoading: false,
     currentCollection: null,
+    creationCategories: ['Digital', 'Photo', 'Project', 'Article', 'Print', 'Web', 'Motion']
+    
   },
   getters: {
     apis(state) {
@@ -42,6 +45,9 @@ export default new Vuex.Store({
     },
     currentCollection(state) {
       return state.currentCollection
+    },
+    categories(state) {
+      return state.creationCategories
     }
   },
   mutations: {
@@ -124,6 +130,16 @@ export default new Vuex.Store({
       await dispatch('changeLoading', true)
       switch(query.api) {
         case 0:
+          const db = firebase.firestore();
+          const settings = {timestampsInSnapshots: true};
+          db.settings(settings);
+
+          let search = decodeURIComponent(query.url)
+          console.log(search)
+          let snapShot = await db.collection('creations').where('name', '==', search)
+          
+        break;
+        case 1:
           url = `http://behance.net/v2/projects?q=${query.url}&page=1&sort=views&api_key=${keys.BEHANCE_API}`;
           try {
             let response = await axios.get(url, { adapter: jsonAdapter})
@@ -136,7 +152,7 @@ export default new Vuex.Store({
             alert(`Oops, ${err.message}`)
           }
           break;
-        case 1:
+        case 2:
           url = `https://newsapi.org/v2/everything?q=${query.url}&sortBy=popularity&pageSize=12&apiKey=${keys.NEWS_API}`
           try {
             let res = await axios.get(url)
@@ -146,7 +162,7 @@ export default new Vuex.Store({
             alert(`Oops, ${err.message}`)
           }
           break;
-        case 2:  
+        case 3:  
           url = `https://api.unsplash.com/search/photos?page=1&per_page=12&query=${query.url}&orientation=squarish&client_id=${keys.UNSPLASH_API}`
           try {
             let res = await axios.get(url)
@@ -398,7 +414,7 @@ export default new Vuex.Store({
         db.collection('creations').doc(newProject.name).set({
           name: newProject.name,
           description: newProject.description,
-          category: newProject.category,
+          categories: newProject.categories,
           image: downloadUrl,
           userId: state.user.id
         })

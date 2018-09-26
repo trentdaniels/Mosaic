@@ -1,24 +1,14 @@
 <template>
     <nav id="nav" class="navbar">
+        <div class="navbar-brand">
+            <router-link to="/home" class="navbar-item">Home</router-link>
+            <button class="navbar-burger is-primary">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </button>
+        </div>
         <div class="navbar-menu">
-            <div class="navbar-start">
-                <router-link to="/home" class="navbar-item">Home</router-link>
-                <template v-if="user">
-                    <div class="navbar-item">
-                        <div class="field is-grouped">
-                            <div class="control is-expanded">
-                                <input type="text" class="input is-primary" placeholder="Search Creations" />
-                            </div>
-                            <div class="control">
-                                <button class="button is-primary">Search</button>
-                            </div>
-                        </div>
-                    </div>
-                </template>
-                <template v-if="user">
-                    
-                </template>
-            </div>
             <div class="navbar-end">
                 <template v-if="user">
                     <router-link to="/account/creations" class="navbar-item" exact>My Creations</router-link>

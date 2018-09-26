@@ -24,10 +24,12 @@
                 </div>
                 <div class="field">
                     <label class="label has-text-white">Category</label>
-                    <div class="control">
-                        <input class="input" type="email" v-model="project.category" placeholder="Project Category"/>
+                    <div class="select is-multiple is-primary is-fullwidth">
+                        <select multiple v-model="project.categories" :size="categories.length">
+                            <option v-for="(category, index) of categories" :key="index" :value="category">{{ category }}</option>
+                        </select>
                     </div>
-                    <p class="help">Illustration, Website, etc... But Please choose one!</p>
+                    <p class="help">(Hold down shift or command to select multiple)</p>
                 </div>
                 <div class="field">
                     <label class="label has-text-white">Description</label>
@@ -66,7 +68,7 @@
 
 <script>
     import Navigation from '@/components/Navigation.vue'
-    import { mapActions } from 'vuex'
+    import { mapActions, mapGetters } from 'vuex'
     export default {
         name: 'CreateProject',
         components: {
@@ -77,13 +79,16 @@
                 project: {
                     name: '',
                     description: '',
-                    category: '',
+                    categories: [],
                     image: null,
                     file: null
                 },
                 fileName: 'Your Project Image',
                 
             }
+        },
+        computed: {
+            ...mapGetters(['categories'])
         },
         methods: {
             ...mapActions(['createProject']),
