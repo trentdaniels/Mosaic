@@ -173,8 +173,11 @@
     }
 </script>
 
-<style scoped>
-    .menu-list a:hover {
-        background-color: #00d1b2;
+<style lang="scss" scoped>
+    .menu-list a {
+        color: white;
+        &:hover {
+            background-color: #00d1b2;
+        }
     }
 </style>

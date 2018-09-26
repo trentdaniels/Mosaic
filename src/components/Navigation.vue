@@ -68,13 +68,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .navbar-dropdown .navbar-item {
+    #nav .navbar-dropdown .navbar-item {
         color: #00d1b2;
         &:hover {
             color: white;
         }
     }
-    .is-active .navbar-link {
+    #nav .navbar-menu > .navbar-item {
+        color: rgba(255, 255, 255, 0.7);
+        &:hover {
+            color: white
+        }
+    }
+    #nav .has-dropdown .navbar-link:hover {
+        color:white
+    }
+    #nav .has-dropdown .navbar-link {
+        color:white;
+    }
+    #nav .has-dropdown .navbar-link::after {
+        border-color: white;
+    }
+    #nav .has-dropdown .navbar-link:hover::after {
+        border-color: white;
+    }
+    #nav .is-active .navbar-link {
         color: #00d1b2;
+        &::after {
+            border-color: #00d1b2;
+        }
     }
 </style>
