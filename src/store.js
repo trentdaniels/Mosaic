@@ -266,10 +266,11 @@ export default new Vuex.Store({
       const settings = {timestampsInSnapshots: true};
       db.settings(settings);
 
-      let collectionArray = [];
-      let collectionToAdd;
+      
       try {
-        let snapShot = await db.collection('collection').where('name', '==', collectionDetails.collection).where('userId', '==', state.user.id).limit(1).get()
+        let collectionArray = [];
+        let collectionToAdd;
+        let snapShot = await db.collection('collections').where('name', '==', collectionDetails.collection).where('userId', '==', state.user.id).limit(1).get()
         await snapShot.forEach((doc) => {
           collectionArray.push({id: doc.id})
         })
@@ -314,46 +315,40 @@ export default new Vuex.Store({
       
       switch(collectionDetails.data.type) {
         case 'project':
-          db.collection('collections').doc(collectionDetails.name).set({
+          await db.collection('collections').doc(collectionDetails.name).set({
             userId: state.user.id,
             name: collectionDetails.name,
-          }).then(() => {
-            db.collection('projects').add({
-              collectionId: collectionDetails.name,
-              userId: state.user.id,
-              data: collectionDetails.data.data
-            }).then(() => {
-              dispatch('getUser', state.user.id)
-            })
           })
+          db.collection('projects').add({
+            collectionId: collectionDetails.name,
+            userId: state.user.id,
+            data: collectionDetails.data.data
+          })
+          dispatch('getUser', state.user.id)
           break;
         case 'article':
-          db.collection('collections').doc(collectionDetails.name).set({
+          await db.collection('collections').doc(collectionDetails.name).set({
             userId: state.user.id,
             name: collectionDetails.name,
-          }).then(() => {
-            db.collection('articles').add({
-              collectionId: collectionDetails.name,
-              userId: state.user.id,
-              data: collectionDetails.data.data
-            }).then(() => {
-              dispatch('getUser', state.user.id)
-            })
           })
+          db.collection('articles').add({
+            collectionId: collectionDetails.name,
+            userId: state.user.id,
+            data: collectionDetails.data.data
+          })
+          dispatch('getUser', state.user.id)
           break;
         case 'photo':
-          db.collection('collections').doc(collectionDetails.name).set({
+          await db.collection('collections').doc(collectionDetails.name).set({
             userId: state.user.id,
             name: collectionDetails.name,
-          }).then(() => {
-            db.collection('photos').add({
-              collectionId: collectionDetails.name,
-              userId: state.user.id,
-              data: collectionDetails.data.data
-            }).then(() => {
-              dispatch('getUser', state.user.id)
-            })
           })
+          db.collection('photos').add({
+            collectionId: collectionDetails.name,
+            userId: state.user.id,
+            data: collectionDetails.data.data
+          })
+          dispatch('getUser', state.user.id)
           break;
         default: 
           alert('Oops, there was a problem adding to that collection. Please try again')
@@ -381,7 +376,7 @@ export default new Vuex.Store({
       }
       commit('setCollection', {projects: projects, articles: articles, photos: photos})
     },
-    createProject({commit, state, dispatch}, newProject) {
+    async createProject({state, dispatch}, newProject) {
       console.log(newProject)
       const db = firebase.firestore();
       const settings = {timestampsInSnapshots: true};
@@ -389,25 +384,21 @@ export default new Vuex.Store({
       const storage = firebase.storage();
       let storageRef = storage.ref()
       let projectRef = storageRef.child(`${state.user.id}/${newProject.name}.jpg`)
-      projectRef.put(newProject.file).then((snapShot) => {
-        snapShot.ref.getDownloadURL().then((downloadUrl) => {
-          db.collection('creations').doc(newProject.name).set({
-            name: newProject.name,
-            description: newProject.description,
-            category: newProject.category,
-            image: downloadUrl,
-            userId: state.user.id
-          }).then(() => {
-            dispatch('getUser', state.user.id)
-            Router.push('/account/creations')
-          }, (err) => {
-            alert(`Oops, ${err.message}`)})
-        }, (err) => {
-          alert(`Oops, ${err.message}`)
+      try {
+        let snapShot = await projectRef.put(newProject.file)
+        let downloadUrl = await snapShot.ref.getDownloadURL()
+        db.collection('creations').doc(newProject.name).set({
+          name: newProject.name,
+          description: newProject.description,
+          category: newProject.category,
+          image: downloadUrl,
+          userId: state.user.id
         })
-      }, (err) => {
+        dispatch('getUser', state.user.id)
+        Router.push('/account/creations')
+      } catch(err) {
         alert(`Oops, ${err.message}`)
-      })
+      }
     }
   }
 });
