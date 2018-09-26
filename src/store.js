@@ -60,7 +60,7 @@ export default new Vuex.Store({
       })
     },
     setLoading(state, value) {
-      state.isLoading = value.value
+      state.isLoading = value
     },
     setCollection(state, collection) {
       state.currentCollection = collection
@@ -87,6 +87,7 @@ export default new Vuex.Store({
       const auth = firebase.auth();
 
       try {
+        dispatch('changeLoading', true)
         let response = await auth.createUserWithEmailAndPassword(createdUser.email, createdUser.password)
         await db.collection("users").doc(response.user.uid).set({
             type: "Creative",
@@ -95,6 +96,7 @@ export default new Vuex.Store({
             bio: createdUser.bio
         }, {merge: true})
         await dispatch('getUser', response.user.uid)
+        dispatch('changeLoading', false)
         Router.push('/home')
       } catch(err) {
         alert(`Oops, ${err.message}`)
@@ -107,8 +109,10 @@ export default new Vuex.Store({
       const auth = firebase.auth();
 
       try {
+        await dispatch('changeLoading', true)
         let response = await auth.signInWithEmailAndPassword(loggedInUser.email, loggedInUser.password)
         dispatch('getUser', response.user.uid)
+        await dispatch('changeLoading', false)
         Router.push('/home')
       } catch(err) {
         alert(`Oops, ${err.message}`)
@@ -117,7 +121,7 @@ export default new Vuex.Store({
     },
     async searchProjects({commit, dispatch}, query) {
       let url;
-      await dispatch('changeLoading', {value: true})
+      await dispatch('changeLoading', true)
       switch(query.api) {
         case 0:
           url = `http://behance.net/v2/projects?q=${query.url}&page=1&sort=views&api_key=${keys.BEHANCE_API}`;
@@ -156,7 +160,7 @@ export default new Vuex.Store({
           alert('unable to get projects, please try again')
           break;
       }
-      dispatch('changeLoading', {value: false})
+      dispatch('changeLoading', false)
     },
     async editUser({ dispatch ,state }, newUserInfo) {
       const auth = firebase.auth();
@@ -165,9 +169,11 @@ export default new Vuex.Store({
       db.settings(settings);
 
       try {
+        await dispatch('changeLoading', true)
         auth.currentUser.updateEmail(newUserInfo.email)
         await db.collection('users').doc(state.user.id).set(newUserInfo, {merge: true})
         dispatch('getUser', state.user.id)
+        dispatch('changeLoading', false)
         Router.push('/account')
       } catch(err) {
         alert(`Oops, ${err.message}`)
@@ -181,9 +187,11 @@ export default new Vuex.Store({
       db.settings(settings);
       
       try {
+        await dispatch('changeLoading', true)
         await db.collection('users').doc(state.user.id).delete()
         await auth.currentUser.delete()
         commit('setUser', null)
+        dispatch('changeLoading', false)
         Router.push('/home')
       } catch(err) {
         alert(`Oops, ${err.message}`)

@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="buttons">
-                    <button class="button is-success" @click="updateInfo">Save</button>
+                    <button class="button is-success" @click="updateInfo" :class="{'is-loading': loading}">Save</button>
                     <router-link to="/account" class="button is-light">Cancel</router-link>
                 </div>
             </div>
@@ -63,7 +63,10 @@
             }
         },
         computed: {
-            ...mapGetters(['user'])
+            ...mapGetters(['user', 'isLoading']),
+            loading() {
+                return this.isLoading
+            }
         },
         methods: {
             ...mapActions(['editUser']),

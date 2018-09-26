@@ -34,7 +34,7 @@
                 </div>
                 <div class="field">
                     <div class="control">
-                        <button @click="signUp" class="button is-primary">Get Inspired</button>
+                        <button @click="signUp" class="button is-primary" :class="{'is-loading': loading}">Get Inspired</button>
                     </div>
                 </div>
                 
@@ -46,7 +46,7 @@
 
 <script>
 import firebase, { auth } from "firebase";
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 export default {
   name: "signup",
   data() {
@@ -66,7 +66,12 @@ export default {
     signUp() {
         this.createUser(this.user)
     }
-      
+  },
+  computed: {
+      ...mapGetters(['isLoading']),
+      loading() {
+          return this.isLoading
+      }
   }
 };
 </script>

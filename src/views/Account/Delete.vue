@@ -25,7 +25,7 @@
                     <p class="help">Are you ABSOLUTELY sure?</p>
                 </div>
                 <div class="buttons">
-                    <button @click="deleteAccount" class="button is-danger">Delete</button>
+                    <button @click="deleteAccount" class="button is-danger" :class="{'is-loading': loading}">Delete</button>
                     <router-link to="/account" class="button is-light" @click.native="cancel">Cancel</router-link>
                 </div>
             </div>
@@ -50,7 +50,10 @@
             }
         },
         computed: {
-            ...mapGetters(['user'])
+            ...mapGetters(['user', 'isLoading']),
+            loading() {
+                return this.isLoading
+            }
         },
         methods: {
             ...mapActions(['deleteUser']),

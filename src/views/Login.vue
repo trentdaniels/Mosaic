@@ -20,7 +20,7 @@
                 </div>
                 <div class="field">
                     <div class="control">
-                        <button @click="login" class="button is-primary">Connect</button>
+                        <button @click="login" class="button is-primary" :class="{'is-loading': loading}">Connect</button>
                     </div>
                 </div>    
                 <p class="help">Don't have an account? <router-link to="/signup">Start Creating.</router-link></p>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "login",
@@ -49,7 +49,12 @@ export default {
     login() {
         this.logInUser(this.user)
     }
-      
+  },
+  computed: {
+      ...mapGetters(['isLoading']),
+      loading() {
+          return this.isLoading
+      }
   }
 };
 </script>
