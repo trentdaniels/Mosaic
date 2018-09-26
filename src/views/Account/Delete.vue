@@ -50,7 +50,7 @@
             }
         },
         computed: {
-            ...mapGetters(['userDetails'])
+            ...mapGetters(['user'])
         },
         methods: {
             ...mapActions(['deleteUser']),
@@ -58,7 +58,7 @@
                 this.$emit('cancelled')
             },
             deleteAccount() {
-                if(this.email === this.userDetails.email) {
+                if(this.email === this.user.data.email) {
                     this.deleteUser()
                 }
                 else {

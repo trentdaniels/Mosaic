@@ -33,7 +33,7 @@
                             <hr class="dropdown-divider">
                             <router-link to="/account" class="navbar-item" exact>My Profile</router-link>
                             <router-link to="/account/edit" class="navbar-item" exact>Edit Account</router-link>
-                            <router-link to="/account/delete" class="navbar-item" exact>Delete Account</router-link>
+                            <router-link to="/account/delete" class="navbar-item has-text-danger" exact>Delete Account</router-link>
                         </div>
                     </div>
                     <router-link to="/home" @click.native="logout" class="navbar-item">Log Out</router-link>
