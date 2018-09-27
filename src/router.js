@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Store from "./store";
+import store from "./store";
 
 
 Vue.use(Router);
@@ -36,7 +37,7 @@ const router = new Router({
     {
       path: "/login",
       name: "login",
-      component: () => import("./views/Login.vue")
+      component: () => import("./views/Login.vue"),
     },
     {
       path: "/signup",
@@ -99,8 +100,9 @@ const router = new Router({
         requiresAuth: true
       },
       props: true,
-      beforeEnter(to, from, next) {
-        Store.dispatch('fetchUser', to.params.id).then(() => { next() })
+      async beforeEnter(to, from, next) {
+        await Store.dispatch('fetchUser', to.params.id)
+        next()
       }
     },
     {

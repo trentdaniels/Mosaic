@@ -69,6 +69,12 @@ export default new Vuex.Store({
         })
         return names
       }
+    },
+    likedPostUsers(state) {
+      let likedUsers = state.posts.map((post) => {
+        return post.likedUsers
+      })
+      return likedUsers
     }
     
   },
@@ -97,6 +103,10 @@ export default new Vuex.Store({
     incrementLike(state, index) {
       state.currentSearch.results[index].likes += 1
       state.currentSearch.results[index].likedUsers.push(state.user.id)
+    },
+    incrementPostLike(state, index) {
+      state.posts[index].likes += 1
+      state.posts[index].likedUsers.push(state.user.id)
     },
     followProfile(state, id) {
       state.user.data.followedCreatives.push(id)
@@ -129,11 +139,15 @@ export default new Vuex.Store({
         let results = []
         let followedUsers = state.user.data.followedCreatives
         for (let user of followedUsers) {
-          let snapShot = await db.collection('posts').where('userId', '==', user ).get()
+          let snapShot = await db.collection('creations').where('userId', '==', user ).get()
           snapShot.forEach((doc) => {
             results.push(doc.data())
           })
         }
+        let userShot = await db.collection('creations').where('userId', '==', state.user.id).get()
+        userShot.forEach((doc) => {
+          results.push(doc.data())
+        })
         function compare(a, b) {
           if (a.created < b.created) return 1;
           else if (a.created > b.created) return -1;
@@ -550,6 +564,25 @@ export default new Vuex.Store({
           likedUsers: firebase.firestore.FieldValue.arrayUnion(state.user.id)
         }, {merge: true})
         commit('incrementLike', creation.index)
+      } catch(err) {
+        alert(`Oops, ${err.message}`)
+      }
+    },
+    async likePost({state, commit}, newPost) {
+      const db = firebase.firestore();
+      const settings = {timestampsInSnapshots: true};
+      db.settings(settings);
+
+      try {
+        let batch = db.batch();
+        let snapShot =  await db.collection('creations').where('name', '==', newPost.data.name).where('userId', '==', newPost.data.userId).limit(1).get()
+        snapShot.forEach((doc) => {
+          let oldLikes = doc.data().likes
+          return batch.update(doc.ref, {likes: oldLikes + 1, likedUsers: firebase.firestore.FieldValue.arrayUnion(state.user.id)})
+        })
+        await batch.commit()
+        commit('incrementPostLike', newPost.index)
+
       } catch(err) {
         alert(`Oops, ${err.message}`)
       }
