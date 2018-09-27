@@ -98,7 +98,10 @@ const router = new Router({
       meta: {
         requiresAuth: true
       },
-      props: true
+      props: true,
+      beforeEnter(to, from, next) {
+        Store.dispatch('fetchUser', to.params.id).then(() => { next() })
+      }
     }
   ]
   

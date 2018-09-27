@@ -46,7 +46,7 @@
                         </div>
                         <div class="buttons is-centered">
                             <button @click="incrementLike(creation, index)" class="button is-info is-rounded" :disabled="liked(creation.name)">{{creation.likes}}</button>
-                            <router-link :to="{ path: `/user/${creation.userId}`}" class="button is-success">View Creative</router-link>
+                            <router-link :to="{ name: 'userProfile', params: { id: creation.userId }}" class="button is-success" :class="{'is-loading': loading}">View Creative</router-link>
                         </div>
                     </div>
                 </div>
@@ -111,16 +111,21 @@
     export default {
         name: 'Inspirations',
         computed: {
-            ...mapGetters(['currentSearch', 'user', 'alreadyLiked']),
+            ...mapGetters(['currentSearch', 'user', 'alreadyLiked','isLoading']),
             noSearchResults() {
                 return this.currentSearch.results.length === 0 && this.currentSearch.type !== null
             },
-            
+            loading() {
+                return this.isLoading
+            }
         },
         methods: {
-            ...mapActions(['like']),
+            ...mapActions(['like', 'fetchUser']),
             addToCollection(project, type) {
                 this.$emit('addedProject', {type: type, data: project})
+            },
+            getProfile(id) {
+                this.fetchUser(id)
             },
             incrementLike(creation, index) {
                 this.like({creation: creation, index: index})

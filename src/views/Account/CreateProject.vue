@@ -55,7 +55,7 @@
                 </div>
                 <div class="field">
                     <div class="control">
-                        <button @click="submitProject" class="button is-dark">Create Project</button>
+                        <button @click="submitProject" class="button is-dark" :class="{'is-loading': loading}">Create Project</button>
                     </div>
                 </div>
             </div>
@@ -88,7 +88,10 @@
             }
         },
         computed: {
-            ...mapGetters(['categories'])
+            ...mapGetters(['categories','isLoading']),
+            loading() {
+                return this.isLoading
+            }
         },
         methods: {
             ...mapActions(['createProject']),

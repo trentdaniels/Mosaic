@@ -8,15 +8,18 @@
       </div>
       <div class="hero-body">
         <div class="container">
-        <div class="columns is-centered">
+        <div class="columns is-centered is-multiline">
+            <div class="column is-12">
+                <h1 class="title is-1">Your Name is {{ user.data.name }}.</h1>
+                <h3 class="subtitle is-3">(Great name by the way)</h3>
+            </div>
           <div class="column is-6">
-            <h1 class="title">Hey, you're back!</h1>
+            <h1 class="title">Your Profile</h1>
             <h2 class="subtitle">Here's what we know about you:</h2>
             <p>Thanks again for using us!</p>
           </div>
             <div class="column is-6">
-                <h1 class="title is-1">Your Name is {{ user.data.name }}.</h1>
-                <h3 class="subtitle is-3">(Great name by the way)</h3>
+                
                 <div class="field">
                     <label class="label has-text-white">Here's your bio:</label>
                     <p>{{ user.data.bio }}</p>
@@ -27,15 +30,22 @@
                 </div>
                 <div class="field">
                     <label class="label has-text-white">Current Creations:</label>
-                    <p v-for="(creation, index) in user.creations" :key="index">{{ creation.name }}</p>
+                    <div class="tags is-multiline">
+                        <span class="tag is-info" v-for="(creation, index) in user.creations" :key="index">{{ creation.name }}</span>
+                    </div>
                 </div>
                 <div class="field">
                     <label class="label has-text-white">Current Collections:</label>
-                    <p v-for="(collection, index) in user.collections" :key="index">{{ collection.name }}</p>
+                    <div class="tags is-multiline">
+                        <span class="tag is-light" v-for="(collection, index) in user.collections" :key="index">{{ collection.name }}</span>
+                    </div>
                 </div>
-                <div class="buttons">
-                    <router-link to="/account/edit" class="button is-light" exact>Edit</router-link>
-                    <router-link to="/account/delete" class="button is-dark" exact>Delete</router-link>
+                <div class="field">
+                    <label class="label has-text-white">What would you like to do?</label>
+                    <div class="buttons">
+                        <router-link to="/account/edit" class="button is-light is-outlined" exact>Edit</router-link>
+                        <router-link to="/account/delete" class="button is-light is-outlined" exact>Delete</router-link>
+                    </div>
                 </div>
             </div>
         </div>

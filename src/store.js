@@ -65,9 +65,9 @@ export default new Vuex.Store({
           return creation.name
         })
         return names
-
       }
     }
+    
   },
   mutations: {
     setUser(state, user) {
@@ -94,19 +94,31 @@ export default new Vuex.Store({
     incrementLike(state, index) {
       state.currentSearch.results[index].likes += 1
       state.currentSearch.results[index].likedUsers.push(state.user.id)
+    },
+    followProfile(state, id) {
+      state.user.data.followedCreatives.push(id)
+    },
+    clearSearch(state) {
+      state.currentSearch.type = null
+      state.currentSearch.results = []
     }
   },
   actions: {
-    async clearUser({ commit }) {
+    async clearUser({ commit, dispatch }) {
       const auth = firebase.auth();
       try {
         await auth.signOut()
+        await dispatch('clearSearch')
         commit('setUser', null)
-        Router.replace('/home')
+        Router.push('/home')
       } catch(err) {
         alert(`Oops, ${err.message}`)
       }
     },
+    async clearSearch({commit}) {
+      commit('clearSearch')
+    }
+    ,
     async changeLoading({ commit }, value) {
       commit('setLoading', value)
     },
@@ -439,6 +451,7 @@ export default new Vuex.Store({
       db.settings(settings);
       const storage = firebase.storage();
       let storageRef = storage.ref()
+      await dispatch('changeLoading', true)
       let projectRef = storageRef.child(`${state.user.id}/${newProject.name}.jpg`)
       try {
         let snapShot = await projectRef.put(newProject.file)
@@ -455,6 +468,7 @@ export default new Vuex.Store({
           likes: 0
         })
         dispatch('getUser', state.user.id)
+        dispatch('changeLoading', false)
         Router.push('/account/creations')
       } catch(err) {
         alert(`Oops, ${err.message}`)
@@ -482,7 +496,7 @@ export default new Vuex.Store({
       const settings = {timestampsInSnapshots: true};
       db.settings(settings);
       let credentials = {id: id, db: db}
-
+      await dispatch('changeLoading', true)
       let queriedProjects = dispatch('getProjects', credentials)
       let queriedArticles =  dispatch('getArticles', credentials);
       let queriedPhotos =  dispatch('getPhotos', credentials);
@@ -492,20 +506,38 @@ export default new Vuex.Store({
       try {
         const results = await Promise.all([queriedProjects, queriedArticles, queriedPhotos, queriedCollections, queriedCreations])
         let doc = await db.collection("users").doc(id).get()
-        commit('setProfile', {
-          data: doc.data(),
+        let profile = {
+          bio: doc.data().bio,
+          email: doc.data().email,
+          name: doc.data().name,
           projects: results[0],
           articles: results[1],
           photos: results[2],
           collections: results[3],
           creations: results[4]
-        })
+        }
+        commit('setProfile', profile )
+        dispatch('changeLoading', false)
       } catch(err) {
         alert(`Oops, ${err.message}`)
       }
     },
     async destroyProfile({commit}) {
       commit('setProfile', null)
+    },
+    async followCreative({commit,state,dispatch}, id) {
+      await dispatch('changeLoading', true)
+      const db = firebase.firestore();
+      const settings = {timestampsInSnapshots: true};
+      db.settings(settings);
+
+      await db.collection('users').doc(state.user.id).update({
+        followedCreatives: firebase.firestore.FieldValue.arrayUnion(id)
+      })
+      
+      commit('followProfile', id)
+      dispatch('changeLoading', false)
+      
     }
   }
 });

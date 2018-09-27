@@ -8,9 +8,11 @@
             </div>
             <div class="hero-body">
                 <div class="container">
-                    <div class="columns is-centered">
-                        <div class="column is-3">
+                    <div class="columns is-centered is-multiline">
+                        <div class="column is-12">
                             <h1 class="title is-1">{{ selectedCollection }}</h1>
+                        </div>
+                        <div class="column is-3">
                             <h1 class="title">Your Collections</h1>
                             <h2 class="subtitle">View your collections here!</h2>
                             <div class="menu">

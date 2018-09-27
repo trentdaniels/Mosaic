@@ -8,41 +8,53 @@
       </div>
       <div class="hero-body">
         <div class="container">
-        <div class="columns is-centered">
-          <div class="column is-6">
-            <h1 class="title">Profile View</h1>
-            <h2 class="subtitle">Get to know this creative!</h2>
-            <div class="field">
-                <label class="label has-text-white is-outline">Like what you see?</label>
-                <div class="control">
-                    <button class="button is-primary">Follow this Creative</button>
-                </div>
-                <p class="help">You won't regret it!</p>
+        <div class="columns is-centered is-multiline">
+            <div class="column is-12">
+                <h1 class="title is-1">Meet {{ profile.name }}.</h1>
+                <h3 class="subtitle is-3">(Pretty good name if you ask me)</h3>
             </div>
+          <div class="column is-6">
+            <h1 class="title is-6">Profile View</h1>
+            <h2 class="subtitle is-6">Get to know this creative!</h2>
+            <template v-if="id !== user.id">
+                <div class="field">
+                    <template v-if="isFollowing === false">
+                        <label class="label has-text-white is-outline">Like what you see?</label>
+                        <div class="control">
+                            <button class="button is-primary" :class="{'is-loading':loading}" @click="follow" >Follow this Creative</button>
+                        </div>
+                        <p class="help">You won't regret it!</p>
+                    </template>
+                    <template v-else>
+                        <label class="label has-text-white">Good for you!</label>
+                        <div class="control">
+                            <button class="button is-primary" disabled>Following</button>
+                        </div>
+                        <p class="help">You're already following!</p>
+                    </template>
+                </div>
+            </template>
           </div>
             <div class="column is-6">
-                <h1 class="title is-1">Meet {{ profile.data.name }}.</h1>
-                <h3 class="subtitle is-3">(Pretty good name if you ask me)</h3>
-                
                 <div class="field">
                     <label class="label has-text-white">Bio:</label>
-                    <p>{{ profile.data.bio }}</p>
+                    <p>{{ profile.bio }}</p>
                 </div>
                 <div class="field">
                     <label class="label has-text-white">Contact Info:</label>
-                    <p>{{ profile.data.email }}</p>
+                    <p>{{ profile.email }}</p>
                 </div>
                 <div class="field">
                     <label class="label has-text-white">Current Creations:</label>
-                    <p v-for="(creation, index) in profile.creations" :key="index">{{ creation.name }}</p>
+                    <div class="tags is-multiline">
+                        <span v-for="(creation, index) in profile.creations" :key="index" class="tag is-info">{{ creation.name }}</span>
+                    </div>
                 </div>
                 <div class="field">
                     <label class="label has-text-white">Current Collections:</label>
-                    <p v-for="(collection, index) in profile.collections" :key="index">{{ collection.name }}</p>
-                </div>
-                <div class="buttons">
-                    <router-link to="/account/edit" class="button is-light" exact>Edit</router-link>
-                    <router-link to="/account/delete" class="button is-dark" exact>Delete</router-link>
+                    <div class="tags is-multiline">
+                        <span class="tag is-light" v-for="(collection, index) in profile.collections" :key="index">{{ collection.name }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -53,9 +65,8 @@
 </template>
 
 <script>
-import Navigation from '@/components/Navigation.vue'
-
 import { mapGetters, mapActions } from 'vuex';
+import Navigation from '@/components/Navigation.vue'
     export default {
         name: 'Profile',
         components: {
@@ -63,13 +74,20 @@ import { mapGetters, mapActions } from 'vuex';
         },
         props: ['id'],
         computed: {
-            ...mapGetters(['user','profile'])
+            ...mapGetters(['user','profile','isLoading']),
+            isFollowing() {
+                return this.user.data.followedCreatives.includes(this.id)
+            },
+            loading() {
+                return this.isLoading
+            }
         },
         methods: {
-            ...mapActions(['fetchUser', 'destroyProfile'])
-        },
-        mounted() {
-            this.fetchUser(this.id)
+            ...mapActions(['fetchUser', 'destroyProfile', 'followCreative']),
+            follow() {
+                this.followCreative(this.id)
+            },
+            
         },
         beforeDestroy() {
             this.destroyProfile()
