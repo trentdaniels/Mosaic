@@ -1,9 +1,9 @@
 <template>
-  <div class="home">
+  <div class="employ">
     <section class="hero is-bold is-fullheight is-primary">
       <div class="hero-head">
         <div class="container">
-            <navigation></navigation>
+            <employer-navigaton></employer-navigaton>
         </div>
       </div>
       <div class="hero-body">
@@ -13,7 +13,7 @@
             <img alt="Vue logo" src="../assets/logo.png">
             <div v-if="user">
               <h1 class="title">Welcome {{ user.data.name }}!</h1>
-              <h2 class="subtitle">Let's get inspired.</h2>
+              <h2 class="subtitle">Find Creatives to employ</h2>
             </div>
             <div v-else>
               <h1 class="title">Welcome</h1>
@@ -21,13 +21,10 @@
             </div>
           </div>
           <div class="column is-10">
-              <main-search @searched="getProjects"></main-search>
+              <creatives-search @searched="getProjects"></creatives-search>
           </div>
         </div>
         <inspirations @addedProject="addToCollection"></inspirations>
-        <template v-if="addingProject">
-          <collection-modal :project=projectToAdd @cancelled="cancel" @saved="saveProject" @addedNewCollection="createCollection"></collection-modal>
-        </template>
         </div>
       </div>
     </section>
@@ -37,19 +34,18 @@
 
 <script>
 // @ is an alias to /src
-import MainSearch from "@/components/MainSearch.vue";
-import Navigation from "@/components/Navigation.vue";
-import CollectionModal from '@/components/CollectionModal.vue'
 import { mapGetters, mapActions } from 'vuex'
 import Inspirations from '@/components/Inspirations.vue'
+import EmployerNavigaton from '@/components/EmployerNavigation.vue'
+import CreativesSearch from '@/components/CreativesSearch.vue'
+
 
 export default {
   name: "home",
   components: {
-    MainSearch,
-    Navigation,
     Inspirations,
-    CollectionModal
+    CreativesSearch,
+    EmployerNavigaton
   },
   data() {
     return {
@@ -95,7 +91,7 @@ export default {
 </script>
 
 <style lang="scss">
-.home {
+.employ {
   text-align: center;
 }
 

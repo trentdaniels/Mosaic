@@ -3,7 +3,8 @@
     <section class="hero is-bold is-fullheight is-primary">
       <div class="hero-head">
         <div class="container">
-         <navigation></navigation>
+            <navigation v-if="user.data.type === 'Creative'"></navigation>
+            <employer-navigation v-else></employer-navigation>
         </div>
       </div>
       <div class="hero-body">
@@ -70,10 +71,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import Navigation from '@/components/Navigation.vue'
+import EmployerNavigation from '@/components/EmployerNavigation.vue'
     export default {
         name: 'Profile',
         components: {
             Navigation,
+            EmployerNavigation
         },
         props: ['id'],
         computed: {

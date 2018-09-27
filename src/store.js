@@ -189,7 +189,7 @@ export default new Vuex.Store({
         alert(`Oops, ${err.message}`)
       }
     },
-    async logIn({ dispatch }, loggedInUser) {
+    async logIn({ dispatch,state }, loggedInUser) {
       const db = firebase.firestore();
       const settings = {timestampsInSnapshots: true};
       db.settings(settings);
@@ -198,9 +198,14 @@ export default new Vuex.Store({
       try {
         await dispatch('changeLoading', true)
         let response = await auth.signInWithEmailAndPassword(loggedInUser.email, loggedInUser.password)
-        dispatch('getUser', response.user.uid)
+        await dispatch('getUser', response.user.uid)
         await dispatch('changeLoading', false)
-        Router.push('/home')
+        if (state.user.data.type === 'Creative') {
+          Router.push('/home')
+        }
+        else {
+          Router.push('/employ')
+        }
       } catch(err) {
         await dispatch('changeLoading', false)
         alert(`Oops, ${err.message}`)

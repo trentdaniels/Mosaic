@@ -1,7 +1,7 @@
 <template>
     <nav id="employerNav" class="navbar">
         <div class="navbar-brand">
-            <router-link to="/home" class="navbar-item">Home</router-link>
+            <router-link to="/employ" class="navbar-item">Home</router-link>
             <button class="navbar-burger is-primary">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
