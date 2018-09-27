@@ -240,16 +240,40 @@ export default new Vuex.Store({
       }
       
     },
+    async deleteDocs({state}, collectionName) {
+      const db = firebase.firestore();
+      const settings = {timestampsInSnapshots: true};
+      db.settings(settings);
+
+      try {
+        let batch = db.batch()
+        let snapShot = await db.collection(collectionName).where('userId', '==', state.user.id).get()
+        snapShot.forEach((doc) => {
+          batch.delete(doc.ref)
+        })
+        batch.commit()
+      } catch(err) {
+        alert(`Oops, ${err.message}`)
+      }
+    },
     async deleteUser({commit, state, dispatch}) {
       const auth = firebase.auth();
       const db = firebase.firestore();
       const settings = {timestampsInSnapshots: true};
       db.settings(settings);
+
+      let deletedProjects = dispatch('deleteDocs', 'projects')
+      let deletedArticles = dispatch('deleteDocs', 'articles')
+      let deletedPhotos = dispatch('deleteDocs', 'photos')
+      let deletedCreations = dispatch('deleteDocs', 'creations')
+      let deletedCollections = dispatch('deleteDocs', 'collections')
       
       try {
-        await dispatch('changeLoading', true)
-        await db.collection('users').doc(state.user.id).delete()
-        await auth.currentUser.delete()
+        dispatch('changeLoading', true)
+        
+        await Promise.all(deletedProjects,deletedArticles,deletedPhotos,deletedCreations,deletedCollections)
+        db.collection('users').doc(state.user.id).delete()
+        auth.currentUser.delete()
         commit('setUser', null)
         await dispatch('changeLoading', false)
         Router.push('/home')
