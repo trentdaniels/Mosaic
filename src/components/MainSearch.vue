@@ -4,12 +4,20 @@
     <div  class="field has-addons" @keyup.enter="getProjects">
     <div class="control">
       <div class="select is-medium is-primary">
-        <select v-model="selectedApi">
-          <option :value="0" v-if="user">Creations</option>
-          <option v-for="(api, index) in apis" :key="index" :value="index" v-if="index > 0">
-            {{ api }}
-          </option>
-        </select>
+        <template v-if="user">
+          <select v-model="selectedApi">
+            <option v-for="(api, index) in apis" :key="index" :value="index">
+              {{ api }}
+            </option>
+          </select>
+        </template>
+        <template v-else>
+          <select v-model="selectedApi">
+            <option v-for="(api, index) in apis" :key="index" :value="index" v-if="index > 0">
+              {{ api }}
+            </option>
+          </select>
+        </template>
       </div>
     </div>
     <template v-if="user">
@@ -41,7 +49,7 @@ export default {
   data() {
     return {
       search: 'Digital',
-      selectedApi: 0,
+      selectedApi: 1,
     }
   },
   computed: {
