@@ -33,19 +33,29 @@
                     </div>
                 </div>
                 <div class="field">
+                    <label class="label">Oh! One last thing. Why are you using this program?</label>
+                    <div class="select is-fullwidth">
+                        <select v-model="user.type">
+                            <option value="Creative">I want to share my creations everywhere!</option>
+                            <option value="Employer">I am an employer looking to employ creatives!</option>
+                        </select>
+                    </div>
+                    <p class="help">We can refine your experience better with this question!</p>
+                </div>
+                <div class="field">
                     <div class="control">
                         <button @click="signUp" class="button is-primary" :class="{'is-loading': loading}">Get Inspired</button>
                     </div>
                 </div>
                 
                 <p class="help">Already have an account? <router-link to="/login">Login.</router-link></p>
+                <p class="help"><router-link to="/home">Browse Quickly</router-link> (We prefer you sign in first).</p>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import firebase, { auth } from "firebase";
 import {mapActions, mapGetters} from 'vuex'
 export default {
   name: "signup",
@@ -55,7 +65,8 @@ export default {
         email: "",
         password: "",
         name: '',
-        bio: ''
+        bio: '',
+        type: 'Creative'
       }
     };
   },

@@ -24,6 +24,7 @@
                     </div>
                 </div>    
                 <p class="help">Don't have an account? <router-link to="/signup">Start Creating.</router-link></p>
+                <p class="help"><router-link to="/home">Browse Quickly</router-link> (We prefer you sign in first).</p>
             </div>
         </div>
     </div>

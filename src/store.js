@@ -176,7 +176,7 @@ export default new Vuex.Store({
         dispatch('changeLoading', true)
         let response = await auth.createUserWithEmailAndPassword(createdUser.email, createdUser.password)
         await db.collection("users").doc(response.user.uid).set({
-            type: "Creative",
+            type: createdUser.type,
             email: createdUser.email,
             name: createdUser.name,
             bio: createdUser.bio,
