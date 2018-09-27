@@ -16,7 +16,7 @@
           <div class="column is-6">
             <h1 class="title is-6">Profile View</h1>
             <h2 class="subtitle is-6">Get to know this creative!</h2>
-            <template v-if="id !== user.id">
+            <template v-if="id !== user.id && user.data.type === 'Creative'">
                 <div class="field">
                     <template v-if="isFollowing === false">
                         <label class="label has-text-white is-outline">Like what you see?</label>
@@ -33,6 +33,9 @@
                         <p class="help">You're already following!</p>
                     </template>
                 </div>
+            </template>
+            <template v-else-if="user.data.type === 'Employer'">
+                <p>Feel free to contact this creative for employment!</p>
             </template>
           </div>
             <div class="column is-6">

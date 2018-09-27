@@ -3,7 +3,12 @@
     <section class="hero is-bold is-fullheight is-primary">
       <div class="hero-head">
         <div class="container">
-         <navigation></navigation>
+        <template v-if="user.data.type === 'Creative'">
+            <navigation></navigation>
+        </template>
+        <template v-else>
+            <employer-navigation></employer-navigation>
+        </template>
         </div>
       </div>
       <div class="hero-body">
@@ -56,6 +61,7 @@
 </template>
 
 <script>
+import EmployerNavigation from '@/components/EmployerNavigation.vue'
 import Navigation from '@/components/Navigation.vue'
 
 import { mapGetters } from 'vuex';
@@ -64,6 +70,7 @@ import { mapGetters } from 'vuex';
         props:['accountMethod'],
         components: {
             Navigation,
+            EmployerNavigation
         },
         computed: {
             ...mapGetters(['user'])

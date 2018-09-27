@@ -45,7 +45,7 @@
                             </div>
                         </div>
                         <div class="buttons is-centered">
-                            <button @click="incrementLike(creation, index)" class="button is-info is-rounded" :disabled="liked(creation.name)">{{creation.likes}}</button>
+                            <button v-if="user.data.type === 'Creative'" @click="incrementLike(creation, index)" class="button is-info is-rounded" :disabled="liked(creation.name)">{{creation.likes}}</button>
                             <router-link :to="{ name: 'userProfile', params: { id: creation.userId }}" class="button is-success" :class="{'is-loading': loading}">View Creative</router-link>
                         </div>
                     </div>

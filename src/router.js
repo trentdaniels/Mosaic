@@ -2,7 +2,6 @@ import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Store from "./store";
-import store from "./store";
 
 
 Vue.use(Router);
@@ -120,7 +119,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   let isLoggedIn = Store.getters.user;
   let needsAuthentication = to.matched.some(route => route.meta.requiresAuth);
-
+  
   if (needsAuthentication && !isLoggedIn) {
     next("login");
   } else if (!needsAuthentication && isLoggedIn) {

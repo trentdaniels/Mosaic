@@ -3,7 +3,7 @@
     <section class="hero is-bold is-fullheight is-primary">
       <div class="hero-head">
         <div class="container">
-         <navigation></navigation>
+            <navigation></navigation>
         </div>
       </div>
       <div class="hero-body">
@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="column is-10">
-            <main-search @searched="getProjects"></main-search>
+              <main-search @searched="getProjects"></main-search>
           </div>
         </div>
         <inspirations @addedProject="addToCollection"></inspirations>
@@ -40,8 +40,10 @@
 import MainSearch from "@/components/MainSearch.vue";
 import Navigation from "@/components/Navigation.vue";
 import CollectionModal from '@/components/CollectionModal.vue'
+import CreativesSearch from '@/components/CreativesSearch.vue'
 import { mapGetters, mapActions } from 'vuex'
 import Inspirations from '@/components/Inspirations.vue'
+import EmployerNavigation from '@/components/EmployerNavigation.vue'
 
 export default {
   name: "home",
@@ -49,7 +51,9 @@ export default {
     MainSearch,
     Navigation,
     Inspirations,
-    CollectionModal
+    CollectionModal,
+    CreativesSearch,
+    EmployerNavigation
   },
   data() {
     return {
@@ -59,7 +63,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user']),
+    isEmployee() {
+      return this.user.data.type === 'Employee'
+    }
   },
   methods: {
     ...mapActions(['searchProjects', 'addProject', 'createNewCollection']),

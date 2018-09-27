@@ -3,7 +3,12 @@
     <section class="hero is-bold is-fullheight is-primary">
       <div class="hero-head">
         <div class="container">
-         <navigation></navigation>
+         <template v-if="user.data.type === 'Creative'">
+            <navigation></navigation>
+        </template>
+        <template v-else>
+            <employer-navigation></employer-navigation>
+        </template>
         </div>
       </div>
       <div class="hero-body">
@@ -50,9 +55,10 @@
 <script>
     import { mapGetters, mapActions } from 'vuex'
     import Navigation from '@/components/Navigation.vue'
+    import EmployerNavigation from '@/components/EmployerNavigation.vue'
     export default {
         name: 'Edit',
-        components: {Navigation},
+        components: {Navigation, EmployerNavigation},
         data() {
             return {
                 editedUser: {
