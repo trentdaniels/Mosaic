@@ -135,7 +135,8 @@ export default new Vuex.Store({
             type: "Creative",
             email: createdUser.email,
             name: createdUser.name,
-            bio: createdUser.bio
+            bio: createdUser.bio,
+            followedCreatives: []
         }, {merge: true})
         await dispatch('getUser', response.user.uid)
         dispatch('changeLoading', false)
@@ -246,12 +247,14 @@ export default new Vuex.Store({
       db.settings(settings);
 
       try {
-        let batch = db.batch()
         let snapShot = await db.collection(collectionName).where('userId', '==', state.user.id).get()
-        snapShot.forEach((doc) => {
-          batch.delete(doc.ref)
-        })
-        batch.commit()
+        if (!snapShot.empty) {
+          let batch = db.batch()
+          snapShot.forEach((doc) => {
+            return batch.delete(doc.ref)
+          })
+          batch.commit()
+        }
       } catch(err) {
         alert(`Oops, ${err.message}`)
       }
@@ -271,14 +274,16 @@ export default new Vuex.Store({
       try {
         dispatch('changeLoading', true)
         
-        await Promise.all(deletedProjects,deletedArticles,deletedPhotos,deletedCreations,deletedCollections)
+        await Promise.all([deletedProjects,deletedArticles,deletedPhotos,deletedCreations,deletedCollections])
         db.collection('users').doc(state.user.id).delete()
         auth.currentUser.delete()
         commit('setUser', null)
-        await dispatch('changeLoading', false)
+        dispatch('clearSearch')
+        dispatch('changeLoading', false)
         Router.push('/home')
       } catch(err) {
         console.log(err)
+        await dispatch('changeLoading', false)
         alert(`Oops, ${err.message}`)
       }
     },
