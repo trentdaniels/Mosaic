@@ -9,6 +9,9 @@
             </button>
         </div>
         <div class="navbar-menu">
+            <div class="navbar-start">
+                <router-link to="/timeline" class="navbar-item">Timeline</router-link>
+            </div>
             <div class="navbar-end">
                 <template v-if="user">
                     <router-link to="/account/creations" class="navbar-item" exact>My Creations</router-link>

@@ -28,12 +28,15 @@ export default new Vuex.Store({
     },
     isLoading: false,
     currentCollection: null,
-    creationCategories: ['Digital', 'Photo', 'Project', 'Article', 'Print', 'Web', 'Motion']
-    
+    creationCategories: ['Digital', 'Photo', 'Project', 'Article', 'Print', 'Web', 'Motion'],
+    posts: []
   },
   getters: {
     apis(state) {
       return state.apiTargets
+    },
+    posts(state) {
+      return state.posts
     },
     currentSearch(state) {
       return state.currentSearch
@@ -101,6 +104,9 @@ export default new Vuex.Store({
     clearSearch(state) {
       state.currentSearch.type = null
       state.currentSearch.results = []
+    },
+    setTimeline(state, newPosts) {
+      state.posts = newPosts
     }
   },
   actions: {
@@ -111,6 +117,30 @@ export default new Vuex.Store({
         await dispatch('clearSearch')
         commit('setUser', null)
         Router.push('/home')
+      } catch(err) {
+        alert(`Oops, ${err.message}`)
+      }
+    },
+    async getPosts({commit, state}) {
+        const db = firebase.firestore();
+        const settings = {timestampsInSnapshots: true};
+        db.settings(settings);
+      try {
+        let results = []
+        let followedUsers = state.user.data.followedCreatives
+        for (let user of followedUsers) {
+          let snapShot = await db.collection('posts').where('userId', '==', user ).get()
+          snapShot.forEach((doc) => {
+            results.push(doc.data())
+          })
+        }
+        function compare(a, b) {
+          if (a.created < b.created) return 1;
+          else if (a.created > b.created) return -1;
+          else return 0;
+        }
+        results.sort(compare)
+        commit('setTimeline', results)
       } catch(err) {
         alert(`Oops, ${err.message}`)
       }
@@ -158,6 +188,7 @@ export default new Vuex.Store({
         await dispatch('changeLoading', false)
         Router.push('/home')
       } catch(err) {
+        await dispatch('changeLoading', false)
         alert(`Oops, ${err.message}`)
       }
       
@@ -474,7 +505,7 @@ export default new Vuex.Store({
       }
       commit('setCollection', {projects: projects, articles: articles, photos: photos})
     },
-    async createProject({state, dispatch}, newProject) {
+    async createProject({state, dispatch, commit}, newProject) {
       const db = firebase.firestore();
       const settings = {timestampsInSnapshots: true};
       db.settings(settings);
@@ -485,7 +516,7 @@ export default new Vuex.Store({
       try {
         let snapShot = await projectRef.put(newProject.file)
         let downloadUrl = await snapShot.ref.getDownloadURL()
-        db.collection('creations').doc(newProject.name).set({
+        let project = {
           name: newProject.name,
           description: newProject.description,
           created: Date.now(),
@@ -495,7 +526,10 @@ export default new Vuex.Store({
           likedUsers: [],
           userId: state.user.id,
           likes: 0
-        })
+        }
+        let newCreation = db.collection('creations').doc(newProject.name).set(project)
+        let newPost = db.collection('posts').add(project)
+        await Promise.all([newCreation, newPost])
         dispatch('getUser', state.user.id)
         dispatch('changeLoading', false)
         Router.push('/account/creations')

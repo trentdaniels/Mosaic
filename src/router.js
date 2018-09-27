@@ -102,6 +102,14 @@ const router = new Router({
       beforeEnter(to, from, next) {
         Store.dispatch('fetchUser', to.params.id).then(() => { next() })
       }
+    },
+    {
+      path: '/timeline',
+      name: 'timeline',
+      component:() => import('./views/Timeline.vue'),
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
   
