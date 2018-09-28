@@ -118,6 +118,14 @@ const router = new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '/messages',
+      name: 'messages',
+      component: () => import('./views/Messages.vue'),
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 });

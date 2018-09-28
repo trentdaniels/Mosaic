@@ -10,6 +10,7 @@
         </div>
         <div class="navbar-menu">
             <div class="navbar-end">
+              <router-link to="/messages" class="navbar-item">Messages</router-link>
                 <div class="navbar-item has-dropdown" :class="{'is-active': isActive}" @click="isActive = !isActive">
                     <a class="navbar-link">My Account</a>
                     <div class="navbar-dropdown is-boxed">
