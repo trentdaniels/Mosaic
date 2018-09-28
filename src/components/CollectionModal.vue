@@ -9,36 +9,28 @@
                 <button class="delete" @click="cancel"></button>
             </header>
             <section class="modal-card-body">
-                <template v-if="collectionExists">
-                    <div class="panel" :class="{'is-active': isActive}">
-                        <p class="panel-heading" v-if="user.collections.length > 0">Your Collections</p>
+            
+                <div class="panel" :class="{'is-active': isActive}">
+                    <p class="panel-tabs">
+                        <a v-for="(action,index) of actions" :key="index" @click="chosenAction = action" :class="{'is-active': action === chosenAction}">{{ action }}</a>
+                    </p>
+                    <template v-if="chosenAction === 'Choose Existing'">
                         <div class="panel-block" v-for="(collection,index) in user.collections" :key="index" :class="{'is-active': collection.name === chosenCollection}">
                             <div class="control">
-                                <p @click="chosenCollection = collection.name" :class="{'has-text-weight-bold': collection.name === chosenCollection}"><a>{{ collection.name }}</a></p>
+                                <p @click="toggleClicked(collection.name)" :class="{'has-text-weight-bold': collection.name === chosenCollection}"><a>{{ collection.name }}</a></p>
                             </div>
                         </div>
-                    </div>
-                </template>
-                <template v-else>
-                    <div class="field">
-                        <label class="label">Save to new Collection</label>
-                        <div class="field has-addons">
-                            <div class="control is-expanded">
-                                <input class="input" type="text" v-model="newCollection" />
-                            </div>
-                            <div class="control">
-                                <button class="button is-success" @click="addNewCollection">Add New</button>
-                            </div>      
-                        </div>
-                        <p class="help has-text-dark">Make it creative!</p>
-                    </div>
-                </template>
+                    </template>                   
+                    <template v-else>
+                        <div class="panel-block">
+                            <input class="input" type="text" v-model="chosenCollection" />
+                        </div>    
+                    </template>
+                </div>
             </section>
             <footer class="modal-card-foot">
-                <button class="button is-success" @click="save">Save</button>
+                <button class="button is-success" @click="handleSubmission">Save</button>
                 <button class="button" @click="cancel">Cancel</button>
-                <button @click="collectionExists = !collectionExists" class="button" v-if="collectionExists">Add New</button>
-                <button @click="collectionExists = !collectionExists" class="button" v-else>Choose Existing</button>
             </footer>
         </div>
     </div>
@@ -55,15 +47,31 @@ export default {
     },
     addNewCollection() {
       this.user.collections.forEach(collection => {
-        if (collection.name === this.newCollection) {
+        if (collection.name === this.chosenCollection) {
           alert("Oops, this collection already exists! Try another name");
           return;
         }
       });
-      this.$emit("addedNewCollection", this.newCollection);
+      this.$emit("addedNewCollection", this.chosenCollection);
     },
     save() {
       this.$emit("saved", this.chosenCollection);
+    },
+    handleSubmission() {
+        if(this.chosenAction === 'Choose Existing') {
+            this.save()
+        }
+        else if(this.chosenAction === 'Create New') {
+            this.addNewCollection()
+        }
+    },
+    toggleClicked(collectionName) {
+        if (this.chosenCollection !== collectionName) {
+            this.chosenCollection = collectionName
+        }
+        else {
+            this.chosenCollection = ''
+        }
     }
   },
   computed: {
@@ -71,14 +79,39 @@ export default {
   },
   data() {
     return {
-      newCollection: "",
       chosenCollection: "",
       isActive: false,
-      collectionExists: true
+      collectionExists: true,
+      actions: ['Choose Existing', 'Create New'],
+      chosenAction: 'Choose Existing'
     };
   }
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+#collection-modal {
+    .panel-tabs a {
+        color: #00d1b2;
+    }
+    .modal-card-head {
+        background-color: #00d1b2;
+        border-bottom: none;
+        .modal-card-title {
+            color: white;
+        }
+    }
+    .modal-card-foot {
+        background-color: white;
+        border-top: none;
+    }
+    .panel-block {
+        &.is-active {
+            border-left-color: #00d1b2;
+            background-color: #00d1b2;
+            color: white;
+        }
+    }
+}
+
 </style>

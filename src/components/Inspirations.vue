@@ -44,8 +44,10 @@
                                 <span class="tag is-light" v-for="category in creation.categories" :key="category">{{ category }}</span>
                             </div>
                         </div>
+                    </div>
+                    <div class="field">
                         <div class="buttons is-centered">
-                            <button v-if="user.data.type === 'Creative'" @click="incrementLike(creation, index)" class="button is-info is-rounded" :disabled="liked(creation.name)">{{creation.likes}}</button>
+                            <button v-if="user.data.type === 'Creative'" @click="incrementLike(creation, index)" class="button is-info" :disabled="liked(creation.name)">{{creation.likes}} Likes</button>
                             <router-link :to="{ name: 'userProfile', params: { id: creation.userId }}" class="button is-success" :class="{'is-loading': loading}">View Creative</router-link>
                         </div>
                     </div>
@@ -67,7 +69,7 @@
                         <p class="subtitle is-6 has-text-dark">By: {{inspiration.author}}</p>
                         <p>{{ inspiration.description }}</p>
                         <div class="buttons is-centered">
-                            <button class="button is-default" v-if="user" @click="addToCollection(inspiration, currentSearch.type)">Add to Collection</button>
+                            <button class="button is-primary" v-if="user" @click="addToCollection(inspiration, currentSearch.type)">Add to Collection</button>
                         </div>
                     </div>
                 </div>
@@ -89,7 +91,7 @@
                         <span v-for="(tag, index) in inspiration.photo_tags" :key="index" class="tag is-light">{{ tag.title }}</span>
                     </div>
                     <div class="buttons is-centered">
-                        <button class="button is-default" v-if="user" @click="addToCollection(inspiration, currentSearch.type)">Add to Collection</button>
+                        <button class="button is-primary" v-if="user" @click="addToCollection(inspiration, currentSearch.type)">Add to Collection</button>
                     </div>
                     </div>
                 </div>
