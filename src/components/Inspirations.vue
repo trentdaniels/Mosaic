@@ -107,40 +107,42 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex'
-    export default {
-        name: 'Inspirations',
-        computed: {
-            ...mapGetters(['currentSearch', 'user', 'alreadyLiked','isLoading']),
-            noSearchResults() {
-                return this.currentSearch.results.length === 0 && this.currentSearch.type !== null
-            },
-            loading() {
-                return this.isLoading
-            }
-        },
-        methods: {
-            ...mapActions(['like', 'fetchUser']),
-            addToCollection(project, type) {
-                this.$emit('addedProject', {type: type, data: project})
-            },
-            getProfile(id) {
-                this.fetchUser(id)
-            },
-            incrementLike(creation, index) {
-                this.like({creation: creation, index: index})
-            },
-            liked(name) {
-                return this.alreadyLiked.includes(name)
-            },
-            getDate(number) {
-                let date = new Date()
-                return `0${date.getMonth(number)+1}/${date.getFullYear(number)}`
-            }
-        }
+import { mapGetters, mapActions } from "vuex";
+export default {
+  name: "Inspirations",
+  computed: {
+    ...mapGetters(["currentSearch", "user", "alreadyLiked", "isLoading"]),
+    noSearchResults() {
+      return (
+        this.currentSearch.results.length === 0 &&
+        this.currentSearch.type !== null
+      );
+    },
+    loading() {
+      return this.isLoading;
     }
+  },
+  methods: {
+    ...mapActions(["like", "fetchUser"]),
+    addToCollection(project, type) {
+      this.$emit("addedProject", { type: type, data: project });
+    },
+    getProfile(id) {
+      this.fetchUser(id);
+    },
+    incrementLike(creation, index) {
+      this.like({ creation: creation, index: index });
+    },
+    liked(name) {
+      return this.alreadyLiked.includes(name);
+    },
+    getDate(number) {
+      let date = new Date();
+      return `0${date.getMonth(number) + 1}/${date.getFullYear(number)}`;
+    }
+  }
+};
 </script>
 
 <style scoped>
-    
 </style>

@@ -61,23 +61,22 @@
 </template>
 
 <script>
-import EmployerNavigation from '@/components/EmployerNavigation.vue'
-import Navigation from '@/components/Navigation.vue'
+import EmployerNavigation from "@/components/EmployerNavigation.vue";
+import Navigation from "@/components/Navigation.vue";
 
-import { mapGetters } from 'vuex';
-    export default {
-        name: 'Details',
-        props:['accountMethod'],
-        components: {
-            Navigation,
-            EmployerNavigation
-        },
-        computed: {
-            ...mapGetters(['user'])
-        },
-    }
+import { mapGetters } from "vuex";
+export default {
+  name: "Details",
+  props: ["accountMethod"],
+  components: {
+    Navigation,
+    EmployerNavigation
+  },
+  computed: {
+    ...mapGetters(["user"])
+  }
+};
 </script>
 
 <style scoped>
-
 </style>

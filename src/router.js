@@ -3,7 +3,6 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Store from "./store";
 
-
 Vue.use(Router);
 
 const router = new Router({
@@ -19,7 +18,7 @@ const router = new Router({
     {
       path: "/home",
       name: "home",
-      component: Home,
+      component: Home
     },
     {
       path: "/about",
@@ -36,7 +35,7 @@ const router = new Router({
     {
       path: "/login",
       name: "login",
-      component: () => import("./views/Login.vue"),
+      component: () => import("./views/Login.vue")
     },
     {
       path: "/signup",
@@ -44,90 +43,89 @@ const router = new Router({
       component: () => import("./views/Signup.vue")
     },
     {
-      path: '/account',
-      name: 'account',
-      component: () => import('./views/Account/Details.vue'),
-      meta: {
-        requiresAuth: true
-      },
-    },
-    {
-      path: '/account/edit',
-      name: 'edit',
-      component: () => import('./views/Account/Edit.vue'),
+      path: "/account",
+      name: "account",
+      component: () => import("./views/Account/Details.vue"),
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/account/delete',
-      name: 'delete',
-      component:() => import('./views/Account/Delete.vue'),
+      path: "/account/edit",
+      name: "edit",
+      component: () => import("./views/Account/Edit.vue"),
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/account/collections',
-      name: 'collections',
-      component:() => import('./views/Account/Collections.vue'),
+      path: "/account/delete",
+      name: "delete",
+      component: () => import("./views/Account/Delete.vue"),
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/account/creations',
-      name: 'creations',
-      component:() => import('./views/Account/Creations.vue'),
+      path: "/account/collections",
+      name: "collections",
+      component: () => import("./views/Account/Collections.vue"),
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/account/creations/create',
-      name: 'create',
-      component:() => import('./views/Account/CreateProject.vue'),
+      path: "/account/creations",
+      name: "creations",
+      component: () => import("./views/Account/Creations.vue"),
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/user/:id',
-      name: 'userProfile',
-      component:() => import('./views/Profile.vue'),
+      path: "/account/creations/create",
+      name: "create",
+      component: () => import("./views/Account/CreateProject.vue"),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/user/:id",
+      name: "userProfile",
+      component: () => import("./views/Profile.vue"),
       meta: {
         requiresAuth: true
       },
       props: true,
       async beforeEnter(to, from, next) {
-        await Store.dispatch('fetchUser', to.params.id)
-        next()
+        await Store.dispatch("fetchUser", to.params.id);
+        next();
       }
     },
     {
-      path: '/timeline',
-      name: 'timeline',
-      component:() => import('./views/Timeline.vue'),
+      path: "/timeline",
+      name: "timeline",
+      component: () => import("./views/Timeline.vue"),
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/employ',
-      name: 'employ',
-      component:() => import('./views/Employ.vue'),
+      path: "/employ",
+      name: "employ",
+      component: () => import("./views/Employ.vue"),
       meta: {
         requiresAuth: true
       }
     }
   ]
-  
 });
 
 router.beforeEach((to, from, next) => {
   let isLoggedIn = Store.getters.user;
   let needsAuthentication = to.matched.some(route => route.meta.requiresAuth);
-  
+
   if (needsAuthentication && !isLoggedIn) {
     next("login");
   } else if (!needsAuthentication && isLoggedIn) {
@@ -135,6 +133,6 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
-})
+});
 
 export default router;

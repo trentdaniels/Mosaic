@@ -67,45 +67,43 @@
 </template>
 
 <script>
-    import Navigation from '@/components/Navigation.vue'
-    import { mapActions, mapGetters } from 'vuex'
-    export default {
-        name: 'CreateProject',
-        components: {
-            Navigation
-        },
-        data() {
-            return {
-                project: {
-                    name: '',
-                    description: '',
-                    categories: [],
-                    image: null,
-                    file: null
-                },
-                fileName: 'Your Project Image',
-                
-            }
-        },
-        computed: {
-            ...mapGetters(['categories','isLoading']),
-            loading() {
-                return this.isLoading
-            }
-        },
-        methods: {
-            ...mapActions(['createProject']),
-            handleFile() {
-                this.project.file = this.$refs.file.files[0]
-                this.fileName = this.project.file.name
-            },
-            submitProject() {
-                this.createProject(this.project)
-            }
-        }
+import Navigation from "@/components/Navigation.vue";
+import { mapActions, mapGetters } from "vuex";
+export default {
+  name: "CreateProject",
+  components: {
+    Navigation
+  },
+  data() {
+    return {
+      project: {
+        name: "",
+        description: "",
+        categories: [],
+        image: null,
+        file: null
+      },
+      fileName: "Your Project Image"
+    };
+  },
+  computed: {
+    ...mapGetters(["categories", "isLoading"]),
+    loading() {
+      return this.isLoading;
     }
+  },
+  methods: {
+    ...mapActions(["createProject"]),
+    handleFile() {
+      this.project.file = this.$refs.file.files[0];
+      this.fileName = this.project.file.name;
+    },
+    submitProject() {
+      this.createProject(this.project);
+    }
+  }
+};
 </script>
 
 <style scoped>
-
 </style>

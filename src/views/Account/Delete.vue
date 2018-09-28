@@ -42,43 +42,41 @@
 </template>
 
 <script>
-    import { mapGetters, mapActions } from 'vuex'
-    import Navigation from '@/components/Navigation.vue'
-    import EmployerNavigation from '@/components/EmployerNavigation.vue'
-    export default {
-        name: 'Delete',
-        components: {
-            Navigation,
-            EmployerNavigation
-        },
-        data() {
-            return {
-                email: ''
-            }
-        },
-        computed: {
-            ...mapGetters(['user', 'isLoading']),
-            loading() {
-                return this.isLoading
-            }
-        },
-        methods: {
-            ...mapActions(['deleteUser']),
-            cancel() {
-                this.$emit('cancelled')
-            },
-            deleteAccount() {
-                if(this.email === this.user.data.email) {
-                    this.deleteUser()
-                }
-                else {
-                    alert('That\'s the wrong email!')
-                }
-            }
-        }
+import { mapGetters, mapActions } from "vuex";
+import Navigation from "@/components/Navigation.vue";
+import EmployerNavigation from "@/components/EmployerNavigation.vue";
+export default {
+  name: "Delete",
+  components: {
+    Navigation,
+    EmployerNavigation
+  },
+  data() {
+    return {
+      email: ""
+    };
+  },
+  computed: {
+    ...mapGetters(["user", "isLoading"]),
+    loading() {
+      return this.isLoading;
     }
+  },
+  methods: {
+    ...mapActions(["deleteUser"]),
+    cancel() {
+      this.$emit("cancelled");
+    },
+    deleteAccount() {
+      if (this.email === this.user.data.email) {
+        this.deleteUser();
+      } else {
+        alert("That's the wrong email!");
+      }
+    }
+  }
+};
 </script>
 
 <style scoped>
-
 </style>

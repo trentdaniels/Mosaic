@@ -38,24 +38,24 @@ export default {
   data() {
     return {
       user: {
-        email: '',
-        password: '',
+        email: "",
+        password: ""
       }
     };
   },
   methods: {
     ...mapActions({
-        logInUser: 'logIn'
+      logInUser: "logIn"
     }),
     login() {
-        this.logInUser(this.user)
+      this.logInUser(this.user);
     }
   },
   computed: {
-      ...mapGetters(['isLoading']),
-      loading() {
-          return this.isLoading
-      }
+    ...mapGetters(["isLoading"]),
+    loading() {
+      return this.isLoading;
+    }
   }
 };
 </script>

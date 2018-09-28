@@ -69,38 +69,36 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import Navigation from '@/components/Navigation.vue'
-import EmployerNavigation from '@/components/EmployerNavigation.vue'
-    export default {
-        name: 'Profile',
-        components: {
-            Navigation,
-            EmployerNavigation
-        },
-        props: ['id'],
-        computed: {
-            ...mapGetters(['user','profile','isLoading']),
-            isFollowing() {
-                return this.user.data.followedCreatives.includes(this.id)
-            },
-            loading() {
-                return this.isLoading
-            }
-        },
-        methods: {
-            ...mapActions(['fetchUser', 'destroyProfile', 'followCreative']),
-            follow() {
-                this.followCreative(this.id)
-            },
-            
-        },
-        beforeDestroy() {
-            this.destroyProfile()
-        }
+import { mapGetters, mapActions } from "vuex";
+import Navigation from "@/components/Navigation.vue";
+import EmployerNavigation from "@/components/EmployerNavigation.vue";
+export default {
+  name: "Profile",
+  components: {
+    Navigation,
+    EmployerNavigation
+  },
+  props: ["id"],
+  computed: {
+    ...mapGetters(["user", "profile", "isLoading"]),
+    isFollowing() {
+      return this.user.data.followedCreatives.includes(this.id);
+    },
+    loading() {
+      return this.isLoading;
     }
+  },
+  methods: {
+    ...mapActions(["fetchUser", "destroyProfile", "followCreative"]),
+    follow() {
+      this.followCreative(this.id);
+    }
+  },
+  beforeDestroy() {
+    this.destroyProfile();
+  }
+};
 </script>
 
 <style scoped>
-
 </style>

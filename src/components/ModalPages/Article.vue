@@ -33,17 +33,16 @@
 </template>
 
 <script>
-    export default {
-        props: ['article'],
-        name: 'Article',
-        methods: {
-            cancel() {
-                this.$emit('cancelled')
-            }
-        }
+export default {
+  props: ["article"],
+  name: "Article",
+  methods: {
+    cancel() {
+      this.$emit("cancelled");
     }
+  }
+};
 </script>
 
 <style scoped>
-
 </style>

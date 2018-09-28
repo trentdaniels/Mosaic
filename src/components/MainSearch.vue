@@ -43,30 +43,30 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 export default {
   name: "MainSearch",
   data() {
     return {
-      search: 'Digital',
-      selectedApi: 1,
-    }
+      search: "Digital",
+      selectedApi: 1
+    };
   },
   computed: {
-    ...mapGetters(['apis', 'isLoading', 'categories', 'user']),
+    ...mapGetters(["apis", "isLoading", "categories", "user"]),
     loading() {
-      return this.isLoading
+      return this.isLoading;
     },
     encodedSearch() {
-      return encodeURIComponent(this.search)
+      return encodeURIComponent(this.search);
     }
   },
   methods: {
     getProjects() {
-      this.$emit('searched', {
+      this.$emit("searched", {
         url: this.encodedSearch,
         api: this.selectedApi
-      })
+      });
     }
   }
 };
@@ -74,5 +74,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
 </style>

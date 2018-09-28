@@ -52,17 +52,16 @@
 </template>
 
 <script>
-    export default {
-        props: ['photo'],
-        name: 'Photo',
-        methods: {
-            cancel() {
-                this.$emit('cancelled')
-            }
-        }
+export default {
+  props: ["photo"],
+  name: "Photo",
+  methods: {
+    cancel() {
+      this.$emit("cancelled");
     }
+  }
+};
 </script>
 
 <style scoped>
-
 </style>

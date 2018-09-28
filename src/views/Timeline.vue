@@ -64,44 +64,43 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex'
-import Navigation from '@/components/Navigation.vue'
+import { mapActions, mapGetters } from "vuex";
+import Navigation from "@/components/Navigation.vue";
 export default {
-    name: 'Timeline',
-    components: {
-        Navigation
-    },
-    computed: {
-        ...mapGetters(['posts', 'isLoading', 'likedPostUsers','user']),
-        loading() {
-            return this.isLoading
-        },
-    },
-    methods: {
-        ...mapActions(['getPosts', 'likePost']),
-        getTime(time) {
-            let date = new Date(time)
-            let hours = date.getHours()
-            let minutes = date.getMinutes()
-            return `${hours}:${minutes}`
-        },
-        incrementLike(post, index) {
-            this.likePost({data: post, index: index})
-        },
-    },
-    beforeMount() {
-        this.getPosts()
+  name: "Timeline",
+  components: {
+    Navigation
+  },
+  computed: {
+    ...mapGetters(["posts", "isLoading", "likedPostUsers", "user"]),
+    loading() {
+      return this.isLoading;
     }
-    
-}
+  },
+  methods: {
+    ...mapActions(["getPosts", "likePost"]),
+    getTime(time) {
+      let date = new Date(time);
+      let hours = date.getHours();
+      let minutes = date.getMinutes();
+      return `${hours}:${minutes}`;
+    },
+    incrementLike(post, index) {
+      this.likePost({ data: post, index: index });
+    }
+  },
+  beforeMount() {
+    this.getPosts();
+  }
+};
 </script>
 
 <style lang="scss" scoped>
 .hr {
-    border: 0;
-    height: 0;
-    border-top: 3px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 3px solid rgba(255, 255, 255, 0.1);
-    width: 15%;
+  border: 0;
+  height: 0;
+  border-top: 3px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+  width: 15%;
 }
 </style>

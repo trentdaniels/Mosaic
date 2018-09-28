@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex'
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "signup",
   data() {
@@ -64,25 +64,25 @@ export default {
       user: {
         email: "",
         password: "",
-        name: '',
-        bio: '',
-        type: 'Creative'
+        name: "",
+        bio: "",
+        type: "Creative"
       }
     };
   },
   methods: {
     ...mapActions({
-        createUser: 'signUp'
+      createUser: "signUp"
     }),
     signUp() {
-        this.createUser(this.user)
+      this.createUser(this.user);
     }
   },
   computed: {
-      ...mapGetters(['isLoading']),
-      loading() {
-          return this.isLoading
-      }
+    ...mapGetters(["isLoading"]),
+    loading() {
+      return this.isLoading;
+    }
   }
 };
 </script>

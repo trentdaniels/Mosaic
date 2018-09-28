@@ -53,36 +53,35 @@
 </template>
 
 <script>
-    import { mapGetters, mapActions } from 'vuex'
-    import Navigation from '@/components/Navigation.vue'
-    import EmployerNavigation from '@/components/EmployerNavigation.vue'
-    export default {
-        name: 'Edit',
-        components: {Navigation, EmployerNavigation},
-        data() {
-            return {
-                editedUser: {
-                    name: '',
-                    email: '',
-                    bio: ''
-                }
-            }
-        },
-        computed: {
-            ...mapGetters(['user', 'isLoading']),
-            loading() {
-                return this.isLoading
-            }
-        },
-        methods: {
-            ...mapActions(['editUser']),
-            updateInfo() {
-                this.editUser(this.editedUser)
-            }
-        }
+import { mapGetters, mapActions } from "vuex";
+import Navigation from "@/components/Navigation.vue";
+import EmployerNavigation from "@/components/EmployerNavigation.vue";
+export default {
+  name: "Edit",
+  components: { Navigation, EmployerNavigation },
+  data() {
+    return {
+      editedUser: {
+        name: "",
+        email: "",
+        bio: ""
+      }
+    };
+  },
+  computed: {
+    ...mapGetters(["user", "isLoading"]),
+    loading() {
+      return this.isLoading;
     }
+  },
+  methods: {
+    ...mapActions(["editUser"]),
+    updateInfo() {
+      this.editUser(this.editedUser);
+    }
+  }
+};
 </script>
 
 <style scoped>
-
 </style>

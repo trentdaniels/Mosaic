@@ -39,9 +39,9 @@
 // @ is an alias to /src
 import MainSearch from "@/components/MainSearch.vue";
 import Navigation from "@/components/Navigation.vue";
-import CollectionModal from '@/components/CollectionModal.vue'
-import { mapGetters, mapActions } from 'vuex'
-import Inspirations from '@/components/Inspirations.vue'
+import CollectionModal from "@/components/CollectionModal.vue";
+import { mapGetters, mapActions } from "vuex";
+import Inspirations from "@/components/Inspirations.vue";
 
 export default {
   name: "home",
@@ -56,39 +56,39 @@ export default {
       addingProject: false,
       projectToAdd: null,
       loading: false
-    }
+    };
   },
   computed: {
-    ...mapGetters(['user']),
+    ...mapGetters(["user"]),
     isEmployee() {
-      return this.user.data.type === 'Employee'
+      return this.user.data.type === "Employee";
     }
   },
   methods: {
-    ...mapActions(['searchProjects', 'addProject', 'createNewCollection']),
+    ...mapActions(["searchProjects", "addProject", "createNewCollection"]),
     getProjects(query) {
-      this.searchProjects(query)
+      this.searchProjects(query);
     },
     addToCollection(project) {
-      this.projectToAdd = project
-      this.addingProject = true
+      this.projectToAdd = project;
+      this.addingProject = true;
     },
     saveProject(collectionName) {
       this.addProject({
-        project: this.projectToAdd, 
+        project: this.projectToAdd,
         collection: collectionName
-      })
-      this.addingProject = false
+      });
+      this.addingProject = false;
     },
     cancel() {
-      this.addingProject = false
+      this.addingProject = false;
     },
     createCollection(collectionName) {
       this.createNewCollection({
-        name: collectionName, 
+        name: collectionName,
         data: this.projectToAdd
-      })
-      this.addingProject = false
+      });
+      this.addingProject = false;
     }
   }
 };
@@ -98,5 +98,4 @@ export default {
 .home {
   text-align: center;
 }
-
 </style>

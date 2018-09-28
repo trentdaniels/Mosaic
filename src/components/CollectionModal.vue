@@ -45,41 +45,40 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
-    export default {
-        name: 'CollectionModal',
-        props: ['project'],
-        methods: {
-            cancel() {
-                this.$emit('cancelled')
-            },
-            addNewCollection() {
-                this.user.collections.forEach((collection) => {
-                    if(collection.name === this.newCollection) {
-                        alert('Oops, this collection already exists! Try another name')
-                        return;
-                    }
-                })
-                this.$emit('addedNewCollection', this.newCollection)
-            },
-            save(){
-                this.$emit('saved', this.chosenCollection)
-            }
-        },
-        computed: {
-            ...mapGetters(['user'])
-        },
-        data() {
-            return {
-                newCollection: '',
-                chosenCollection: '',
-                isActive: false,
-                collectionExists: true,
-            }
+import { mapGetters } from "vuex";
+export default {
+  name: "CollectionModal",
+  props: ["project"],
+  methods: {
+    cancel() {
+      this.$emit("cancelled");
+    },
+    addNewCollection() {
+      this.user.collections.forEach(collection => {
+        if (collection.name === this.newCollection) {
+          alert("Oops, this collection already exists! Try another name");
+          return;
         }
+      });
+      this.$emit("addedNewCollection", this.newCollection);
+    },
+    save() {
+      this.$emit("saved", this.chosenCollection);
     }
+  },
+  computed: {
+    ...mapGetters(["user"])
+  },
+  data() {
+    return {
+      newCollection: "",
+      chosenCollection: "",
+      isActive: false,
+      collectionExists: true
+    };
+  }
+};
 </script>
 
 <style scoped>
-
 </style>

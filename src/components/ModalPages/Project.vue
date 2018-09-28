@@ -44,23 +44,22 @@
 </template>
 
 <script>
-    export default {
-        props: ['project'],
-        name: 'Project',
-        methods: {
-            cancel() {
-                this.$emit('cancelled')
-            }
-        },
-        computed: {
-            dateCreated() {
-                let date = new Date(this.project.created_on)
-                return `${date.getMonth() + 1}/${date.getFullYear()}`
-            }
-        }
+export default {
+  props: ["project"],
+  name: "Project",
+  methods: {
+    cancel() {
+      this.$emit("cancelled");
     }
+  },
+  computed: {
+    dateCreated() {
+      let date = new Date(this.project.created_on);
+      return `${date.getMonth() + 1}/${date.getFullYear()}`;
+    }
+  }
+};
 </script>
 
 <style scoped>
-
 </style>

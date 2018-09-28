@@ -48,19 +48,18 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
-    import Navigation from '@/components/Navigation.vue'
-    export default {
-        name: 'Creations',
-        components: {
-            Navigation
-        },
-        computed: {
-            ...mapGetters(['user'])
-        }
-    }
+import { mapGetters } from "vuex";
+import Navigation from "@/components/Navigation.vue";
+export default {
+  name: "Creations",
+  components: {
+    Navigation
+  },
+  computed: {
+    ...mapGetters(["user"])
+  }
+};
 </script>
 
 <style scoped>
-
 </style>
