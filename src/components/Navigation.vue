@@ -2,13 +2,13 @@
     <nav id="nav" class="navbar">
         <div class="navbar-brand">
             <router-link to="/home" class="navbar-item">Home</router-link>
-            <button class="navbar-burger is-primary">
+            <button class="navbar-burger is-primary" :class="{'is-active': menuClicked}" @click="menuClicked = !menuClicked">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
             </button>
         </div>
-        <div class="navbar-menu">
+        <div class="navbar-menu" :class="{'is-active': menuClicked}">
           <template v-if="user">
             <div class="navbar-start">
                 <router-link to="/timeline" class="navbar-item">Timeline</router-link>
@@ -57,7 +57,8 @@ export default {
   },
   data() {
     return {
-      isActive: false
+      isActive: false,
+      menuClicked: false
     };
   }
 };
@@ -92,6 +93,15 @@ export default {
   color: #00d1b2;
   &::after {
     border-color: #00d1b2;
+  }
+}
+#nav {
+  .navbar-brand {
+    .navbar-burger {
+      border-color: transparent;
+      color: black;
+      background-color: white;
+    }
   }
 }
 </style>

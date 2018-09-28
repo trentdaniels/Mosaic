@@ -27,14 +27,14 @@
                                         </ul>
                                     </aside>
                                 </div>
-                                <div class="field">
+                                <div class="field" v-if="collectionClicked">
                                     <label class="label has-text-white">Make a Note</label>
                                     <div class="control">
                                         <textarea class="textarea" v-model="newNote"></textarea>
                                     </div>
                                     <p class="help">Make a note about your collection for the future!</p>
                                 </div>
-                                <div class="field">
+                                <div class="field" v-if="collectionClicked">
                                     <div class="control">
                                         <button class="button is-success" :class="{'is-loading': isLoading}" @click="addNote">Create Note</button>
                                     </div>

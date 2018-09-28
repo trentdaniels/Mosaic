@@ -9,12 +9,12 @@
             <div class="hero-body">
                 <div class="container">
                     <div class="columns is-centered">
-                        <div class="column is-5">
+                        <div class="column is-4">
                             <h1 class="title is-1">Your Timeline</h1>
                             <h2 class="subtitle">See what people you follow are up to!</h2>
                             <p> Want to add to the timeline?<br><router-link class="has-text-weight-bold" to="/home">Discover and Interact</router-link> with more users<br> or <router-link  class="has-text-weight-bold" to="/account/creations/create">Create Something!</router-link>.</p>
                         </div>
-                        <div class="column is-7">
+                        <div class="column is-8">
                             <div class="card is-horizontal columns" v-for="(post,index) in posts" :key="index">
                                 <div class="card-image column is-three-fifths">
                                     <figure class="image is-4by3">
