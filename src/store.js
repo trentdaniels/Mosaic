@@ -153,7 +153,7 @@ export default new Vuex.Store({
           .collection("creations")
           .where("userId", "==", state.user.id)
           .get();
-        userShot.forEach(doc => {
+        await userShot.forEach(doc => {
           results.push(doc.data());
         });
         function compare(a, b) {
@@ -233,7 +233,7 @@ export default new Vuex.Store({
       let url;
       await dispatch("changeLoading", true);
       switch (query.api) {
-        case 0:
+        case 0: {
           const db = firebase.firestore();
           const settings = { timestampsInSnapshots: true };
           db.settings(settings);
@@ -257,7 +257,8 @@ export default new Vuex.Store({
             alert(`Oops, ${err.message}`);
           }
           break;
-        case 1:
+        }
+        case 1: {
           url = `http://behance.net/v2/projects?q=${
             query.url
           }&page=1&sort=views&api_key=${keys.BEHANCE_API}`;
@@ -275,7 +276,8 @@ export default new Vuex.Store({
             alert(`Oops, ${err.message}`);
           }
           break;
-        case 2:
+        }
+        case 2: {
           url = `https://newsapi.org/v2/everything?q=${
             query.url
           }&sortBy=popularity&pageSize=12&apiKey=${keys.NEWS_API}`;
@@ -287,7 +289,8 @@ export default new Vuex.Store({
             alert(`Oops, ${err.message}`);
           }
           break;
-        case 3:
+        }
+        case 3: {
           url = `https://api.unsplash.com/search/photos?page=1&per_page=12&query=${
             query.url
           }&orientation=squarish&client_id=${keys.UNSPLASH_API}`;
@@ -299,6 +302,7 @@ export default new Vuex.Store({
             alert(`Oops, ${err.message}`);
           }
           break;
+        }
         default:
           alert("unable to get projects, please try again");
           break;
@@ -610,7 +614,7 @@ export default new Vuex.Store({
         photos: photos
       });
     },
-    async createProject({ state, dispatch, commit }, newProject) {
+    async createProject({ state, dispatch }, newProject) {
       const db = firebase.firestore();
       const settings = { timestampsInSnapshots: true };
       db.settings(settings);

@@ -114,26 +114,20 @@
                                         </div>
                                     </template>
                                 </div>
-                                </div>
-                            </div>
-                            <template v-if="viewingDetails && projectType === 'project'">
-                                <project :project="activeProject" @cancelled="cancelProject"></project>
-                            </template>
-                            <template v-else-if="viewingDetails && projectType === 'article'">
-                                <app-article :article="activeProject" @cancelled="cancelProject"></app-article>
-                            </template>
-                            <template v-else-if="viewingDetails && projectType === 'photo'">
-                                <photo :photo="activeProject" @cancelled="cancelProject"></photo>
-                            </template>
                             </div>
                         </div>
+                        <template v-if="viewingDetails && projectType === 'project'">
+                            <project :project="activeProject" @cancelled="cancelProject"></project>
+                        </template>
+                        <template v-else-if="viewingDetails && projectType === 'article'">
+                            <app-article :article="activeProject" @cancelled="cancelProject"></app-article>
+                        </template>
+                        <template v-else-if="viewingDetails && projectType === 'photo'">
+                            <photo :photo="activeProject" @cancelled="cancelProject"></photo>
+                        </template>
                     </div>
-           
-        
-                
-                 
-                   
-              
+                </div>
+            </div>
         </section>
     </div>
 </template>
