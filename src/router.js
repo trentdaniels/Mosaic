@@ -35,7 +35,7 @@ const router = new Router({
     {
       path: "/login",
       name: "login",
-      component: () => import("./views/Login.vue")
+      component: () => import("./views/Login.vue"),
     },
     {
       path: "/signup",
@@ -127,7 +127,7 @@ router.beforeEach((to, from, next) => {
   let needsAuthentication = to.matched.some(route => route.meta.requiresAuth);
 
   if (needsAuthentication && !isLoggedIn) {
-    next("login");
+    next("home");
   } else if (!needsAuthentication && isLoggedIn) {
     next();
   } else {

@@ -119,9 +119,39 @@ export default new Vuex.Store({
     },
     setTimeline(state, newPosts) {
       state.posts = newPosts;
+    },
+    addNote(state, payLoad) {
+      state.currentCollection.notes.push(payLoad.text)
     }
   },
   actions: {
+    async messageUser({ state }, messageDetails) {
+      const db = firebase.firestore();
+      const settings = {timestampsInSnapshots: true }
+      db.settings(settings);
+
+      try {
+        let user = db.collection('users').doc(messageDetails.userId)
+        if (user.messages) {
+          user.update({messages: firebase.firestore.FieldValue.arrayUnion({
+            from: state.user.data.name,
+            senderId: state.user.id,
+            message: messageDetails.message,
+            sent: Date.now()
+          })})
+        }
+        else {
+          user.set({ messages: [{
+            from: state.user.data.name,
+            senderId: state.user.id,
+            message: messageDetails.message,
+            sent: Date.now()
+          }]}, {merge: true})
+        }
+      } catch(err) {
+        alert(`Oops, ${err.message}`)
+      }
+    },
     async clearUser({ commit, dispatch }) {
       const auth = firebase.auth();
       try {
@@ -131,6 +161,28 @@ export default new Vuex.Store({
         Router.push("/home");
       } catch (err) {
         alert(`Oops, ${err.message}`);
+      }
+    },
+    async addNewNote({ commit, state, dispatch }, payLoad) {
+      const db = firebase.firestore();
+      const settings = {timestampsInSnapshots: true }
+      db.settings(settings);
+
+      try {
+        dispatch('changeLoading', true)
+        let querySnapshot = await db.collection('collections').where('name', '==', payLoad.collection.name).where('userId', '==', state.user.id).limit(1).get()
+        querySnapshot.forEach((doc) => {
+          if (doc.get('notes')) {
+            doc.ref.update({notes: firebase.firestore.FieldValue.arrayUnion(payLoad.text)})
+          }
+          else {
+            doc.ref.set({notes: [payLoad.text]}, {merge: true})
+          }
+        })
+        commit('addNote', payLoad)
+        dispatch('changeLoading', false)
+      } catch(err) {
+        alert(`Oops, ${err.message}`)
       }
     },
     async getPosts({ commit, state }) {
@@ -589,30 +641,49 @@ export default new Vuex.Store({
           break;
       }
     },
-    getProjectsByCollection({ commit, state }, collectionName) {
-      let projects = state.user.projects.filter(project => {
-        return project.collectionId === collectionName;
-      });
-      if (projects === null) {
-        projects = [];
+    async getProjectsByCollection({ commit, state, dispatch }, collectionName) {
+      const db = firebase.firestore();
+      const settings = { timestampsInSnapshots: true };
+      db.settings(settings);
+
+      try {
+        dispatch('changeLoading', true)
+        let projects = state.user.projects.filter(project => {
+          return project.collectionId === collectionName;
+        });
+        if (projects === null) {
+          projects = [];
+        }
+        let articles = state.user.articles.filter(article => {
+          return article.collectionId === collectionName;
+        });
+        if (articles === null) {
+          articles = [];
+        }
+        let photos = state.user.photos.filter(photo => {
+          return photo.collectionId === collectionName;
+        });
+        if (photos === null) {
+          photos = [];
+        }
+        let querySnapshot = await db.collection('collections').doc(collectionName).get()
+        let notes = querySnapshot.get('notes')
+        if (!notes) {
+          notes = []
+        }
+        dispatch('changeLoading', false)
+        commit("setCollection", {
+          projects: projects,
+          articles: articles,
+          photos: photos,
+          name: collectionName,
+          notes: notes
+        });
+
+      } catch(err) {
+        alert(`Oops, ${err.message}`)
       }
-      let articles = state.user.articles.filter(article => {
-        return article.collectionId === collectionName;
-      });
-      if (articles === null) {
-        articles = [];
-      }
-      let photos = state.user.photos.filter(photo => {
-        return photo.collectionId === collectionName;
-      });
-      if (photos === null) {
-        photos = [];
-      }
-      commit("setCollection", {
-        projects: projects,
-        articles: articles,
-        photos: photos
-      });
+      
     },
     async createProject({ state, dispatch }, newProject) {
       const db = firebase.firestore();

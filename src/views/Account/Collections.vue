@@ -10,35 +10,41 @@
                                 <h1 class="title is-1">{{ selectedCollection }}</h1>
                             </div>
                             <div class="column is-9">
-                                <div class="tabs is-right is-boxed">
+                                <div class="tabs is-right is-boxed is-fullwidth">
                                     <ul>
                                         <li v-for="(collection,index) in user.collections" :key="index" :class="{'is-active': selectedCollection === collection.name}" @click="getProjects(collection.name)"><a>{{ collection.name }}</a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="column is-3">
-                                <h1 class="title">Your Collections</h1>
-                                <h2 class="subtitle">View your collections here!</h2>
-                               
+                                <h1 class="title is-3">Your Collections</h1>
+                                <h2 class="subtitle is-5">View your collections here!</h2>
+                                <div class="field">
+                                    <aside class="menu" v-if="currentCollection">
+                                        <p class="menu-label has-text-white" v-if="currentCollection.notes.length > 0">Your Notes</p>
+                                        <ul class="menu-list">
+                                            <li v-for="(note, index) in currentCollection.notes" :key="index">{{ note }}</li>
+                                        </ul>
+                                    </aside>
+                                </div>
                                 <div class="field">
                                     <label class="label has-text-white">Make a Note</label>
                                     <div class="control">
-                                        <textarea class="textarea"></textarea>
+                                        <textarea class="textarea" v-model="newNote"></textarea>
                                     </div>
                                     <p class="help">Make a note about your collection for the future!</p>
                                 </div>
-                                
                                 <div class="field">
                                     <div class="control">
-                                        <button class="button is-success">Create Note</button>
+                                        <button class="button is-success" :class="{'is-loading': isLoading}" @click="addNote">Create Note</button>
                                     </div>
                                 </div>
                             </div>
                             <div class="column is-9">
-                                <div class="content">
+                                
                                     <template v-if="collectionClicked">
-                                        <label class="label has-text-white" v-if="currentCollection.projects.length > 0">Projects</label>
                                         <div class="field" v-if="currentCollection.projects !== null">
+                                            <label class="label has-text-white" v-if="currentCollection.projects.length > 0">Projects</label>
                                             <div class="columns is-multiline">
                                                 <div class="column is-4" v-for="(project,index) in currentCollection.projects" :key="index" v-if="currentCollection.projects.length > 0">
                                                     <div class="card">
@@ -114,7 +120,7 @@
                                         </div>
                                     </template>
                                 </div>
-                            </div>
+                            
                         </div>
                         <template v-if="viewingDetails && projectType === 'project'">
                             <project :project="activeProject" @cancelled="cancelProject"></project>
@@ -147,7 +153,8 @@ export default {
     Photo
   },
   computed: {
-    ...mapGetters(["user", "currentCollection"])
+    ...mapGetters(["user", "currentCollection", "isLoading"]),
+    
   },
   data() {
     return {
@@ -155,15 +162,16 @@ export default {
       collectionClicked: false,
       viewingDetails: false,
       activeProject: null,
-      projectType: ""
-    };
+      projectType: "",
+      newNote: ''
+    }
   },
   methods: {
-    ...mapActions(["getProjectsByCollection"]),
-    getProjects(collectionName) {
-      this.selectedCollection = collectionName;
-      this.getProjectsByCollection(this.selectedCollection);
-      this.collectionClicked = true;
+    ...mapActions(["getProjectsByCollection", 'addNewNote']),
+    async getProjects(collectionName) {
+        await this.getProjectsByCollection(collectionName);
+        this.selectedCollection = collectionName;
+        this.collectionClicked = true;
     },
     viewProject(project) {
       this.projectType = "project";
@@ -184,13 +192,25 @@ export default {
       this.projectType = "";
       this.activeProject = null;
       this.viewingDetails = false;
+    },
+    addNote() {
+        if(this.newNote !== '' && this.currentCollection !== null) {
+            this.addNewNote({text: this.newNote, collection: this.currentCollection})
+            this.newNote = ''
+        }
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+
+
 .content figure {
     margin: 0
+}
+
+textarea {
+    white-space: pre;
 }
 </style>

@@ -9,12 +9,12 @@
       </div>
       <div class="hero-body">
         <div class="container">
-        <div class="columns is-centered is-multiline">
+        <div class="columns is-multiline">
             <div class="column is-12">
                 <h1 class="title is-1">Meet {{ profile.name }}.</h1>
                 <h3 class="subtitle is-3">(Pretty good name if you ask me)</h3>
             </div>
-          <div class="column is-6">
+          <div class="column is-4">
             <h1 class="title is-6">Profile View</h1>
             <h2 class="subtitle is-6">Get to know this creative!</h2>
             <template v-if="id !== user.id && user.data.type === 'Creative'">
@@ -34,12 +34,15 @@
                         <p class="help">You're already following!</p>
                     </template>
                 </div>
+                <messenger @sentMessage="sendMessage"></messenger>
             </template>
             <template v-else-if="user.data.type === 'Employer'">
                 <p>Feel free to contact this creative for employment!</p>
+                <messenger @sentMessage="sendMessage"></messenger>
             </template>
+            
           </div>
-            <div class="column is-6">
+            <div class="column is-6 is-offset-2">
                 <div class="field">
                     <label class="label has-text-white">Bio:</label>
                     <p>{{ profile.bio }}</p>
@@ -72,11 +75,13 @@
 import { mapGetters, mapActions } from "vuex";
 import Navigation from "@/components/Navigation.vue";
 import EmployerNavigation from "@/components/EmployerNavigation.vue";
+import Messenger from '@/components/Messenger.vue';
 export default {
   name: "Profile",
   components: {
     Navigation,
-    EmployerNavigation
+    EmployerNavigation,
+    Messenger
   },
   props: ["id"],
   computed: {
@@ -89,9 +94,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["fetchUser", "destroyProfile", "followCreative"]),
+    ...mapActions(["fetchUser", "destroyProfile", "followCreative", "messageUser"]),
     follow() {
       this.followCreative(this.id);
+    },
+    sendMessage(message) {
+        this.messageUser({userId: this.id, message: message })
     }
   },
   beforeDestroy() {
