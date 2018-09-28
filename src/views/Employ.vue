@@ -10,7 +10,7 @@
         <div class="container">
         <div class="columns is-multiline is-centered">
           <div class="column is-12">
-            <img alt="Logo" src="../assets/heart_whiteflat.png">
+            <img alt="Logo" id="logo" src="../assets/heart_whiteflat.png">
             <div v-if="user">
               <h1 class="title">Welcome {{ user.data.name }}!</h1>
               <h2 class="subtitle">Find Creatives to employ</h2>
@@ -92,7 +92,7 @@ export default {
 <style lang="scss">
 .employ {
   text-align: center;
-  img {
+  #id {
     width: 20%;
   }
 }

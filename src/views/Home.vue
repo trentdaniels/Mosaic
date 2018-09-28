@@ -10,7 +10,7 @@
         <div class="container">
         <div class="columns is-multiline is-centered">
           <div class="column is-12">
-            <img alt="Logo" src="../assets/heart_whiteflat.png">
+            <img alt="Logo" id="logo" src="../assets/heart_whiteflat.png">
             <div v-if="user">
               <h1 class="title">Welcome {{ user.data.name }}!</h1>
               <h2 class="subtitle">Let's get inspired.</h2>
@@ -97,7 +97,7 @@ export default {
 <style lang="scss">
 .home {
   text-align: center;
-  img {
+  #logo {
     width: 20%;
   }
 }
