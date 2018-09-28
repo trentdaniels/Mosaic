@@ -35,6 +35,6 @@
 
 <style lang="scss" scoped>
     .textarea {
-        white-space: pre;
+        white-space: pre-line;
     }
 </style>

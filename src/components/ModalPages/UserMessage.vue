@@ -50,6 +50,9 @@ export default {
         color: white;
     }
 }
+.textarea {
+    white-space: pre-line;
+}
 .modal-card-body {
     .field {
         .label {

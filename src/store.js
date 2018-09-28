@@ -131,9 +131,10 @@ export default new Vuex.Store({
       db.settings(settings);
 
       try {
-        let user = db.collection('users').doc(messageDetails.userId)
-        if (user.messages) {
-          user.update({messages: firebase.firestore.FieldValue.arrayUnion({
+        let user = await db.collection('users').doc(messageDetails.userId).get()
+        let messages = user.get('messages')
+        if (messages) {
+          user.ref.update({messages: firebase.firestore.FieldValue.arrayUnion({
             from: state.user.data.name,
             senderId: state.user.id,
             message: messageDetails.message,
@@ -141,7 +142,7 @@ export default new Vuex.Store({
           })})
         }
         else {
-          user.set({ messages: [{
+          user.ref.set({ messages: [{
             from: state.user.data.name,
             senderId: state.user.id,
             message: messageDetails.message,

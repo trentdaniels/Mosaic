@@ -92,7 +92,7 @@ export default {
 <style lang="scss">
 .employ {
   text-align: center;
-  #id {
+  #logo {
     width: 20%;
   }
 }

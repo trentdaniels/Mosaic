@@ -19,11 +19,8 @@
                                     <div class="column is-4" v-for="(message,index) in user.data.messages" :key="index">
                                         <keep-alive>
                                             <div class="card">
-                                                <div class="card-header is-centered">
-                                                    <h1 class="card-header-title is-centered has-text-dark">{{ message.from }}</h1>
-                                                    
-                                                </div>
                                                 <div class="card-content">
+                                                    <h1 class="title has-text-dark">{{ message.from }}</h1>
                                                     <div class="field">
                                                         <p>{{ message.message }}</p><br>
                                                         <p class="is-size-7">{{ getTime(message.sent) }}</p>
