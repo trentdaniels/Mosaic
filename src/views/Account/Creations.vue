@@ -1,6 +1,5 @@
 <template>
     <div id="creations">
-        <section class="hero is-bold is-fullheight is-primary">
             <div class="hero-head">
                 <div class="container">
                 <navigation></navigation>
@@ -43,7 +42,6 @@
                     </div>
                 </div>
             </div>
-        </section>
     </div>
 </template>
 

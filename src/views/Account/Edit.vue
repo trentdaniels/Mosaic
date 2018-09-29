@@ -1,6 +1,5 @@
 <template>
     <div id="edit">
-    <section class="hero is-bold is-fullheight is-primary">
       <div class="hero-head">
         <div class="container">
          <template v-if="user.data.type === 'Creative'">
@@ -48,7 +47,6 @@
         </div>
         </div>
       </div>
-    </section>
     </div>
 </template>
 

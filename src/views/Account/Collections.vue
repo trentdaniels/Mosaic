@@ -1,7 +1,6 @@
 <template>
-    <div id="collections">
-        <section class="hero is-bold is-fullheight is-primary">
-            <div class="hero-head">
+
+            <div class="hero-head"  id="collections">
                 <div class="container">
                     <navigation></navigation>
                     <div class="content">
@@ -133,8 +132,6 @@
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
 </template>
 
 <script>
