@@ -6,10 +6,10 @@
                     <navigation></navigation>
                     <div class="content">
                         <div class="columns is-multiline is-centered">
-                            <div class="column is-3">
+                            <div class="column is-4">
                                 <h1 class="title is-1">{{ selectedCollection }}</h1>
                             </div>
-                            <div class="column is-9">
+                            <div class="column is-8">
                                 <div class="tabs is-right is-boxed is-fullwidth">
                                     <ul>
                                         <li v-for="(collection,index) in user.collections" :key="index" :class="{'is-active': selectedCollection === collection.name}" @click="getProjects(collection.name)"><a>{{ collection.name }}</a></li>
@@ -41,7 +41,6 @@
                                 </div>
                             </div>
                             <div class="column is-9">
-                                
                                     <template v-if="collectionClicked">
                                         <div class="field" v-if="currentCollection.projects !== null">
                                             <label class="label has-text-white" v-if="currentCollection.projects.length > 0">Projects</label>
@@ -54,7 +53,7 @@
                                                             </figure>
                                                         </div>
                                                         <div class="card-header">
-                                                            <h1 class="card-header-title is-centered has-text-dark">{{ project.data.name }}</h1>
+                                                            <p class="card-header-title has-text-centered has-text-dark">{{ project.data.name }}</p>
                                                         </div>
                                                         <div class="card-content">
                                                             <div class="tags is-centered">
@@ -79,7 +78,7 @@
                                                             </figure>
                                                         </div>
                                                         <div class="card-header">
-                                                            <h1 class="card-header-title has-text-centered has-text-dark">{{ article.data.title }}</h1>
+                                                            <p class="card-header-title has-text-centered has-text-dark">{{ article.data.title }}</p>
                                                         </div>
                                                         <div class="card-content">
                                                             <div class="tags is-centered">
@@ -103,8 +102,8 @@
                                                                 <img :src="photo.data.urls.regular" :alt="photo.data.description" />
                                                             </figure>
                                                         </div>
-                                                        <div class="card-header is-centered">
-                                                            <h1 class="card-header-title has-text-centered has-text-dark is-capitalized">{{ photo.data.description }}</h1>
+                                                        <div class="card-header">
+                                                            <p class="card-header-title has-text-centered has-text-dark is-capitalized">{{ photo.data.description }}</p>
                                                         </div>
                                                         <div class="card-content">
                                                             <div class="tags is-centered">
@@ -204,7 +203,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.column {
+    box-sizing: border-box;
+}
 
 .content figure {
     margin: 0
