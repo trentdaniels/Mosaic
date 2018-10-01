@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       search: "Digital",
-      selectedApi: 1
+      selectedApi: 0
     };
   },
   computed: {

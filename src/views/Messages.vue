@@ -1,6 +1,5 @@
 <template>
     <div id="messages">
-        <section class="hero is-bold is-fullheight is-primary">
             <div class="hero-head">
                 <div class="container">
                 <navigation v-if="user.data.type === 'Creative'"></navigation>
@@ -42,7 +41,6 @@
                     </div>
                 </div>
             </div>
-        </section>
     </div>
 </template>
 
@@ -59,7 +57,16 @@ export default {
         EmployerNavigation
     },
     computed: {
-        ...mapGetters(["user"])
+        ...mapGetters(["user"]),
+        updatedMessages() {
+            function compare(a, b) {
+                if (a.created < b.created) return 1;
+                else if (a.created > b.created) return -1;
+                else return 0;
+            }
+            let sortedMessages = this.user.data.messages.sort(compare)
+            return sortedMessages
+        }
     },
     data() {
         return {
@@ -69,7 +76,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['messageUser']),
+        ...mapActions(['messageUser', 'getUser']),
         getTime(time) {
             let date = new Date(time);
             let hours = date.getHours();
@@ -95,6 +102,9 @@ export default {
             this.recipientId = ''
             this.recipientName = ''
         }
+    },
+    beforeMount() {
+        this.getUser(this.user.id)
     }
 }
 </script>

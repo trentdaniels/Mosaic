@@ -1,6 +1,5 @@
 <template>
   <div class="employ">
-    <section class="hero is-bold is-fullheight is-primary">
       <div class="hero-head">
         <div class="container">
             <employer-navigaton></employer-navigaton>
@@ -10,10 +9,10 @@
         <div class="container">
         <div class="columns is-multiline is-centered">
           <div class="column is-12">
-            <img alt="Logo" id="logo" src="../assets/heart_whiteflat.png">
+            <h1 class="title is-1" id="logo">MOSAIC</h1>
             <div v-if="user">
-              <h1 class="title">Welcome {{ user.data.name }}!</h1>
-              <h2 class="subtitle">Find Creatives to employ</h2>
+              <h1 class="title is-3">Welcome {{ user.data.name }}!</h1>
+              <h2 class="subtitle is-5">Find Creatives to employ</h2>
             </div>
             <div v-else>
               <h1 class="title">Welcome</h1>
@@ -27,7 +26,6 @@
         <inspirations @addedProject="addToCollection"></inspirations>
         </div>
       </div>
-    </section>
     
   </div>
 </template>
@@ -93,7 +91,8 @@ export default {
 .employ {
   text-align: center;
   #logo {
-    width: 20%;
+    font-size: 6rem;
+    letter-spacing: 1rem;
   }
 }
 </style>

@@ -1,6 +1,5 @@
 <template>
     <div id="timeline">
-        <section class="hero is-bold is-fullheight is-primary">
             <div class="hero-head">
                 <div class="container">
                 <navigation></navigation>
@@ -61,7 +60,6 @@
                     </div>
                 </div>
             </div>
-        </section>
     </div>
 </template>
 
@@ -87,7 +85,7 @@ export default {
       let minutes = date.getMinutes();
       let month = date.getMonth() + 1;
       let year = date.getFullYear();
-      return `${month}/${year} at ${hours}:${minutes}`;
+      return `${hours}:${minutes}`;
     },
     incrementLike(post, index) {
       this.likePost({ data: post, index: index });

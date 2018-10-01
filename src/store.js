@@ -256,6 +256,7 @@ export default new Vuex.Store({
         Router.push("/home");
       } catch (err) {
         alert(`Oops, ${err.message}`);
+        dispatch("changeLoading", false);
       }
     },
     async logIn({ dispatch, state }, loggedInUser) {

@@ -1,6 +1,5 @@
 <template>
     <div id="details">
-    <section class="hero is-bold is-fullheight is-primary">
       <div class="hero-head">
         <div class="container">
             <navigation v-if="user.data.type === 'Creative'"></navigation>
@@ -67,7 +66,6 @@
         </div>
         </div>
       </div>
-    </section>
     </div>
 </template>
 

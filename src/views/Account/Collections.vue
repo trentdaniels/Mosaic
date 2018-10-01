@@ -1,6 +1,6 @@
 <template>
 
-            <div class="hero-head"  id="collections">
+            <div   id="collections">
                 <div class="container">
                     <navigation></navigation>
                     <div class="content">
