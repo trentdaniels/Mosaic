@@ -13,7 +13,7 @@
             <h1 class="title is-1 has-text-centered" id="logo">MOSAIC</h1>
             <div v-if="user">
               <h1 class="title is-3 has-text-centered">Welcome {{ user.data.name }}!</h1>
-              <h2 class="subtitle is-5 has-text-centered">Let's get inspired.</h2>
+              <h2 class="subtitle is-5 has-text-centered">Piece together your creativity.</h2>
             </div>
             <div v-else>
               <h1 class="title has-text-centered">Welcome</h1>
