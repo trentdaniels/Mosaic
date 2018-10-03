@@ -150,6 +150,7 @@ export default {
 #inspirations {
     .card {
         height: 100%;
+        
     }
 }
 </style>

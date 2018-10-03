@@ -1,6 +1,6 @@
 <template>
-    <b-dropdown>
-        <a class="navbar-item" slot="trigger">
+    <b-dropdown class="navbar-item">
+        <a class="is-primary" slot="trigger">
         <span>Account</span>
         <b-icon icon="menu-down"></b-icon>
         </a>
@@ -32,4 +32,8 @@ export default {
     name: 'Dropdown'
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>
 
