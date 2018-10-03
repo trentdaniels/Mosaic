@@ -9,7 +9,7 @@
                                 <h1 class="title is-1">{{ user.collections[selectedCollection].name }}</h1>
                             </div>
                             <div class="column is-8">
-                                <b-tabs type="is-boxed" v-model="selectedCollection" @change="getProjects(selectedCollection)">
+                                <b-tabs :animated="true" type="is-boxed" v-model="selectedCollection" @change="getProjects(selectedCollection)">
                                     <b-tab-item v-for="(collection,index) in user.collections" :key="index" :label="collection.name" ></b-tab-item>
                                 </b-tabs>
                             </div>

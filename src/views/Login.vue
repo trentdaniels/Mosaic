@@ -4,20 +4,12 @@
             <h1 class="title">Log In</h1>
             <h2 class="subtitle">Get back to your inspirations</h2>
             <div class="field" @keyup.enter="login">
-                <div class="field">
-                    <label class="label has-text-white">Email</label>
-                    <div class="control">
-                        <input class="input" type="email" placeholder="Email" v-model.trim="user.email"/>
-                    </div>
-                    <p class="help" v-show="user.email !== ''">Ex: creative@creative.com</p>
-                </div>
-                <div class="field">
-                    <label class="label has-text-white">Password</label>
-                    <div class="control">
-                        <input class="input" type="password" placeholder="Password" v-model.trim="user.password"/>
-                    </div>
-                    <p class="help" v-show="user.password.length > 0">Be secretive..</p>
-                </div>
+                <b-field label="Email" message="Ex: creative@creative.com" custom-class="has-text-white">
+                    <b-input v-model.trim="user.email" icon="email"></b-input>
+                </b-field>
+                <b-field label="Password" message="Be secretive!" custom-class="has-text-white">
+                    <b-input type="password" v-model.trim="user.password" icon="security"></b-input>
+                </b-field>
                 <div class="field">
                     <div class="control">
                         <button @click="login" class="button is-primary" :class="{'is-loading': loading}">Connect</button>
