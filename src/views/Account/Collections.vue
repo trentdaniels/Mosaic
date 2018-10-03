@@ -6,14 +6,12 @@
                     <div class="content">
                         <div class="columns is-multiline is-centered">
                             <div class="column is-4">
-                                <h1 class="title is-1">{{ selectedCollection }}</h1>
+                                <h1 class="title is-1">{{ user.collections[selectedCollection].name }}</h1>
                             </div>
                             <div class="column is-8">
-                                <div class="tabs is-right is-boxed is-fullwidth">
-                                    <ul>
-                                        <li v-for="(collection,index) in user.collections" :key="index" :class="{'is-active': selectedCollection === collection.name}" @click="getProjects(collection.name)"><a>{{ collection.name }}</a></li>
-                                    </ul>
-                                </div>
+                                <b-tabs :animated="true" type="is-boxed" v-model="selectedCollection" @change="getProjects(selectedCollection)">
+                                    <b-tab-item v-for="(collection,index) in user.collections" :key="index" :label="collection.name" ></b-tab-item>
+                                </b-tabs>
                             </div>
                             <div class="column is-3">
                                 <h1 class="title is-3">Your Collections</h1>
@@ -154,7 +152,7 @@ export default {
   },
   data() {
     return {
-      selectedCollection: "",
+      selectedCollection: 0,
       collectionClicked: false,
       viewingDetails: false,
       activeProject: null,
@@ -164,9 +162,9 @@ export default {
   },
   methods: {
     ...mapActions(["getProjectsByCollection", 'addNewNote']),
-    async getProjects(collectionName) {
+    async getProjects(collectionIndex) {
+        let collectionName = this.user.collections[collectionIndex].name;
         await this.getProjectsByCollection(collectionName);
-        this.selectedCollection = collectionName;
         this.collectionClicked = true;
     },
     viewProject(project) {

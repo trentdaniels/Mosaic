@@ -19,6 +19,23 @@
                         <router-link to="/account/delete" class="navbar-item has-text-danger" exact>Delete Account</router-link>
                     </div>
                 </div>
+                <b-dropdown>
+                  <a class="navbar-item" slot="trigger">
+                    <span>Account</span>
+                    <b-icon icon="menu-down"></b-icon>
+                  </a>
+
+                  <hr class="dropdown-divider">
+                  <b-dropdown-item has-link>
+                    <router-link to="/account" exact>My Profile</router-link>
+                  </b-dropdown-item>
+                  <b-dropdown-item has-link>
+                    <router-link to="/account/edit" exact>Edit Account</router-link>
+                  </b-dropdown-item>
+                  <b-dropdown-item has-link>
+                    <router-link to="/account/delete" exact>Delete Account</router-link>
+                  </b-dropdown-item>
+                </b-dropdown>
                 <router-link to="/home" @click.native="logout" class="navbar-item">Log Out</router-link>
             </div>
         </div>

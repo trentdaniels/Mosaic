@@ -1,44 +1,27 @@
 <template>
-  <div id="mainSearch">
+  <div id="mainSearch" @keyup.enter="getProjects">
     <label class="label has-text-white">Start Searching:</label>
-    <div  class="field has-addons" @keyup.enter="getProjects">
-    <div class="control">
-      <div class="select is-medium is-primary">
-        <template v-if="user">
-          <select v-model="selectedApi">
-            <option v-for="(api, index) in apis" :key="index" :value="index">
-              {{ api }}
-            </option>
-          </select>
-        </template>
-        <template v-else>
-          <select v-model="selectedApi">
-            <option v-for="(api, index) in apis" :key="index" :value="index" v-if="index > 0">
-              {{ api }}
-            </option>
-          </select>
-        </template>
-      </div>
-    </div>
-    <template v-if="user">
-      <div class="control is-expanded">
-        <input type="text" placeholder="ex: Rainbow Dragons" v-model="search" class="input is-medium is-primary" v-if="selectedApi !== 0" />
-        <div class="select is-medium is-primary is-fullwidth" v-else>
-          <select v-model="search">
-            <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
-          </select>
-        </div>
-      </div>
-    </template>
-    <template v-else>
-      <div class="control is-expanded">
-        <input type="text" placeholder="ex: Rainbow Dragons" v-model="search" class="input is-medium is-primary"/>
-      </div>
-    </template>
-    <div class="control">
-      <button class="button is-primary is-medium" :class="{'is-loading': loading}" @click="getProjects">Search</button>
-    </div>
-  </div>
+    <b-field  type="is-primary">
+      <b-select placeholder="Purpose" icon="earth" v-model="selectedApi" v-if="user" size="is-medium">
+          <option v-for="(api, index) in apis" :key="index" :value="index">
+            {{ api }}
+          </option>
+      </b-select>
+      <b-select placeholder="Purpose" icon="earth" v-model="selectedApi" v-else size="is-medium">
+          <option v-for="(api, index) in apis" :key="index" :value="index" v-if="index > 0">
+            {{ api }}
+          </option>
+      </b-select>
+      <b-input v-model.trim="search" type="text" placeholder="Search Text" size="is-medium" expanded v-if="selectedApi !== 0"></b-input>
+      <b-select placeholder="Purpose" v-model="search" v-else size="is-medium" expanded>
+          <option v-for="category in categories" :key="category" :value="category">
+            {{ category }}
+          </option>
+      </b-select>
+      <p class="control">
+          <button class="button is-primary is-medium" :class="{'is-loading': loading}" @click="getProjects">Search</button>
+      </p>
+    </b-field>
   </div>
 </template>
 

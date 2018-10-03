@@ -5,49 +5,30 @@
             <h1 class="title">Sign Up</h1>
             <h2 class="subtitle">Get Creating.</h2>
             <div class="field" @keyup.enter="signUp">
-                <div class="field">
-                    <label class="label has-text-white">What is your first name?</label>
-                    <div class="control">
-                        <input class="input" type="text" placeholder="Name" v-model.lazy.trim="user.name"/>
-                    </div>
-                    <p v-if="user.name.length > 0" class="help">Nice to meet you, {{ user.name }}!</p>
-                </div>
-                <div class="field">
-                    <label class="label has-text-white">Email</label>
-                    <div class="control">
-                        <input class="input" type="email" placeholder="Email" v-model.trim="user.email"/>
-                    </div>
-                    <p class="help">Ex: creative@creative.com</p>
-                </div>
-                <div class="field">
-                    <label class="label has-text-white">Password</label>
-                    <div class="control">
-                        <input class="input" type="password" placeholder="Password" v-model.trim="user.password"/>
-                    </div>
-                    <p class="help">Create your password</p>
-                </div>
-                
-                <div class="field">
-                    <label class="label has-text-white">Tell us about yourself!</label>
-                    <div class="control">
-                        <textarea class="textarea" placeholder="Need a hint? What's your favorite animal?" v-model="user.bio"></textarea>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label has-text-white">Oh! One last thing. Why are you using this program?</label>
-                    <div class="select is-fullwidth">
-                        <select v-model="user.type">
-                            <option value="Creative">I want to share my creations everywhere!</option>
-                            <option value="Employer">I am an employer looking to employ creatives!</option>
-                        </select>
-                    </div>
-                    <p class="help">We can refine your experience better with this question!</p>
-                </div>
-                <div class="field">
-                    <div class="control">
-                        <button @click="signUp" class="button is-primary" :class="{'is-loading': loading}">Get Inspired</button>
-                    </div>
-                </div>
+                <b-field label="What is your first name?" custom-class="has-text-white">
+                    <b-input type="text" v-model.trim="user.name" icon="face" placeholder="Name"></b-input>
+                </b-field>
+                <b-field label="Email" message="Ex: creative@creative.com" custom-class="has-text-white">
+                    <b-input v-model.trim="user.email" icon="email" type="email" placeholder="Email"></b-input>
+                </b-field>
+                <b-field label="Password" message="Be secretive!" custom-class="has-text-white">
+                    <b-input type="password" v-model.trim="user.password" icon="security" placeholder="Password"></b-input>
+                </b-field>
+                <b-field label="Confirm Password" message="Just to make sure.." custom-class="has-text-white">
+                    <b-input type="password" v-model.trim="confirmedPassword" icon="security" placeholder="Re-enter your password"></b-input>
+                </b-field>
+                <b-field label="Tell us about yourself!" custom-class="has-text-white">
+                    <b-input v-model.trim="user.bio" icon="description" type="textarea" placeholder="Need a hint? What's your favorite animal?"></b-input>
+                </b-field>
+                <b-field label="Why are you using Mosaic?" custom-class="has-text-white" message="We refine your experience based on this question!">
+                    <b-select placeholder="Purpose" icon="earth" v-model="user.type">
+                        <option value="Creative">I want to share my creations everywhere!</option>
+                        <option value="Employer">I am an employer looking to employ creatives!</option>
+                    </b-select>
+                </b-field>
+                <b-field>
+                    <button @click="signUp" class="button is-success" :class="{'is-loading': loading}">Start Creating</button>
+                </b-field>
                 
                 <p class="help">Already have an account? <router-link class="has-text-weight=bold" to="/login">Login.</router-link></p>
                 <p class="help"><router-link to="/home" class="has-text-weight=bold">Browse Quickly</router-link> (We prefer you sign in first).</p>
@@ -69,7 +50,8 @@ export default {
         name: "",
         bio: "",
         type: "Creative"
-      }
+      },
+      confirmedPassword: ''
     };
   },
   methods: {
@@ -77,7 +59,9 @@ export default {
       createUser: "signUp"
     }),
     signUp() {
-      this.createUser(this.user);
+        if (this.user.password === this.confirmedPassword) {
+            this.createUser(this.user);
+        }
     }
   },
   computed: {
