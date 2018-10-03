@@ -50,9 +50,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#creations {
-    .card {
-        height: 100%;
-    }
-}
+
 </style>
