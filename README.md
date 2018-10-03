@@ -1,4 +1,4 @@
-# creatives
+# Mosaic
 
 ## Project setup
 ```
