@@ -146,5 +146,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+#inspirations {
+    .card {
+        height: 100%;
+    }
+}
 </style>

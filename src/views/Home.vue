@@ -94,12 +94,13 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .home {
   text-align: center;
   #logo {
     font-size: 6rem;
     letter-spacing: 1rem;
   }
+  
 }
 </style>

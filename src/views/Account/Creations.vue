@@ -17,24 +17,12 @@
                             <div class="columns is-multiline">
                                     <div class="column is-4" v-for="(creation,index) in user.creations" :key="index">
                                         <keep-alive>
-                                            <div class="card">
-                                                <div class="card-image">
-                                                    <figure class="image">
-                                                        <img :src="creation.image" alt="Creation Picture" />
-                                                    </figure>
-                                                </div>
-                                                <div class="card-header">
-                                                    <h1 class="card-header-title is-centered has-text-dark">{{ creation.name }}</h1>
-                                                </div>
-                                                <div class="card-content">
-                                                    <div class="field">
-                                                        <p>{{ creation.description }}</p>
-                                                    </div>
-                                                    <div class="tags">
-                                                        <span v-for="category in creation.categories" :key="category" class="tag is-primary">{{ category }}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <creation-card 
+                                                :image ="creation.image" 
+                                                :name="creation.name" 
+                                                :description="creation.description" 
+                                                :categories="creation.categories">
+                                            </creation-card>
                                         </keep-alive>
                                     </div>
                                 </div>
@@ -47,11 +35,13 @@
 
 <script>
 import { mapGetters } from "vuex";
+import CreationCard from '@/components/Cards/CreationCard.vue';
 import Navigation from "@/components/Navigation.vue";
 export default {
   name: "Creations",
   components: {
-    Navigation
+    Navigation,
+    CreationCard
   },
   computed: {
     ...mapGetters(["user"])
@@ -59,5 +49,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+#creations {
+    .card {
+        height: 100%;
+    }
+}
 </style>
