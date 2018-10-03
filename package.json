@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "axios-jsonp": "^1.0.2",
+    "buefy": "^0.6.7",
     "bulma": "^0.7.1",
     "firebase": "^5.5.0",
     "vue": "^2.5.17",

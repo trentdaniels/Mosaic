@@ -8,16 +8,16 @@
       <div class="hero-body">
         <div class="container">
         <div class="columns is-multiline is-centered">
-          <div class="column is-12">
+          <div class="column is-6">
             <div class="content">
-            <h1 class="title is-1" id="logo">MOSAIC</h1>
+            <h1 class="title is-1 has-text-centered" id="logo">MOSAIC</h1>
             <div v-if="user">
-              <h1 class="title is-3">Welcome {{ user.data.name }}!</h1>
-              <h2 class="subtitle is-5">Let's get inspired.</h2>
+              <h1 class="title is-3 has-text-centered">Welcome {{ user.data.name }}!</h1>
+              <h2 class="subtitle is-5 has-text-centered">Let's get inspired.</h2>
             </div>
             <div v-else>
-              <h1 class="title">Welcome</h1>
-              <h2 class="subtitle">Please log in for a greater experience</h2>
+              <h1 class="title has-text-centered">Welcome</h1>
+              <h2 class="subtitle has-text-centered">Please log in for a greater experience</h2>
             </div>
           </div>
           </div>
@@ -96,7 +96,7 @@ export default {
 
 <style lang="scss" scoped>
 .home {
-  text-align: center;
+  
   #logo {
     font-size: 6rem;
     letter-spacing: 1rem;
