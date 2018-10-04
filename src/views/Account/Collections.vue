@@ -119,13 +119,116 @@
                             
                         </div>
                         <template v-if="viewingDetails && projectType === 'project'">
-                            <project :project="activeProject" @cancelled="cancelProject"></project>
+                            <b-modal :active.sync="viewingDetails" :width="500">
+                                <div class="card">
+                                    <div class="card-image">
+                                        <figure class="image">
+                                            <img :src="activeProject.covers.original" :alt="activeProject.name" />
+                                        </figure>
+                                    </div>
+                                    <div class="card-header">
+                                        <h1 class="card-header-title is-centered has-text-dark has-text-centered">{{ activeProject.name }}</h1>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="content">
+                                            <h3 class="subtitle has-text-dark is-5 has-text-centered">{{ activeProject.owners[0].display_name }}</h3>
+                                            <b-taglist>
+                                                <b-tag v-for="field in activeProject.fields" :key="field" type="is-light">{{ field }}</b-tag>
+                                            </b-taglist>
+                                            <table class="table is-fullwidth is-striped">
+                                                <tbody>
+                                                    <tr v-for="(stat, key) in activeProject.stats" :key="key">
+                                                        <td>{{ key }}</td>
+                                                        <td class="has-text-primary">{{ stat }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Created</td>
+                                                        <td>{{ dateCreated }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a :href="activeProject.url" target="_blank" class="card-footer-item">View on Behance</a>
+                                        <a class="card-footer-item" @click="cancelProject">Cancel</a>
+                                    </div>
+                                </div>
+                            </b-modal>
+                            <!-- <project :project="activeProject" @cancelled="cancelProject"></project> -->
                         </template>
                         <template v-else-if="viewingDetails && projectType === 'article'">
-                            <app-article :article="activeProject" @cancelled="cancelProject"></app-article>
+                            <b-modal :active.sync="viewingDetails" :width="500">
+                                <div class="card">
+                                    <div class="card-image">
+                                        <figure class="image">
+                                            <img :src="activeProject.urlToImage" :alt="activeProject.description" />
+                                        </figure>
+                                    </div>
+                                    <div class="card-header">
+                                        <h1 class="card-header-title is-centered has-text-dark has-text-centered">{{ activeProject.title }}</h1>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="content">
+                                            <h3 class="subtitle has-text-dark is-5 has-text-centered">{{ activeProject.author }}</h3>
+                                            <p class="is-italic has-text-dark has-text-centered">{{ activeProject.description }}</p>
+                                            <b-tag type="is-light">{{activeProject.source.name}}</b-tag>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a :href="activeProject.url" target="_blank" class="card-footer-item">View on NewsApi</a>
+                                        <a class="card-footer-item" @click="cancelProject">Cancel</a>
+                                    </div>
+                                </div>
+                            </b-modal>
+                            <!-- <app-article :article="activeProject" @cancelled="cancelProject"></app-article> -->
                         </template>
                         <template v-else-if="viewingDetails && projectType === 'photo'">
-                            <photo :photo="activeProject" @cancelled="cancelProject"></photo>
+                            <b-modal :active.sync="viewingDetails" :width="600">
+                                <div class="card">
+                                    <div class="card-image">
+                                        <figure class="image">
+                                            <img :src="activeProject.urls.regular" :alt="activeProject.description" />
+                                        </figure>
+                                    </div>
+                                    <div class="card-header">
+                                        <h1 class="card-header-title is-centered has-text-dark has-text-centered">{{ activeProject.description }}</h1>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="content">
+                                            <h3 class="subtitle has-text-dark is-5 has-text-centered">{{ activeProject.user.name }}</h3>
+                                            <b-taglist>
+                                                <b-tag v-for="(tag, index) in activeProject.photo_tags" :key="index" type="is-light">{{ tag.title }}</b-tag>
+                                            </b-taglist>
+                                            <table class="table is-fullwidth is-striped">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Height</td>
+                                                        <td>{{ activeProject.height }} px</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Width</td>
+                                                        <td>{{ activeProject.width }} px</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Color</td>
+                                                        <td :style="{'color': activeProject.color}">{{ activeProject.color }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Likes</td>
+                                                        <td class="has-text-primary">{{ activeProject.likes }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a :href="activeProject.links.html" target="_blank" class="card-footer-item">View on Unsplash</a>
+                                        <a class="card-footer-item" @click="cancelProject">Cancel</a>
+                                    </div>
+                                </div>
+                            </b-modal>
+                            <!-- <photo :photo="activeProject" @cancelled="cancelProject"></photo> -->
                         </template>
                     </div>
                 </div>
@@ -148,6 +251,10 @@ export default {
   },
   computed: {
     ...mapGetters(["user", "currentCollection", "isLoading"]),
+    dateCreated() {
+      let date = new Date(this.activeProject.created_on);
+      return `${date.getMonth() + 1}/${date.getFullYear()}`;
+    }
     
   },
   data() {

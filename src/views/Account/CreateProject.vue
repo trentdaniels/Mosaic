@@ -16,15 +16,15 @@
             </div>
             <div class="column is-6">
                 <b-field label="Creation Name" message="What is your creation's name?" custom-class="has-text-white">
-                    <b-input v-model="creation.name" type="text" placeholder="Creation Name"></b-input>
+                    <b-input v-model.lazy="creation.name" type="text" placeholder="Creation Name"></b-input>
                 </b-field>
                 <b-field message="Hold down shift or command when selecting to choose multiple" label="Select your creation's categories" custom-class="has-text-white">
-                    <b-select multiple :native-size="categories.length" v-model="creation.categories" expanded>
+                    <b-select multiple :native-size="categories.length" v-model.lazy="creation.categories" expanded>
                         <option v-for="(category, index) of categories" :key="index" :value="category">{{ category }}</option>
                     </b-select>
                 </b-field>
                 <b-field label="Description" custom-class="has-text-white" message="Talk about what you used, how you made it, etc.">
-                    <b-input v-model="creation.description" type="textarea" placeholder="Talk about your creation!"></b-input>
+                    <b-input v-model.lazy="creation.description" type="textarea" placeholder="Talk about your creation!"></b-input>
                 </b-field>
                 <b-field class="file" custom-class="has-text-white">
                     <b-upload v-model="creation.file" accept="image/*">
