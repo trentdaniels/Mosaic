@@ -15,49 +15,35 @@
                 <p>You can also go <router-link class="has-text-weight-bold" to="../creations">Back To Your Creations</router-link></p>
             </div>
             <div class="column is-6">
-                <div class="field">
-                    <label class="label has-text-white">Creation Name</label>
-                    <div class="control">
-                        <input class="input" type="text" v-model="project.name" placeholder="Project Name"/>
-                    </div>
-                    <p class="help">What is your project's name?</p>
-                </div>
-                <div class="field">
-                    <label class="label has-text-white">Category</label>
-                    <div class="select is-multiple is-primary is-fullwidth">
-                        <select multiple v-model="project.categories" :size="categories.length">
-                            <option v-for="(category, index) of categories" :key="index" :value="category">{{ category }}</option>
-                        </select>
-                    </div>
-                    <p class="help">(Hold down shift or command to select multiple)</p>
-                </div>
-                <div class="field">
-                    <label class="label has-text-white">Description</label>
-                    <div class="control">
-                        <textarea class="textarea" v-model="project.description" style="whitespace: pre-line" placeholder="Project Description"></textarea>
-                    </div>
-                    <p class="help">Talk about your project. The world would love to know!</p>
-                </div>
-                <div class="field">
-                    <label class="label has-text-white">Image Upload</label>
-                    <div class="file has-name">
-                        <label class="file-label">
-                        <input class="file-input" ref="file" type="file" accept="image/*" @change="handleFile" />
-                        <span class="file-cta">
-                            <span class="file-label">
-                                Upload Image Here
-                            </span>
-                        </span>
-                        <span class="file-name">{{ fileName }}</span>
-                        </label>
-                    </div>
-                    <p class="help">Make the picture unique!</p>
-                </div>
+                <b-field label="Creation Name" message="What is your creation's name?" custom-class="has-text-white">
+                    <b-input v-model="creation.name" type="text" placeholder="Creation Name"></b-input>
+                </b-field>
+                <b-field message="Hold down shift or command when selecting to choose multiple" label="Select your creation's categories" custom-class="has-text-white">
+                    <b-select multiple :native-size="categories.length" v-model="creation.categories" expanded>
+                        <option v-for="(category, index) of categories" :key="index" :value="category">{{ category }}</option>
+                    </b-select>
+                </b-field>
+                <b-field label="Description" custom-class="has-text-white" message="Talk about what you used, how you made it, etc.">
+                    <b-input v-model="creation.description" type="textarea" placeholder="Talk about your creation!"></b-input>
+                </b-field>
+                <b-field class="file" custom-class="has-text-white">
+                    <b-upload v-model="creation.file" accept="image/*">
+                        <a class="button is-light">
+                            <b-icon icon="upload"></b-icon>
+                            <span>Upload Image</span>
+                        </a>
+                    </b-upload>
+                    <span class="file-name" v-if="creation.file && creation.file.length">
+                        {{ creation.file[0].name }}
+                    </span>
+                </b-field>
+                
                 <div class="field">
                     <div class="control">
                         <button @click="submitProject" class="button is-dark" :class="{'is-loading': loading}">Create Project</button>
                     </div>
                 </div>
+                
             </div>
         </div>
         </div>
@@ -75,7 +61,7 @@ export default {
   },
   data() {
     return {
-      project: {
+      creation: {
         name: "",
         description: "",
         categories: [],
@@ -93,12 +79,14 @@ export default {
   },
   methods: {
     ...mapActions(["createProject"]),
-    handleFile() {
-      this.project.file = this.$refs.file.files[0];
-      this.fileName = this.project.file.name;
-    },
     submitProject() {
-      this.createProject(this.project);
+      this.createProject({
+          name: this.creation.name,
+          description: this.creation.description,
+          categories: this.creation.categories,
+          image: this.creation.image,
+          file: this.creation.file[0]
+      });
     }
   }
 };

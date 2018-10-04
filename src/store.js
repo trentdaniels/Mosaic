@@ -722,6 +722,7 @@ export default new Vuex.Store({
         Router.push("/account/creations");
       } catch (err) {
         alert(`Oops, ${err.message}`);
+        dispatch("changeLoading", false);
       }
     },
     async like({ state, commit }, creation) {
