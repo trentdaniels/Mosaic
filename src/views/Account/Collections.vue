@@ -155,7 +155,6 @@
                                     </div>
                                 </div>
                             </b-modal>
-                            <!-- <project :project="activeProject" @cancelled="cancelProject"></project> -->
                         </template>
                         <template v-else-if="viewingDetails && projectType === 'article'">
                             <b-modal :active.sync="viewingDetails" :width="500">
@@ -181,7 +180,6 @@
                                     </div>
                                 </div>
                             </b-modal>
-                            <!-- <app-article :article="activeProject" @cancelled="cancelProject"></app-article> -->
                         </template>
                         <template v-else-if="viewingDetails && projectType === 'photo'">
                             <b-modal :active.sync="viewingDetails" :width="600">
@@ -228,7 +226,6 @@
                                     </div>
                                 </div>
                             </b-modal>
-                            <!-- <photo :photo="activeProject" @cancelled="cancelProject"></photo> -->
                         </template>
                     </div>
                 </div>
