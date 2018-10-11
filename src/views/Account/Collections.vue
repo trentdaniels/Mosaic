@@ -127,7 +127,7 @@
                                         </figure>
                                     </div>
                                     <div class="card-header">
-                                        <h1 class="card-header-title is-centered has-text-dark has-text-centered">{{ activeProject.name }}</h1>
+                                        <h1 class="card-header-title has-text-dark">{{ activeProject.name }}</h1>
                                     </div>
                                     <div class="card-content">
                                         <div class="content">
@@ -171,7 +171,9 @@
                                         <div class="content">
                                             <h3 class="subtitle has-text-dark is-5 has-text-centered">{{ activeProject.author }}</h3>
                                             <p class="is-italic has-text-dark has-text-centered">{{ activeProject.description }}</p>
-                                            <b-tag type="is-light">{{activeProject.source.name}}</b-tag>
+                                            <b-taglist>
+                                                <b-tag type="is-light">{{activeProject.source.name}}</b-tag>
+                                            </b-taglist>
                                         </div>
                                     </div>
                                     <div class="card-footer">
@@ -299,6 +301,9 @@ export default {
         this.newNote = "";
       }
     }
+  },
+  mounted() {
+      this.getProjects(this.selectedCollection)
   }
 };
 </script>
@@ -307,9 +312,22 @@ export default {
 .column {
   box-sizing: border-box;
 }
-
+.card {
+    height: 100%;
+}
 .content figure {
   margin: 0;
+}
+.tags {
+    justify-content: center;
+}
+
+.card-header{
+    justify-content: center;
+    .card-header-title {
+        text-align: center;
+        justify-content: center;
+    }
 }
 
 textarea {
