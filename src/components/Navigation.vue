@@ -62,7 +62,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import Dropdown from '@/components/Navigation/Dropdown.vue'
+import Dropdown from "@/components/Navigation/Dropdown.vue";
 export default {
   components: {
     Dropdown
@@ -95,7 +95,6 @@ export default {
         color: white;
       }
     }
-    
   }
 }
 </style>

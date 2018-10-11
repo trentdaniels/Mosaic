@@ -121,36 +121,47 @@ export default new Vuex.Store({
       state.posts = newPosts;
     },
     addNote(state, payLoad) {
-      state.currentCollection.notes.push(payLoad.text)
+      state.currentCollection.notes.push(payLoad.text);
     }
   },
   actions: {
     async messageUser({ state }, messageDetails) {
       const db = firebase.firestore();
-      const settings = {timestampsInSnapshots: true }
+      const settings = { timestampsInSnapshots: true };
       db.settings(settings);
 
       try {
-        let user = await db.collection('users').doc(messageDetails.userId).get()
-        let messages = user.get('messages')
+        let user = await db
+          .collection("users")
+          .doc(messageDetails.userId)
+          .get();
+        let messages = user.get("messages");
         if (messages) {
-          user.ref.update({messages: firebase.firestore.FieldValue.arrayUnion({
-            from: state.user.data.name,
-            senderId: state.user.id,
-            message: messageDetails.message,
-            sent: Date.now()
-          })})
+          user.ref.update({
+            messages: firebase.firestore.FieldValue.arrayUnion({
+              from: state.user.data.name,
+              senderId: state.user.id,
+              message: messageDetails.message,
+              sent: Date.now()
+            })
+          });
+        } else {
+          user.ref.set(
+            {
+              messages: [
+                {
+                  from: state.user.data.name,
+                  senderId: state.user.id,
+                  message: messageDetails.message,
+                  sent: Date.now()
+                }
+              ]
+            },
+            { merge: true }
+          );
         }
-        else {
-          user.ref.set({ messages: [{
-            from: state.user.data.name,
-            senderId: state.user.id,
-            message: messageDetails.message,
-            sent: Date.now()
-          }]}, {merge: true})
-        }
-      } catch(err) {
-        alert(`Oops, ${err.message}`)
+      } catch (err) {
+        alert(`Oops, ${err.message}`);
       }
     },
     async clearUser({ commit, dispatch }) {
@@ -166,24 +177,30 @@ export default new Vuex.Store({
     },
     async addNewNote({ commit, state, dispatch }, payLoad) {
       const db = firebase.firestore();
-      const settings = {timestampsInSnapshots: true }
+      const settings = { timestampsInSnapshots: true };
       db.settings(settings);
 
       try {
-        dispatch('changeLoading', true)
-        let querySnapshot = await db.collection('collections').where('name', '==', payLoad.collection.name).where('userId', '==', state.user.id).limit(1).get()
-        querySnapshot.forEach((doc) => {
-          if (doc.get('notes')) {
-            doc.ref.update({notes: firebase.firestore.FieldValue.arrayUnion(payLoad.text)})
+        dispatch("changeLoading", true);
+        let querySnapshot = await db
+          .collection("collections")
+          .where("name", "==", payLoad.collection.name)
+          .where("userId", "==", state.user.id)
+          .limit(1)
+          .get();
+        querySnapshot.forEach(doc => {
+          if (doc.get("notes")) {
+            doc.ref.update({
+              notes: firebase.firestore.FieldValue.arrayUnion(payLoad.text)
+            });
+          } else {
+            doc.ref.set({ notes: [payLoad.text] }, { merge: true });
           }
-          else {
-            doc.ref.set({notes: [payLoad.text]}, {merge: true})
-          }
-        })
-        commit('addNote', payLoad)
-        dispatch('changeLoading', false)
-      } catch(err) {
-        alert(`Oops, ${err.message}`)
+        });
+        commit("addNote", payLoad);
+        dispatch("changeLoading", false);
+      } catch (err) {
+        alert(`Oops, ${err.message}`);
       }
     },
     async getPosts({ commit, state }) {
@@ -209,12 +226,11 @@ export default new Vuex.Store({
         await userShot.forEach(doc => {
           results.push(doc.data());
         });
-        function compare(a, b) {
+        results.sort((a, b) => {
           if (a.created < b.created) return 1;
           else if (a.created > b.created) return -1;
           else return 0;
-        }
-        results.sort(compare);
+        });
         commit("setTimeline", results);
       } catch (err) {
         alert(`Oops, ${err.message}`);
@@ -477,7 +493,7 @@ export default new Vuex.Store({
         alert(`Oops, ${err.message}`);
       }
     },
-    async getProjects({}, credential) {
+    async getProjects(context, credential) {
       let queriedProjects = [];
       let snapShot = await credential.db
         .collection("projects")
@@ -488,7 +504,7 @@ export default new Vuex.Store({
       });
       return queriedProjects;
     },
-    async getArticles({}, credential) {
+    async getArticles(context, credential) {
       let queriedArticles = [];
       let snapShot = await credential.db
         .collection("articles")
@@ -499,7 +515,7 @@ export default new Vuex.Store({
       });
       return queriedArticles;
     },
-    async getPhotos({}, credential) {
+    async getPhotos(context, credential) {
       let queriedPhotos = [];
       let snapShot = await credential.db
         .collection("photos")
@@ -510,7 +526,7 @@ export default new Vuex.Store({
       });
       return queriedPhotos;
     },
-    async getCollections({}, credential) {
+    async getCollections(context, credential) {
       let queriedCollections = [];
       let snapShot = await credential.db
         .collection("collections")
@@ -521,7 +537,7 @@ export default new Vuex.Store({
       });
       return queriedCollections;
     },
-    async getCreations({}, credential) {
+    async getCreations(context, credential) {
       let queriedCreations = [];
       let snapShot = await credential.db
         .collection("creations")
@@ -649,7 +665,7 @@ export default new Vuex.Store({
       db.settings(settings);
 
       try {
-        dispatch('changeLoading', true)
+        dispatch("changeLoading", true);
         let projects = state.user.projects.filter(project => {
           return project.collectionId === collectionName;
         });
@@ -668,12 +684,15 @@ export default new Vuex.Store({
         if (photos === null) {
           photos = [];
         }
-        let querySnapshot = await db.collection('collections').doc(collectionName).get()
-        let notes = querySnapshot.get('notes')
+        let querySnapshot = await db
+          .collection("collections")
+          .doc(collectionName)
+          .get();
+        let notes = querySnapshot.get("notes");
         if (!notes) {
-          notes = []
+          notes = [];
         }
-        dispatch('changeLoading', false)
+        dispatch("changeLoading", false);
         commit("setCollection", {
           projects: projects,
           articles: articles,
@@ -681,11 +700,9 @@ export default new Vuex.Store({
           name: collectionName,
           notes: notes
         });
-
-      } catch(err) {
-        alert(`Oops, ${err.message}`)
+      } catch (err) {
+        alert(`Oops, ${err.message}`);
       }
-      
     },
     async createProject({ state, dispatch }, newProject) {
       const db = firebase.firestore();
@@ -806,6 +823,7 @@ export default new Vuex.Store({
           bio: doc.data().bio,
           email: doc.data().email,
           name: doc.data().name,
+          type: doc.data().type,
           projects: results[0],
           articles: results[1],
           photos: results[2],

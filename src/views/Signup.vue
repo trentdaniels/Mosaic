@@ -51,7 +51,7 @@ export default {
         bio: "",
         type: "Creative"
       },
-      confirmedPassword: ''
+      confirmedPassword: ""
     };
   },
   methods: {
@@ -59,9 +59,9 @@ export default {
       createUser: "signUp"
     }),
     signUp() {
-        if (this.user.password === this.confirmedPassword) {
-            this.createUser(this.user);
-        }
+      if (this.user.password === this.confirmedPassword) {
+        this.createUser(this.user);
+      }
     }
   },
   computed: {

@@ -47,86 +47,86 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import Navigation from "@/components/Navigation.vue";
-import UserMessage from '@/components/ModalPages/UserMessage.vue'
-import EmployerNavigation from '@/components/EmployerNavigation.vue' 
-import firebase from 'firebase'
-import 'firebase/firestore'
+import UserMessage from "@/components/ModalPages/UserMessage.vue";
+import EmployerNavigation from "@/components/EmployerNavigation.vue";
+import firebase from "firebase";
+import "firebase/firestore";
 export default {
-    name: "Messages",
-    components: {
-        Navigation,
-        UserMessage,
-        EmployerNavigation
-    },
-    computed: {
-        ...mapGetters(["user"]),
-        sortedMessages() {
-            let sortedMessages = this.sortMessages();
-            return sortedMessages
-        }
-        
-    },
-    data() {
-        return {
-            recipientId: '',
-            recipientName: '',
-            replying: false
-        }
-    },
-    methods: {
-        ...mapActions(['messageUser', 'getUser']),
-        getTime(time) {
-            let date = new Date(time);
-            let hours = date.getHours();
-            let minutes = date.getMinutes();
-            let month = date.getMonth() + 1;
-            let year = date.getFullYear();
-            let day = date.getDate() + 1
-            return `${month}/${day}/${year} at ${hours}:${minutes}`;
-        },
-        showReply(senderId, senderName) {
-            this.recipientId = senderId,
-            this.recipientName = senderName
-            this.replying = true
-        },
-        cancel() {
-            this.recipientId = ''
-            this.recipientName = ''
-            this.replying = false
-        },
-        async sendMessage(message) {
-            this.replying = false
-            await this.messageUser({userId: this.recipientId, message: message })
-            this.recipientId = ''
-            this.recipientName = ''
-        },
-        updateMessages() {
-            const db = firebase.firestore();
-            db.collection('users').doc(this.user.id).onSnapshot((doc) => {
-                this.getUser(this.user.id)
-            } )
-        },
-        sortMessages() {
-            function compare(a, b) {
-                if (a.created < b.created) return -1;
-                else if (a.created > b.created) return 1;
-                else return 0;
-            }
-            let sortedMessages = this.user.data.messages.sort(compare)
-            return sortedMessages
-        }
-    },
-    beforeMount() {
-        this.getUser(this.user.id)
-    },
-    mounted() {
-        this.updateMessages()
+  name: "Messages",
+  components: {
+    Navigation,
+    UserMessage,
+    EmployerNavigation
+  },
+  computed: {
+    ...mapGetters(["user"]),
+    sortedMessages() {
+      let sortedMessages = this.sortMessages();
+      return sortedMessages.reverse();
     }
-}
+  },
+  data() {
+    return {
+      recipientId: "",
+      recipientName: "",
+      replying: false
+    };
+  },
+  methods: {
+    ...mapActions(["messageUser", "getUser"]),
+    getTime(time) {
+      let date = new Date(time);
+      let hours = date.getHours();
+      let minutes = date.getMinutes();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+      let day = date.getDate() + 1;
+      return `${month}/${day}/${year} at ${hours}:${minutes}`;
+    },
+    showReply(senderId, senderName) {
+      (this.recipientId = senderId), (this.recipientName = senderName);
+      this.replying = true;
+    },
+    cancel() {
+      this.recipientId = "";
+      this.recipientName = "";
+      this.replying = false;
+    },
+    async sendMessage(message) {
+      this.replying = false;
+      await this.messageUser({ userId: this.recipientId, message: message });
+      this.recipientId = "";
+      this.recipientName = "";
+    },
+    updateMessages() {
+      const db = firebase.firestore();
+      db.collection("users")
+        .doc(this.user.id)
+        .onSnapshot(doc => {
+          this.getUser(doc.id);
+        });
+    },
+    sortMessages() {
+      function compare(a, b) {
+        if (a.created < b.created) return -1;
+        else if (a.created > b.created) return 1;
+        else return 0;
+      }
+      let sortedMessages = this.user.data.messages.sort(compare);
+      return sortedMessages;
+    }
+  },
+  beforeMount() {
+    this.getUser(this.user.id);
+  },
+  mounted() {
+    this.updateMessages();
+  }
+};
 </script>
 
 <style scoped lang="scss">
 .card-footer-item:not(:last-child) {
-    border-right: none;
+  border-right: none;
 }
 </style>

@@ -252,7 +252,6 @@ export default {
       let date = new Date(this.activeProject.created_on);
       return `${date.getMonth() + 1}/${date.getFullYear()}`;
     }
-    
   },
   data() {
     return {
@@ -261,15 +260,15 @@ export default {
       viewingDetails: false,
       activeProject: null,
       projectType: "",
-      newNote: ''
-    }
+      newNote: ""
+    };
   },
   methods: {
-    ...mapActions(["getProjectsByCollection", 'addNewNote']),
+    ...mapActions(["getProjectsByCollection", "addNewNote"]),
     async getProjects(collectionIndex) {
-        let collectionName = this.user.collections[collectionIndex].name;
-        await this.getProjectsByCollection(collectionName);
-        this.collectionClicked = true;
+      let collectionName = this.user.collections[collectionIndex].name;
+      await this.getProjectsByCollection(collectionName);
+      this.collectionClicked = true;
     },
     viewProject(project) {
       this.projectType = "project";
@@ -292,10 +291,13 @@ export default {
       this.viewingDetails = false;
     },
     addNote() {
-        if(this.newNote !== '' && this.currentCollection !== null) {
-            this.addNewNote({text: this.newNote, collection: this.currentCollection})
-            this.newNote = ''
-        }
+      if (this.newNote !== "" && this.currentCollection !== null) {
+        this.addNewNote({
+          text: this.newNote,
+          collection: this.currentCollection
+        });
+        this.newNote = "";
+      }
     }
   }
 };
@@ -303,14 +305,14 @@ export default {
 
 <style lang="scss" scoped>
 .column {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .content figure {
-    margin: 0
+  margin: 0;
 }
 
 textarea {
-    white-space: pre;
+  white-space: pre;
 }
 </style>

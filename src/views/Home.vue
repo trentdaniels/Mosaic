@@ -90,17 +90,15 @@ export default {
       });
       this.addingProject = false;
     }
-  },
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .home {
-  
   #logo {
     font-size: 6rem;
     letter-spacing: 1rem;
   }
-  
 }
 </style>

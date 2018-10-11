@@ -81,11 +81,11 @@ export default {
     ...mapActions(["createProject"]),
     submitProject() {
       this.createProject({
-          name: this.creation.name,
-          description: this.creation.description,
-          categories: this.creation.categories,
-          image: this.creation.image,
-          file: this.creation.file[0]
+        name: this.creation.name,
+        description: this.creation.description,
+        categories: this.creation.categories,
+        image: this.creation.image,
+        file: this.creation.file[0]
       });
     }
   }

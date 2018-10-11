@@ -31,13 +31,12 @@
                         </figure>
                     </div>
                     <div class="card-header">
-                        <p class="card-header-title has-text-dark is-centered">{{ creation.name }}</p>
+                        <h3 class="card-header-title has-text-dark is-centered">{{ creation.name }} by {{creation.userName}}</h3>
                     </div>
                     <div class="card-content">
-                        <p class="subtitle is-6 has-text-dark has-text-weight-bold">{{ creation.userName}}</p>
                         <div class="content">
-                            <p>{{ creation.description }}</p>
-                            <p>Created: {{ getDate(creation.created)}}</p>
+                            <p class="has-text-centered">{{ creation.description }}</p>
+                            <p class="has-text-centered">Created: {{ getDate(creation.created)}}</p>
                         </div>
                         <div class="content">
                             <div class="tags is-centered">
@@ -110,8 +109,12 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import CreationCard from '@/components/Cards/CreationCard.vue'
 export default {
   name: "Inspirations",
+  components: {
+      CreationCard
+  },
   computed: {
     ...mapGetters(["currentSearch", "user", "alreadyLiked", "isLoading"]),
     noSearchResults() {
@@ -148,21 +151,24 @@ export default {
 
 <style lang="scss" scoped>
 #inspirations {
-    .card {
+  .card {
+    height: 100%;
+    .card-image {
+      overflow: hidden;
+      height: 300px;
+      .image {
         height: 100%;
-        .card-image {
-            overflow: hidden;
-            img {
-                object-fit: cover;
-                object-position: center;
-            }
+        img {
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
         }
-        
-        
+      }
     }
-    .buttons {
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
+  }
+  .buttons {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 }
 </style>

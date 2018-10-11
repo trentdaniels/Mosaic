@@ -29,11 +29,9 @@
 </template>
 <script>
 export default {
-    name: 'Dropdown'
-}
+  name: "Dropdown"
+};
 </script>
 
 <style lang="scss" scoped>
-
 </style>
-

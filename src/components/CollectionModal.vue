@@ -58,20 +58,18 @@ export default {
       this.$emit("saved", this.chosenCollection);
     },
     handleSubmission() {
-        if(this.chosenAction === 'Choose Existing') {
-            this.save()
-        }
-        else if(this.chosenAction === 'Create New') {
-            this.addNewCollection()
-        }
+      if (this.chosenAction === "Choose Existing") {
+        this.save();
+      } else if (this.chosenAction === "Create New") {
+        this.addNewCollection();
+      }
     },
     toggleClicked(collectionName) {
-        if (this.chosenCollection !== collectionName) {
-            this.chosenCollection = collectionName
-        }
-        else {
-            this.chosenCollection = ''
-        }
+      if (this.chosenCollection !== collectionName) {
+        this.chosenCollection = collectionName;
+      } else {
+        this.chosenCollection = "";
+      }
     }
   },
   computed: {
@@ -82,8 +80,8 @@ export default {
       chosenCollection: "",
       isActive: false,
       collectionExists: true,
-      actions: ['Choose Existing', 'Create New'],
-      chosenAction: 'Choose Existing'
+      actions: ["Choose Existing", "Create New"],
+      chosenAction: "Choose Existing"
     };
   }
 };
@@ -91,27 +89,26 @@ export default {
 
 <style lang="scss" scoped>
 #collection-modal {
-    .panel-tabs a {
-        color: #00d1b2;
+  .panel-tabs a {
+    color: #00d1b2;
+  }
+  .modal-card-head {
+    background-color: #00d1b2;
+    border-bottom: none;
+    .modal-card-title {
+      color: white;
     }
-    .modal-card-head {
-        background-color: #00d1b2;
-        border-bottom: none;
-        .modal-card-title {
-            color: white;
-        }
+  }
+  .modal-card-foot {
+    background-color: white;
+    border-top: none;
+  }
+  .panel-block {
+    &.is-active {
+      border-left-color: #00d1b2;
+      background-color: #00d1b2;
+      color: white;
     }
-    .modal-card-foot {
-        background-color: white;
-        border-top: none;
-    }
-    .panel-block {
-        &.is-active {
-            border-left-color: #00d1b2;
-            background-color: #00d1b2;
-            color: white;
-        }
-    }
+  }
 }
-
 </style>

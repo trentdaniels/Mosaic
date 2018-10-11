@@ -30,38 +30,38 @@ export default {
       this.$emit("cancelled");
     },
     send() {
-        this.$emit('sent', this.newMessage)
+      this.$emit("sent", this.newMessage);
     }
   },
-  props: ['sender'],
+  props: ["sender"],
   data() {
-      return {
-          newMessage: ''
-      }
+    return {
+      newMessage: ""
+    };
   }
 };
 </script>
 
 <style lang="scss" scoped>
 .modal-card-head {
-    border-bottom: none;
-    background-color: #00d1b2;
-    .modal-card-title {
-        color: white;
-    }
+  border-bottom: none;
+  background-color: #00d1b2;
+  .modal-card-title {
+    color: white;
+  }
 }
 .textarea {
-    white-space: pre-line;
+  white-space: pre-line;
 }
 .modal-card-body {
-    .field {
-        .label {
-            color: #00d1b2;
-        }
+  .field {
+    .label {
+      color: #00d1b2;
     }
+  }
 }
 .modal-card-foot {
-    border-top: none;
-    background-color: white;
+  border-top: none;
+  background-color: white;
 }
 </style>

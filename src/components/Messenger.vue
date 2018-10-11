@@ -16,25 +16,24 @@
 </template>
 
 <script>
-    export default {
-        name: 'Messenger',
-        data() {
-            return {
-                message: ''
-            }
-        },
-        methods: {
-            sendMessage() {
-                this.$emit('sentMessage', this.message)
-                this.message = ''
-            }
-            
-        }
+export default {
+  name: "Messenger",
+  data() {
+    return {
+      message: ""
+    };
+  },
+  methods: {
+    sendMessage() {
+      this.$emit("sentMessage", this.message);
+      this.message = "";
     }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-    .textarea {
-        white-space: pre-line;
-    }
+.textarea {
+  white-space: pre-line;
+}
 </style>

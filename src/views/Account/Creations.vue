@@ -35,7 +35,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import CreationCard from '@/components/Cards/CreationCard.vue';
+import CreationCard from "@/components/Cards/CreationCard.vue";
 import Navigation from "@/components/Navigation.vue";
 export default {
   name: "Creations",
@@ -50,5 +50,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 </style>

@@ -73,7 +73,7 @@
 import { mapGetters, mapActions } from "vuex";
 import Navigation from "@/components/Navigation.vue";
 import EmployerNavigation from "@/components/EmployerNavigation.vue";
-import Messenger from '@/components/Messenger.vue';
+import Messenger from "@/components/Messenger.vue";
 export default {
   name: "Profile",
   components: {
@@ -92,12 +92,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["fetchUser", "destroyProfile", "followCreative", "messageUser"]),
+    ...mapActions([
+      "fetchUser",
+      "destroyProfile",
+      "followCreative",
+      "messageUser"
+    ]),
     follow() {
       this.followCreative(this.id);
     },
     sendMessage(message) {
-        this.messageUser({userId: this.id, message: message })
+      this.messageUser({ userId: this.id, message: message });
     }
   },
   beforeDestroy() {

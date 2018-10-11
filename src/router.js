@@ -18,7 +18,7 @@ const router = new Router({
     {
       path: "/home",
       name: "home",
-      component: Home,
+      component: Home
     },
     {
       path: "/about",
@@ -35,7 +35,7 @@ const router = new Router({
     {
       path: "/login",
       name: "login",
-      component: () => import("./views/Login.vue"),
+      component: () => import("./views/Login.vue")
     },
     {
       path: "/signup",
@@ -120,9 +120,9 @@ const router = new Router({
       }
     },
     {
-      path: '/messages',
-      name: 'messages',
-      component: () => import('./views/Messages.vue'),
+      path: "/messages",
+      name: "messages",
+      component: () => import("./views/Messages.vue"),
       meta: {
         requiresAuth: true
       }

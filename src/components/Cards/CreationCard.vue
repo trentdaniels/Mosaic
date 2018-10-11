@@ -12,7 +12,7 @@
             <div class="field">
                 <p>{{ description }}</p>
             </div>
-            <div class="tags">
+            <div class="tags is-centered">
                 <span v-for="category in categories" :key="category" class="tag is-primary">{{ category }}</span>
             </div>
         </div>
@@ -21,27 +21,34 @@
 
 <script>
 export default {
-    name: 'CreationCard',
-    props: ['image', 'name', 'description', 'categories']
-}
+  name: "CreationCard",
+  props: ["image", "name", "description", "categories"]
+};
 </script>
 
 <style lang="scss" scoped>
 .card {
-    height: 100%;
-    .card-image {
-        overflow: hidden;
-        height: 256px;
-        .image {
-            overflow: hidden;
-            height: 100%;
-            img {
-                object-fit: cover;
-                object-position: top;
-                height: 100%;
-            }
-        }
+  height: 100%;
+  .card-image {
+    overflow: hidden;
+    height: 256px;
+    .image {
+      overflow: hidden;
+      height: 100%;
+      img {
+        object-fit: cover;
+        object-position: top;
+        height: 100%;
+      }
     }
+  }
+  .card-content {
+      .field {
+          p {
+              text-align: center;
+          }
+      }
+      text-align: center;
+  }
 }
 </style>
-

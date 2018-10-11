@@ -83,8 +83,6 @@ export default {
       let date = new Date(time);
       let hours = date.getHours();
       let minutes = date.getMinutes();
-      let month = date.getMonth() + 1;
-      let year = date.getFullYear();
       return `${hours}:${minutes}`;
     },
     incrementLike(post, index) {
@@ -98,60 +96,56 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .card {
-    .media:not(:last-child) {
-        margin-bottom: 1rem;
-    }
-    &.card--reverse-order { 
-        flex-direction: row-reverse; 
-    }
-    &.is-horizontal {
-        display: flex;
-        flex-basis: 50ex;
-        flex-grow: 0;
-        flex-shrink: 1;
-        .card-image {
-            flex: 4;
-            flex-shrink: 1;
-            &.column {
-                padding: 0;
-            }   
-            .image {
-                display: block;
-                position: relative;
-                overflow: hidden;
-                height: 100%;
-                width: 100%;
-                img {
-                    height: 100%;
-                    object-fit: cover;
-                    object-position: center;
-                }
-            }
+  .media:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+  &.card--reverse-order {
+    flex-direction: row-reverse;
+  }
+  &.is-horizontal {
+    display: flex;
+    flex-basis: 50ex;
+    flex-grow: 0;
+    flex-shrink: 1;
+    .card-image {
+      flex: 4;
+      flex-shrink: 1;
+      &.column {
+        padding: 0;
+      }
+      .image {
+        display: block;
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+        img {
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
         }
-        .card-content {
-            flex: 3;
-            .media {
-                .image {
-                    overflow: hidden;
-                    img {
-                        object-fit: cover;
-                        object-position: center center;
-                        height: 100%;
-                    }
-                }
-            }
-        }
+      }
     }
-    &.columns {
-        margin-top: 0;
-        &:not(:last-child) {
-            margin-bottom: 1.25rem;
+    .card-content {
+      flex: 3;
+      .media {
+        .image {
+          overflow: hidden;
+          img {
+            object-fit: cover;
+            object-position: center center;
+            height: 100%;
+          }
         }
+      }
     }
-    
-    
+  }
+  &.columns {
+    margin-top: 0;
+    &:not(:last-child) {
+      margin-bottom: 1.25rem;
+    }
+  }
 }
-
 </style>
