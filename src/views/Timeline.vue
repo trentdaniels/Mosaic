@@ -132,6 +132,16 @@ export default {
         }
         .card-content {
             flex: 3;
+            .media {
+                .image {
+                    overflow: hidden;
+                    img {
+                        object-fit: cover;
+                        object-position: center center;
+                        height: 100%;
+                    }
+                }
+            }
         }
     }
     &.columns {

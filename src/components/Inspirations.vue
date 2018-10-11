@@ -150,7 +150,19 @@ export default {
 #inspirations {
     .card {
         height: 100%;
+        .card-image {
+            overflow: hidden;
+            img {
+                object-fit: cover;
+                object-position: center;
+            }
+        }
         
+        
+    }
+    .buttons {
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
 }
 </style>

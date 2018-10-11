@@ -29,6 +29,19 @@ export default {
 <style lang="scss" scoped>
 .card {
     height: 100%;
+    .card-image {
+        overflow: hidden;
+        height: 256px;
+        .image {
+            overflow: hidden;
+            height: 100%;
+            img {
+                object-fit: cover;
+                object-position: top;
+                height: 100%;
+            }
+        }
+    }
 }
 </style>
 

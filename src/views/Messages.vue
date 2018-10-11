@@ -15,7 +15,7 @@
                         </div>
                         <div class="column is-9">
                             <div class="columns is-multiline">
-                                    <div class="column is-4" v-for="(message,index) in user.data.messages" :key="index">
+                                    <div class="column is-4" v-for="(message,index) in sortedMessages" :key="index">
                                         <keep-alive>
                                             <div class="card">
                                                 <div class="card-content">
@@ -48,7 +48,9 @@
 import { mapGetters, mapActions } from "vuex";
 import Navigation from "@/components/Navigation.vue";
 import UserMessage from '@/components/ModalPages/UserMessage.vue'
-import EmployerNavigation from '@/components/EmployerNavigation.vue'
+import EmployerNavigation from '@/components/EmployerNavigation.vue' 
+import firebase from 'firebase'
+import 'firebase/firestore'
 export default {
     name: "Messages",
     components: {
@@ -58,15 +60,11 @@ export default {
     },
     computed: {
         ...mapGetters(["user"]),
-        updatedMessages() {
-            function compare(a, b) {
-                if (a.created < b.created) return 1;
-                else if (a.created > b.created) return -1;
-                else return 0;
-            }
-            let sortedMessages = this.user.data.messages.sort(compare)
+        sortedMessages() {
+            let sortedMessages = this.sortMessages();
             return sortedMessages
         }
+        
     },
     data() {
         return {
@@ -101,10 +99,28 @@ export default {
             await this.messageUser({userId: this.recipientId, message: message })
             this.recipientId = ''
             this.recipientName = ''
+        },
+        updateMessages() {
+            const db = firebase.firestore();
+            db.collection('users').doc(this.user.id).onSnapshot((doc) => {
+                this.getUser(this.user.id)
+            } )
+        },
+        sortMessages() {
+            function compare(a, b) {
+                if (a.created < b.created) return -1;
+                else if (a.created > b.created) return 1;
+                else return 0;
+            }
+            let sortedMessages = this.user.data.messages.sort(compare)
+            return sortedMessages
         }
     },
     beforeMount() {
         this.getUser(this.user.id)
+    },
+    mounted() {
+        this.updateMessages()
     }
 }
 </script>
