@@ -18,8 +18,8 @@
           </template>
             <div class="navbar-end">
                 <template v-if="user">
-                    <router-link to="/account/creations" class="navbar-item" exact>My Creations</router-link>
-                    <router-link to="/account/collections" class="navbar-item">My Collections</router-link>
+                    <router-link to="/account/creations" class="navbar-item" exact>Creations</router-link>
+                    <router-link to="/account/collections" class="navbar-item">Collections</router-link>
                     <b-dropdown>
                       <a class="navbar-item" slot="trigger">
                         <span>Account</span>
